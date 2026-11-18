@@ -6,11 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "provision:admin": "tsx scripts/provision-admin.ts"
   },
   "dependencies": {
+    "@better-auth/mongo-adapter": "^1.7.26",
     "better-auth": "^1.7.26",
     "lucide-react": "^1.75.0",
+    "mongodb": "^7.9.0",
     "next": "^16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -23,6 +26,7 @@
     "@types/react-dom": "^19.2.2",
     "eslint": "^10.15.0",
     "eslint-config-next": "^16.4.6",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3"
   }
 }

@@ -1,0 +1,63 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { authClient } from "@/lib/auth-client";
+import { authenticatedApiFetch } from "@/lib/api";
+
+export function DashboardGate({ role, title }: { role: "admin" | "customer"; title: string }) {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+  const [apiStatus, setApiStatus] = useState("Checking secure API connection…");
+
+  useEffect(() => {
+    if (isPending) return;
+    if (!session) {
+      router.replace("/login");
+      return;
+    }
+    const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
+    if (user.isBlocked) {
+      void authClient.signOut().then(() => router.replace("/login"));
+    } else if (user.role !== role) {
+      router.replace(user.role === "admin" ? "/dashboard/admin" : "/dashboard/customer");
+    }
+  }, [isPending, router, role, session]);
+
+  useEffect(() => {
+    if (isPending || !session) return;
+    const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
+    if (user.role !== role || user.isBlocked) return;
+    let active = true;
+    void authenticatedApiFetch(`/api/dashboard/${role}`)
+      .then(async (response) => {
+        if (!response.ok) {
+          const body = await response.json().catch(() => ({})) as { message?: string };
+          throw new Error(body.message || `API request failed (${response.status}).`);
+        }
+        if (active) setApiStatus("Express API verified your JWT and current account role.");
+      })
+      .catch((error: unknown) => {
+        if (active) setApiStatus(error instanceof Error ? error.message : "Could not verify the API session.");
+      });
+    return () => { active = false; };
+  }, [isPending, role, session]);
+
+  if (isPending || !session) return <main className="auth-page"><p>Checking your session…</p></main>;
+  const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
+  if (user.role !== role || user.isBlocked) return <main className="auth-page"><p>Redirecting…</p></main>;
+
+  return (
+    <main className="auth-page">
+      <section className="auth-card">
+        <Link className="brand" href="/">SalonBook</Link>
+        <p className="eyebrow">{role.toUpperCase()} DASHBOARD</p>
+        <h1>{title}</h1>
+        <p>Signed in as {session.user.name}.</p>
+        <p className="api-status">{apiStatus}</p>
+        <button className="secondary-button" onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => router.replace("/login") } })}>Sign out</button>
+      </section>
+    </main>
+  );
+}

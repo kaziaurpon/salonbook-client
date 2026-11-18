@@ -13,9 +13,11 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Client and server production builds compile.
 - [x] User confirmed both apps and the MongoDB connection run locally.
 - [~] READMEs exist, but the full assignment sections/links and feature instructions remain to be completed.
-- [ ] No SalonBook product features are implemented yet beyond the placeholder home page and API health endpoint.
-- [ ] No commits have been made. The assignment's meaningful commit counts remain outstanding.
-- [ ] Nothing has been pushed or deployed.
+- [~] Authentication foundation is implemented: Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and live-role guards. End-to-end auth still needs local credentials and account testing.
+- [ ] SalonBook service browsing, booking, dashboards, admin tools, and payments are not implemented yet.
+- [x] One initial scaffold commit exists in each repository and has been pushed.
+- [ ] Required meaningful commit totals remain outstanding: 1/20 client, 1/12 server.
+- [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
 
@@ -47,17 +49,18 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 ## Authentication and access control
 
-- [ ] Better Auth configured with secrets/URLs from environment variables and MongoDB adapter.
-- [ ] Email/password registration and login; Google OAuth.
-- [ ] Registration fields: full name, email, password, profile image upload or URL.
-- [ ] Password validation: minimum six characters, at least one uppercase and one lowercase letter; enforced server-side.
-- [ ] Success/error feedback and role-based post-auth redirects.
-- [ ] Public signup cannot create admins; admin role assigned securely.
-- [ ] JWT verification middleware on Express protected APIs; role checked server-side on every protected API.
-- [ ] Protected route redirects for unauthenticated users; sessions persist through refresh.
-- [ ] Admin and customer dashboard access is role-restricted, including direct URL attempts.
-- [ ] Blocked accounts cannot access protected platform features.
-- [ ] Client auth state changes immediately after sign-in/sign-out.
+- [x] Better Auth configured with environment-based URL/secret and official MongoDB adapter; auth-owned users, sessions, accounts, verifications, and JWKS share the MongoDB database.
+- [~] Email/password registration and login implemented; Google OAuth is ready but requires credentials and callback configuration.
+- [x] Registration fields include full name, email, password, and optional profile image URL (assignment permits URL or upload).
+- [x] Password validation: minimum six characters, at least one uppercase and one lowercase letter; server-side Better Auth hook plus client validation.
+- [x] Loading states, toast success/error feedback, and role-based post-auth redirects.
+- [x] Public registration cannot set role/isBlocked; admin promotion is available only through a local CLI provisioning command.
+- [x] Express verifies JWT signature, issuer, audience, and expiry through Better Auth JWKS, then reads current role and isBlocked from Better Auth's users collection.
+- [x] Express server-side auth and role guard middleware; protected customer/admin API examples included.
+- [x] Client dashboard route gates redirect unauthenticated users and wrong-role visits; session is Better Auth cookie-based.
+- [x] Blocked accounts are signed out from client dashboard gates and denied by protected Express APIs.
+- [x] Better Auth session hook updates client auth state; app uses session state on protected dashboard routes.
+- [~] Auth feature builds successfully and the local admin provisioning CLI has created/promoted an account in MongoDB; email/password login, Google OAuth, and separate customer/admin API flows still need local verification.
 
 ## Service details, booking, and customer dashboard
 
@@ -101,12 +104,12 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 ## Profile, data model, and security
 
 - [ ] Four business collections: users (Better Auth), services, appointments, transactions; references are correct and no redundant business collections.
-- [ ] User fields include name, email, image, role, isBlocked; profile fields may include phone.
+- [x] Better Auth `users` records include name, email, image, role, isBlocked; profile phone remains future work.
 - [ ] Service fields include name, category, description, price, duration, image, status, createdAt.
 - [ ] Appointment fields include serviceId, customerId, date, time, message, servicePrice, paymentStatus, status, createdAt.
 - [ ] Transaction fields include appointmentId, customerId, amount, currency, stripeSessionId, status, createdAt.
 - [ ] User profile update allows name/image/phone only; cannot change role/isBlocked or another user's data.
-- [ ] Sensitive MongoDB, Better Auth, Google, Stripe, ImgBB, and application URL values are environment-only; no `.env` or credentials committed.
+- [x] Sensitive MongoDB, Better Auth, Google, Stripe, ImgBB, and application URL values are environment-only; examples contain names/empty values and `.env` files are ignored.
 - [ ] Server-side authorization, input validation, error handling, and production CORS are correct.
 
 ## UX, reliability, and final verification
@@ -124,9 +127,9 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 ## Decisions still to confirm or configure
 
 - [ ] Production hosting/domains and allowed CORS/auth callback URLs.
-- [ ] Google OAuth client credentials and callback configuration.
+- [ ] Google OAuth client credentials and callback configuration (for local: `http://localhost:3000/api/auth/callback/google`).
 - [ ] Stripe test/live credentials and webhook endpoint configuration.
 - [ ] ImgBB API key.
 - [ ] Salon phone, address, hours, social links, and final category/content choices.
 - [ ] Appointment capacity policy and paid-appointment cancellation/refund policy.
-- [ ] Evaluator admin account creation/provisioning method.
+- [~] Local admin provisioning CLI verified; confirm whether this account will be used for evaluation, then provide evaluator credentials securely at submission time.

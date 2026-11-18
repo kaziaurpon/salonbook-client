@@ -12,3 +12,23 @@ body { margin: 0; }
 h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1.02; }
 .home > p:not(.eyebrow) { color: #625853; font-size: 1.15rem; }
 .home a { display: inline-block; padding: .9rem 1.2rem; border-radius: 999px; background: #784e45; color: white; text-decoration: none; }
+
+.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 2rem 1rem; background: radial-gradient(circle at 15% 10%, #f3e5dc, transparent 38%), #fcf8f5; }
+.auth-card { width: min(100%, 29rem); padding: clamp(1.5rem, 5vw, 2.75rem); border: 1px solid #eadbd2; border-radius: 1.5rem; background: #fffdfa; box-shadow: 0 1.5rem 4rem #5b382014; }
+.brand { display: inline-block; margin-bottom: 2rem; color: #784e45; font-size: 1.25rem; font-weight: 800; text-decoration: none; }
+.auth-card h1 { max-width: none; margin: .35rem 0 1.5rem; font-size: clamp(2rem, 7vw, 2.6rem); }
+.auth-card .eyebrow { margin: 0; }
+.auth-form { display: grid; gap: 1rem; }
+.auth-form label { display: grid; gap: .45rem; color: #403631; font-size: .92rem; font-weight: 650; }
+.auth-form input { width: 100%; min-height: 3rem; padding: .75rem .85rem; border: 1px solid #d8c9c0; border-radius: .75rem; background: white; color: #292321; font: inherit; }
+.auth-form input:focus { outline: 3px solid #784e4526; border-color: #784e45; }
+.auth-form small, .muted { color: #786c66; font-weight: 400; }
+.auth-form button, .secondary-button { min-height: 3rem; padding: .75rem 1rem; border: 0; border-radius: .75rem; background: #784e45; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+.auth-form button:disabled, .secondary-button:disabled { opacity: .65; cursor: wait; }
+.secondary-button { width: 100%; border: 1px solid #d8c9c0; background: #fffdfa; color: #403631; }
+.auth-divider { display: flex; align-items: center; gap: .75rem; margin: 1.25rem 0; color: #786c66; }
+.auth-divider::before, .auth-divider::after { height: 1px; flex: 1; background: #eadbd2; content: ""; }
+.auth-switch { margin: 1.4rem 0 0; color: #625853; text-align: center; }
+.auth-switch a { color: #784e45; font-weight: 700; }
+.form-error { padding: .75rem; border-radius: .6rem; background: #fff0ee; color: #9d332a; }
+.api-status { padding: .75rem; border-radius: .6rem; background: #f5eee8; color: #625853; font-size: .9rem; }
