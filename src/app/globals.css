@@ -63,3 +63,65 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .detail-note { margin-top: 2rem; padding: .9rem; border-radius: .75rem; background: #f5eee8; font-size: .9rem; }
 @media (max-width: 760px) { .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .service-controls { grid-template-columns: 1fr; } }
 @media (max-width: 520px) { .service-grid, .service-detail-card { grid-template-columns: 1fr; } .service-card > img { height: 14rem; } }
+.admin-services-page { min-height: 100vh; max-width: 76rem; margin: 0 auto; padding: clamp(1.25rem, 4vw, 3rem); }
+.admin-services-heading { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 2rem; }
+.admin-services-heading .brand { margin-bottom: 1.5rem; }
+.admin-services-heading h1 { max-width: none; margin: .25rem 0; font-size: clamp(2rem, 5vw, 3.25rem); }
+.admin-services-heading p:last-child { color: #625853; }
+.admin-refresh { width: auto; padding-inline: 1.2rem; }
+.admin-service-form-card, .admin-service-list { margin: 1.5rem 0; padding: clamp(1rem, 3vw, 1.75rem); border: 1px solid #eadbd2; border-radius: 1rem; background: #fffdfa; }
+.admin-service-form-card h2, .admin-service-list h2 { margin: 0 0 1.25rem; }
+.admin-service-list h2 span { margin-left: .4rem; color: #8b5e55; font-size: .9rem; }
+.admin-service-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.admin-service-form label { display: grid; gap: .4rem; color: #403631; font-size: .9rem; font-weight: 700; }
+.admin-service-form input:not([type="file"]), .admin-service-form textarea { width: 100%; min-height: 2.9rem; padding: .7rem .8rem; border: 1px solid #d8c9c0; border-radius: .65rem; background: white; color: #292321; font: inherit; }
+.admin-service-form input[type="file"] { max-width: 100%; padding: .6rem; border: 1px dashed #c8afa2; border-radius: .65rem; }
+.wide-field { grid-column: 1 / -1; }
+.upload-success { color: #31724b; font-size: .85rem; font-weight: 500; }
+.admin-form-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.admin-form-actions button { min-height: 2.8rem; padding: .65rem 1rem; border: 0; border-radius: .65rem; background: #784e45; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+.admin-form-actions button:disabled { opacity: .65; cursor: wait; }
+.admin-form-actions .secondary-button { border: 1px solid #d8c9c0; background: #fffdfa; color: #403631; }
+.admin-service-items { display: grid; gap: .75rem; }
+.admin-service-item { display: grid; grid-template-columns: 5rem minmax(8rem, 1fr) auto auto; gap: 1rem; align-items: center; padding: .8rem; border: 1px solid #efe5df; border-radius: .8rem; }
+.admin-service-item > img { width: 5rem; height: 4.5rem; border-radius: .55rem; object-fit: cover; background: #f3e5dc; }
+.admin-service-info h3 { margin: .2rem 0; }
+.admin-service-info p:last-child { margin: .3rem 0 0; color: #625853; }
+.admin-service-info .service-category { margin: 0; }
+.status-pill { padding: .35rem .6rem; border-radius: 999px; font-size: .75rem; font-weight: 750; text-transform: capitalize; }
+.status-pill.active { background: #e6f3e9; color: #28623e; }
+.status-pill.inactive { background: #f1eeeb; color: #625853; }
+.admin-item-actions { display: flex; flex-wrap: wrap; gap: .35rem; justify-content: end; }
+.text-button { padding: .45rem .55rem; border: 0; background: transparent; color: #784e45; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+.danger-text { color: #a1362c; }
+@media (max-width: 700px) { .admin-service-item { grid-template-columns: 4rem minmax(0, 1fr) auto; gap: .65rem; } .admin-service-item > img { width: 4rem; height: 4rem; } .admin-item-actions { grid-column: 1 / -1; justify-content: start; } }
+@media (max-width: 540px) { .admin-services-heading { align-items: start; flex-direction: column; } .admin-service-form { grid-template-columns: 1fr; } .wide-field { grid-column: auto; } .admin-service-item { grid-template-columns: 3.5rem minmax(0, 1fr); } .admin-service-item > img { width: 3.5rem; height: 3.5rem; } .admin-service-item > .status-pill { grid-column: 2; justify-self: start; } .admin-item-actions { grid-column: 1 / -1; } }
+.booking-form { display: grid; gap: .85rem; margin-top: 1.5rem; padding: 1rem; border: 1px solid #eadbd2; border-radius: .9rem; background: #fffdfa; }
+.booking-form h2 { margin: 0; font-size: 1.2rem; }
+.booking-form label { display: grid; gap: .35rem; color: #403631; font-size: .9rem; font-weight: 700; }
+.booking-form input, .booking-form select, .booking-form textarea { width: 100%; min-height: 2.75rem; padding: .65rem .75rem; border: 1px solid #d8c9c0; border-radius: .6rem; background: white; color: #292321; font: inherit; }
+.booking-form button { min-height: 2.8rem; padding: .7rem 1rem; border: 0; border-radius: .65rem; background: #784e45; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+.booking-form button:disabled { opacity: .6; cursor: wait; }
+.booking-error { margin: 0; color: #a1362c; font-size: .9rem; }
+.customer-appointments { min-height: 100vh; max-width: 76rem; margin: 0 auto; padding: clamp(1.25rem, 4vw, 3rem); }
+.appointments-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+.appointments-heading h2 { margin: .2rem 0; font-size: clamp(1.8rem, 4vw, 2.5rem); }
+.appointments-refresh { width: auto; padding-inline: 1rem; }
+.appointment-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; margin-bottom: 1.5rem; }
+.appointment-stats article { display: grid; gap: .5rem; padding: 1rem; border: 1px solid #eadbd2; border-radius: .85rem; background: #fffdfa; color: #625853; font-size: .85rem; }
+.appointment-stats strong { color: #292321; font-size: 1.6rem; }
+.appointment-list { display: grid; gap: .8rem; }
+.appointment-item { display: grid; grid-template-columns: 5rem minmax(0, 1fr) auto; gap: 1rem; align-items: center; padding: 1rem; border: 1px solid #eadbd2; border-radius: .9rem; background: #fffdfa; }
+.appointment-item > img { width: 5rem; height: 5rem; border-radius: .65rem; object-fit: cover; background: #f3e5dc; }
+.appointment-main h3 { margin: .2rem 0; }
+.appointment-main p:not(.service-category) { margin: .3rem 0; color: #625853; font-size: .9rem; }
+.appointment-message { font-style: italic; }
+.appointment-statuses { display: grid; justify-items: end; gap: .45rem; }
+.appointment-statuses strong { color: #784e45; }
+.status-pill.pending { background: #fff4da; color: #815e16; }
+.status-pill.confirmed, .status-pill.paid { background: #e6f3e9; color: #28623e; }
+.status-pill.cancelled, .status-pill.unpaid { background: #f1eeeb; color: #625853; }
+.appointment-item > .text-button, .appointment-item > .admin-item-actions { justify-self: end; }
+.admin-appointment-item { grid-template-columns: 5rem minmax(0, 1fr) auto minmax(7rem, auto); }
+@media (max-width: 720px) { .appointment-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .appointment-item, .admin-appointment-item { grid-template-columns: 4rem minmax(0, 1fr) auto; gap: .7rem; } .appointment-item > img { width: 4rem; height: 4rem; } .appointment-statuses { grid-column: 2; grid-row: 2; justify-items: start; display: flex; flex-wrap: wrap; } .appointment-item > .text-button, .appointment-item > .admin-item-actions { grid-column: 3; grid-row: 2; } }
+@media (max-width: 480px) { .appointments-heading { align-items: start; flex-direction: column; } .appointment-item, .admin-appointment-item { grid-template-columns: 3.25rem minmax(0, 1fr); } .appointment-item > img { width: 3.25rem; height: 3.25rem; } .appointment-statuses, .appointment-item > .text-button, .appointment-item > .admin-item-actions { grid-column: 1 / -1; grid-row: auto; justify-self: start; } }

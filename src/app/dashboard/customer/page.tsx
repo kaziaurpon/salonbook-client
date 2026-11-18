@@ -1,5 +1,5 @@
-import { DashboardGate } from "@/components/dashboard-gate";
+import { CustomerAppointments } from "@/components/customer-appointments";
 
 export default function CustomerDashboardPage() {
-  return <DashboardGate role="customer" title="Your appointments and profile" />;
+  return <CustomerAppointments />;
 }

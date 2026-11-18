@@ -56,6 +56,8 @@ export function DashboardGate({ role, title }: { role: "admin" | "customer"; tit
         <h1>{title}</h1>
         <p>Signed in as {session.user.name}.</p>
         <p className="api-status">{apiStatus}</p>
+        {role === "admin" && <Link className="service-link" href="/dashboard/admin/services">Manage salon services →</Link>}
+        {role === "admin" && <Link className="service-link" href="/dashboard/admin/appointments">Review appointment requests →</Link>}
         <button className="secondary-button" onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => router.replace("/login") } })}>Sign out</button>
       </section>
     </main>

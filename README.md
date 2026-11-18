@@ -14,6 +14,10 @@ Next.js App Router frontend for the SalonBook salon appointment platform. Better
 
 Sign-up and sign-in support email/password and Google. Better Auth owns the `users`, session, account, verification, and JWKS records. Public registration can only create customers; `role` and `isBlocked` are server-owned fields.
 
+The public `/services` page reads active services from the API and supports name search, category filtering, and price sorting. Signed-in users can open service details. Admins can manage the service catalog at `/dashboard/admin/services`.
+
+Customers can request an appointment from an active service detail page and manage pending requests at `/dashboard/customer`. Admins can review and update appointment requests at `/dashboard/admin/appointments`.
+
 To provision an admin, add `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` temporarily to your ignored `.env.local`, then run `npm run provision:admin -- --confirm-admin-provision`. The local CLI uses Better Auth to create the account and sets its role in the same Better Auth `users` collection. Remove those temporary admin credential values after provisioning. There is no public admin creation endpoint.
 
 The frontend obtains API JWTs through Better Auth's `authClient.token()` method and sends them in an `Authorization: Bearer …` header. Tokens are used in memory for the request and are never written to localStorage.

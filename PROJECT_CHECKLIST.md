@@ -14,9 +14,9 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] User confirmed both apps and the MongoDB connection run locally.
 - [~] READMEs exist, but the full assignment sections/links and feature instructions remain to be completed.
 - [~] Authentication foundation is implemented: Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and live-role guards. End-to-end auth still needs local credentials and account testing.
-- [~] Public service browsing, service data model/API, and protected service details are implemented; service management, booking, dashboards, and payments remain.
+- [~] Public service browsing, service model/API, protected details, admin service management/image upload, and appointment request/status workflows are implemented; full dashboard overview and payments remain.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [~] Required meaningful commit totals are in progress: 2/20 client, 2/12 server (latest auth commits are local and not pushed).
+- [~] Required meaningful commit totals are in progress: 3/20 client, 3/12 server (latest service browsing commits are pushed).
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -24,8 +24,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Separate client and server repositories; no parent repository.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
-- [~] Meaningful client commits: 2/20; continue with meaningful messages.
-- [~] Meaningful server commits: 2/12; continue with meaningful messages.
+- [~] Meaningful client commits: 3/20; continue with meaningful messages.
+- [~] Meaningful server commits: 3/12; continue with meaningful messages.
 - [ ] Client README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Server README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Production deployment and working live site URL.
@@ -64,15 +64,15 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 ## Service details, booking, and customer dashboard
 
-- [~] Protected `/services/[id]` details page shows image, name, category, description, price, and duration; booking option remains for the appointment task.
+- [x] Protected `/services/[id]` details page shows image, name, category, description, price, duration, and customer appointment form.
 - [x] Invalid service IDs show a useful error; inactive services are omitted from public detail/list APIs.
-- [ ] Only authenticated customers can request appointments; admins cannot book as customers.
-- [ ] Booking form: date, predefined time slot, optional message; validation and toast feedback.
-- [ ] New appointment defaults to pending/unpaid; stores service/customer references and service price snapshot.
-- [ ] Prevent duplicate active requests for the same date and time slot.
-- [ ] Customer can cancel only their own pending request; cannot cancel confirmed/cancelled requests.
-- [ ] Customer dashboard overview totals: total, pending, confirmed, cancelled appointments.
-- [ ] Customer appointment list shows service image/name/category, date/time, price, status, payment status, request date.
+- [x] Only authenticated customers can request appointments; admins cannot book as customers.
+- [x] Booking form: date, predefined time slot, optional message; validation and toast feedback.
+- [x] New appointment defaults to pending/unpaid; stores service/customer references and service price snapshot.
+- [x] Prevent duplicate active requests for the same date and time slot with a unique active-slot reservation.
+- [x] Customer can cancel only their own pending request; cannot cancel confirmed/cancelled requests.
+- [x] Customer appointment overview totals: total, pending, confirmed, cancelled requests.
+- [x] Customer appointment list shows service image/name/category, date/time, price, appointment status, payment status, and message.
 - [ ] Customer can view appointment details and payment status/history.
 - [ ] Customer can pay only for confirmed, unpaid appointments; cannot pay pending/cancelled appointments.
 - [ ] Customer profile page supports permitted profile edits.
@@ -80,12 +80,12 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 ## Admin dashboard and management
 
 - [ ] Admin dashboard overview: registered customers, active services, appointment totals/statuses, successful payments.
-- [ ] Admin services list, create, update, delete, activate/deactivate.
-- [ ] Service form: name, category, description, positive price, positive duration, uploaded image, status active by default.
-- [ ] Service image upload uses ImgBB key from environment; upload failures handled.
-- [ ] Only active services are public/bookable.
-- [ ] Admin sees all appointment requests with customer/service details, date/time, message, price, statuses, request date.
-- [ ] Admin can confirm only pending requests; can cancel pending or confirmed requests.
+- [x] Admin services list, create, update, delete, activate/deactivate; API checks admin role.
+- [x] Service form: name, category, description, positive price, positive duration, image upload, status active by default.
+- [x] Service image upload uses the server-only ImgBB key; file type/size and upload failures are handled.
+- [x] Only active services are public and available for future booking.
+- [x] Admin sees all appointment requests with customer/service details, date/time, message, price, and statuses.
+- [x] Admin can confirm only pending requests; can cancel pending or confirmed requests.
 - [ ] Admin can list/view registered customers and block/unblock customers.
 - [ ] Admin can view transactions with customer, service, appointment date, amount, currency, Stripe reference, status, date.
 - [ ] Admin cannot manually mark a payment successful.
@@ -106,7 +106,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [ ] Four business collections: users (Better Auth), services, appointments, transactions; references are correct and no redundant business collections.
 - [x] Better Auth `users` records include name, email, image, role, isBlocked; profile phone remains future work.
 - [x] Service model includes name, category, description, positive price, positive duration, image, status, and createdAt.
-- [ ] Appointment fields include serviceId, customerId, date, time, message, servicePrice, paymentStatus, status, createdAt.
+- [x] Appointment fields include serviceId, customerId, date, time, message, servicePrice, paymentStatus, status, and createdAt.
 - [ ] Transaction fields include appointmentId, customerId, amount, currency, stripeSessionId, status, createdAt.
 - [ ] User profile update allows name/image/phone only; cannot change role/isBlocked or another user's data.
 - [x] Sensitive MongoDB, Better Auth, Google, Stripe, ImgBB, and application URL values are environment-only; examples contain names/empty values and `.env` files are ignored.
@@ -121,7 +121,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Search by service name and sort by price work on the client and API; paginated API and category filtering are also available.
 - [ ] Production deep links reload without 404; private routes work after refresh and remain authenticated.
 - [ ] No CORS/404/504 issues on production.
-- [ ] Verify service CRUD, appointment lifecycle, ownership rules, role restrictions, blocked users, Stripe test flow, webhook, uploads, and deployed behavior.
+- [~] Builds pass after service and booking work; local service CRUD, appointment lifecycle, ownership rules, image uploads, Stripe, and deployment still need manual verification.
 - [ ] No secrets are exposed in client bundles, repository history, logs, or README.
 
 ## Decisions still to confirm or configure

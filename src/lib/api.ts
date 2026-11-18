@@ -8,7 +8,9 @@ export async function authenticatedApiFetch(path: string, init: RequestInit = {}
 
   const headers = new Headers(init.headers);
   headers.set("Authorization", `Bearer ${data.token}`);
-  if (init.body && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
+  if (init.body && !(init.body instanceof FormData) && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
 
   return fetch(new URL(path, apiUrl), { ...init, headers, cache: "no-store" });
 }
