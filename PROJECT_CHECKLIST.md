@@ -14,9 +14,9 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] User confirmed both apps and the MongoDB connection run locally.
 - [~] READMEs exist, but the full assignment sections/links and feature instructions remain to be completed.
 - [~] Authentication foundation is implemented: Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and live-role guards. End-to-end auth still needs local credentials and account testing.
-- [ ] SalonBook service browsing, booking, dashboards, admin tools, and payments are not implemented yet.
+- [~] Public service browsing, service data model/API, and protected service details are implemented; service management, booking, dashboards, and payments remain.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [ ] Required meaningful commit totals remain outstanding: 1/20 client, 1/12 server.
+- [~] Required meaningful commit totals are in progress: 2/20 client, 2/12 server (latest auth commits are local and not pushed).
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -24,8 +24,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Separate client and server repositories; no parent repository.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
-- [ ] At least 20 meaningful client commits with meaningful messages.
-- [ ] At least 12 meaningful server commits with meaningful messages.
+- [~] Meaningful client commits: 2/20; continue with meaningful messages.
+- [~] Meaningful server commits: 2/12; continue with meaningful messages.
 - [ ] Client README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Server README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Production deployment and working live site URL.
@@ -43,9 +43,9 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [ ] Home featured section shows at least six active database services with all required card fields.
 - [ ] Home categories section supports exploring services by category.
 - [ ] One additional home section.
-- [ ] Public Browse Services page shows only active services in responsive cards.
-- [ ] Service name search, category filter, price sorting.
-- [ ] Loading and error/empty states for service retrieval and invalid routes.
+- [x] Public Browse Services page shows active services in responsive cards when records exist.
+- [x] Public Services page shows active-only service cards; API supports search by name, category filter, and price sorting.
+- [x] Services page has loading, API error/retry, empty, and invalid service route states.
 
 ## Authentication and access control
 
@@ -64,8 +64,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 ## Service details, booking, and customer dashboard
 
-- [ ] Protected `/services/[id]` details page shows image, name, category, description, price, duration, and booking option.
-- [ ] Invalid service IDs show a useful error; inactive services cannot be booked.
+- [~] Protected `/services/[id]` details page shows image, name, category, description, price, and duration; booking option remains for the appointment task.
+- [x] Invalid service IDs show a useful error; inactive services are omitted from public detail/list APIs.
 - [ ] Only authenticated customers can request appointments; admins cannot book as customers.
 - [ ] Booking form: date, predefined time slot, optional message; validation and toast feedback.
 - [ ] New appointment defaults to pending/unpaid; stores service/customer references and service price snapshot.
@@ -105,7 +105,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 - [ ] Four business collections: users (Better Auth), services, appointments, transactions; references are correct and no redundant business collections.
 - [x] Better Auth `users` records include name, email, image, role, isBlocked; profile phone remains future work.
-- [ ] Service fields include name, category, description, price, duration, image, status, createdAt.
+- [x] Service model includes name, category, description, positive price, positive duration, image, status, and createdAt.
 - [ ] Appointment fields include serviceId, customerId, date, time, message, servicePrice, paymentStatus, status, createdAt.
 - [ ] Transaction fields include appointmentId, customerId, amount, currency, stripeSessionId, status, createdAt.
 - [ ] User profile update allows name/image/phone only; cannot change role/isBlocked or another user's data.
@@ -118,7 +118,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [ ] Toast notifications for success/failure; no browser `alert()` for ordinary feedback.
 - [ ] Handle API failures, invalid forms/routes, unauthorized access, upload failures, booking conflicts, payment failures/cancellation.
 - [ ] Dashboard layout has responsive sidebar/main area, role-based navigation, statistic cards, and appropriate tables/lists.
-- [ ] Search by service name and sort by price work on the client and API as appropriate.
+- [x] Search by service name and sort by price work on the client and API; paginated API and category filtering are also available.
 - [ ] Production deep links reload without 404; private routes work after refresh and remain authenticated.
 - [ ] No CORS/404/504 issues on production.
 - [ ] Verify service CRUD, appointment lifecycle, ownership rules, role restrictions, blocked users, Stripe test flow, webhook, uploads, and deployed behavior.
