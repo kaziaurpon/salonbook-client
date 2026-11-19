@@ -16,7 +16,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [~] Authentication foundation is implemented: Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and live-role guards. End-to-end auth still needs local credentials and account testing.
 - [~] Public service browsing, service model/API, protected details, admin service management/image upload, and appointment request/status workflows are implemented; full dashboard overview and payments remain.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [~] Required meaningful commit totals are in progress: 4/20 client, 5/12 server (latest server auth-ID fix is local and not pushed).
+- [~] Required meaningful commit totals are in progress: 4/20 client, 5/12 server. The client branch currently has one previously made local commit that is not pushed.
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -33,16 +33,16 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 ## Shared layout and public pages
 
-- [~] Initial responsive-capable Next.js app shell and placeholder home page exist; product UI is not implemented.
-- [ ] SalonBook navbar with public links: Home, Browse Services, Sign In, Sign Up.
-- [ ] Authenticated navbar state updates immediately; profile dropdown includes name, Dashboard, Logout.
-- [ ] Footer includes logo/description, navigation, contact, address/hours, social links, copyright.
-- [ ] Responsive salon-themed design for desktop, tablet, and mobile; consistent typography, spacing, colors, reusable components.
+- [x] SalonBook home page has an original salon-inspired banner illustration, featured active services from the API, category links, and a useful appointment-planning section.
+- [x] Public navbar links to Home, Browse Services, Sign In, and Sign Up; signed-in users see their role-appropriate dashboard and Sign Out.
+- [~] Authenticated navbar state is shown; profile dropdown and name display remain to be added.
+- [~] Footer has logo, description, navigation, and copyright; salon contact/address/hours and social links remain to be supplied.
+- [x] Original responsive salon-themed public design implemented for desktop, tablet, and mobile with reusable components.
 - [ ] Working links/buttons, status badges, confirmation dialogs; avoid unnecessary animation/clutter.
-- [ ] Home banner with title, description, salon-themed image, Explore Services CTA.
-- [ ] Home featured section shows at least six active database services with all required card fields.
-- [ ] Home categories section supports exploring services by category.
-- [ ] One additional home section.
+- [x] Home banner has title, description, original salon-inspired CSS illustration, and Explore Services CTA.
+- [x] Home featured section requests up to six active services from the API; cards show image, name, category, price, duration, short description, and details link (actual count depends on active database records).
+- [x] Home categories are loaded from the API and link to the matching Browse Services filter.
+- [x] Additional appointment-planning section explains how to find a service and request a time.
 - [x] Public Browse Services page shows active services in responsive cards when records exist.
 - [x] Public Services page shows active-only service cards; API supports search by name, category filter, and price sorting.
 - [x] Services page has loading, API error/retry, empty, and invalid service route states.

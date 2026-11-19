@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
+import { PublicShell } from "@/components/public-shell";
 
 type Service = {
   serviceName: string;
@@ -100,13 +101,13 @@ export default function ServiceDetailsPage() {
     }
   }
 
-  if (isPending || (!service && !error)) return <main className="auth-page"><p>Checking your sign-in and loading service…</p></main>;
-  if (error) return <main className="service-message service-error"><h1>Service unavailable</h1><p>{error}</p><Link href="/services">Back to services</Link></main>;
+  if (isPending || (!service && !error)) return <PublicShell><main className="service-state-page"><div className="public-state"><span className="state-symbol">✳</span><h1>One moment.</h1><p>Checking your sign-in and loading service details…</p></div></main></PublicShell>;
+  if (error) return <PublicShell><main className="service-state-page"><div className="public-state error-state" role="alert"><span className="state-symbol">!</span><p className="eyebrow">SERVICE NOT FOUND</p><h1>This service isn’t available.</h1><p>{error}</p><Link className="button-primary" href="/services">Back to services <span aria-hidden="true">→</span></Link></div></main></PublicShell>;
   if (!service || !session) return null;
   const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
 
   return (
-    <main className="service-detail-page">
+    <PublicShell><main className="service-detail-page">
       <Link className="brand" href="/services">← All services</Link>
       <article className="service-detail-card">
         <img src={service.image} alt={service.serviceName} />
@@ -133,6 +134,6 @@ export default function ServiceDetailsPage() {
           )}
         </div>
       </article>
-    </main>
+    </main></PublicShell>
   );
 }
