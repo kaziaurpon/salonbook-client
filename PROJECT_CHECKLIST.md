@@ -10,13 +10,13 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Public GitHub repositories exist and are configured as the matching `origin` remotes.
 - [x] Independent `package.json`, lockfile, `.gitignore`, `.env.example`, and README exist for each app.
 - [x] TypeScript scaffold: Next.js App Router client; Express API; Mongoose MongoDB connection; health endpoint.
-- [x] Client and server production builds compile.
+- [x] Client and server production builds compile; this audit reran both builds successfully.
 - [x] User confirmed both apps and the MongoDB connection run locally.
-- [~] READMEs exist, but the full assignment sections/links and feature instructions remain to be completed.
-- [~] Authentication foundation is implemented: Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and live-role guards. End-to-end auth still needs local credentials and account testing.
-- [~] Public service browsing, admin service/image management, dashboard overview, appointment lifecycle, and Stripe test-mode payment implementation are complete; end-to-end payment/webhook verification still needs local Stripe setup.
+- [x] Both READMEs now document features, stack, environment variable names only, local run, deployment steps, repository URLs, and explicit not-deployed live URL placeholders.
+- [~] Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and current-role guards are implemented. Local email/password persistence and API authorization were verified; Google OAuth still needs a real browser consent test.
+- [~] Public service browsing, admin service/image management, dashboards, appointments, and Stripe test-mode payment are implemented. Signed Stripe test-event replay, invalid-signature rejection, and payment idempotency were verified locally.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [~] Required meaningful commit totals are in progress: 10/20 client and 7/12 server before the current payment commits. Client is 5 commits ahead of GitHub; server is 2 commits ahead.
+- [~] Required meaningful commit totals: client 13 (8 ahead of origin) and server 9 (4 ahead of origin). After this audit is committed, totals become 14/20 and 10/12, still 6 client and 2 server commits short.
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -24,10 +24,10 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Separate client and server repositories; no parent repository.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
-- [~] Meaningful client commits: 10/20 before the current payment commit; continue with meaningful messages.
-- [~] Meaningful server commits: 7/12 before the current payment commit; continue with meaningful messages.
-- [ ] Client README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
-- [ ] Server README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
+- [~] Meaningful client commits: 13/20 before this audit; one audit commit will bring it to 14/20.
+- [~] Meaningful server commits: 9/12 before this audit; one audit commit will bring it to 10/12.
+- [x] Client README includes description, features, stack, install/run instructions, environment variable names, live link placeholder, and both repository links.
+- [x] Server README includes description, features, stack, install/run instructions, environment variable names, live link placeholder, and both repository links.
 - [ ] Production deployment and working live site URL.
 - [ ] Securely provision evaluator admin credentials and provide submission details.
 
@@ -35,8 +35,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 - [x] SalonBook home page has an original salon-inspired banner illustration, featured active services from the API, category links, and a useful appointment-planning section.
 - [x] Public navbar links to Home, Browse Services, Sign In, and Sign Up; signed-in users see their role-appropriate dashboard and Sign Out.
-- [~] Authenticated navbar state is shown; profile dropdown and name display remain to be added.
-- [~] Footer has logo, description, navigation, and copyright; salon contact/address/hours and social links remain to be supplied.
+- [x] Authenticated navbar includes the user's name, profile link, role-appropriate dashboard link, and sign out.
+- [~] Footer includes salon contact/address/hours and social-link fields; real values must be supplied in client environment variables before production.
 - [x] Original responsive salon-themed public design implemented for desktop, tablet, and mobile with reusable components.
 - [x] Shared Powder Blue `#8DB9F0`, Lavender `#E9E8F8`, and Peach `#F5B69E` design tokens and 60/30/10 guidance applied across current page styles; future page guidance documented in `DESIGN_SYSTEM.md`.
 - [ ] Working links/buttons, status badges, confirmation dialogs; avoid unnecessary animation/clutter.
@@ -61,7 +61,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Client dashboard route gates redirect unauthenticated users and wrong-role visits; session is Better Auth cookie-based.
 - [x] Blocked accounts are signed out from client dashboard gates and denied by protected Express APIs.
 - [x] Better Auth session hook updates client auth state; app uses session state on protected dashboard routes.
-- [~] Auth feature builds successfully and the local admin provisioning CLI has created/promoted an account in MongoDB; email/password login, Google OAuth, and separate customer/admin API flows still need local verification. The recent build environment could not create Better Auth indexes, so confirm Atlas connectivity and index creation from the user's machine before relying on fresh auth records.
+- [x] Local email/password session persistence, JWT handoff, customer API access, admin-route denial to customers, blocked-user denial, and profile role/block-field rejection were verified against MongoDB and Express. Admin provisioning was previously confirmed by the user.
+- [~] Google OAuth still requires a browser consent test with Google credentials and the configured callback.
 
 ## Service details, booking, and customer dashboard
 
@@ -112,7 +113,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Transaction fields include only appointmentId, customerId, amount, currency, stripeSessionId, status, createdAt (plus MongoDB's required document id).
 - [x] User profile update accepts only name/image/phone; strict server validation rejects role/isBlocked, email, or user-id fields and only updates the ID from the verified token.
 - [x] Sensitive MongoDB, Better Auth, Google, Stripe, ImgBB, and application URL values are environment-only; examples contain names/empty values and `.env` files are ignored.
-- [~] Server-side authorization, webhook signature/body handling, payment-state validation, and errors are implemented; production CORS/domain configuration remains.
+- [x] Local CORS allows the configured client origin with credentials and Authorization preflight; untrusted browser origins are not authorized.
+- [~] Production CORS and domain configuration cannot be verified until deployment.
 
 ## UX, reliability, and final verification
 
@@ -123,17 +125,17 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Handle API failures, invalid forms/routes, unauthorized access, upload failures, booking conflicts, cancelled Checkout, and webhook errors.
 - [x] Dashboard layout has responsive sidebar/main area, role-based navigation, statistic cards, and appropriate tables/lists.
 - [x] Search by service name and sort by price work on the client and API; paginated API and category filtering are also available.
-- [ ] Production deep links reload without 404; private routes work after refresh and remain authenticated.
-- [ ] No CORS/404/504 issues on production.
-- [~] Client and server builds pass after Stripe implementation; the user confirmed a successful local Stripe test payment/webhook. Full appointment edge cases, service CRUD/uploads, and deployment still need manual verification.
-- [ ] No secrets are exposed in client bundles, repository history, logs, or README.
+- [~] Local direct HTTP reload returned 200 for home, service list/detail (including invalid ID), payment return, and customer/admin dashboard/profile/transaction routes. Protected API requests reject missing auth and enforce current role; production route reload still needs post-deploy verification.
+- [~] Local CORS and route behavior passed; production CORS/404/504 behavior is pending deployment.
+- [~] Client and server builds pass. Lint reports React effect-state errors (see final audit report). Stripe webhook signature, retry idempotency, and invalid-signature rejection passed. Manual CRUD/image upload and appointment edge cases remain to be retested.
+- [x] Git-history scan found no tracked `.env` files or credential patterns in either repo. Environment files are ignored and examples contain variable names with blank values only.
 
 ## Decisions still to confirm or configure
 
-- [ ] Production hosting/domains and allowed CORS/auth callback URLs.
-- [ ] Google OAuth client credentials and callback configuration (for local: `http://localhost:3000/api/auth/callback/google`).
-- [~] Stripe local test keys and CLI webhook secret; production test-mode endpoint still needs configuring at `https://<your-api-domain>/api/payments/webhook`.
-- [ ] ImgBB API key.
+- [ ] Production hosting/domains and allowed CORS/auth callback URLs; deployment was not performed.
+- [~] Google OAuth credentials and browser test (local callback: `http://localhost:3000/api/auth/callback/google`).
+- [~] Stripe was verified locally in test mode. After deployment configure `https://<api-domain>/api/payments/webhook`.
+- [ ] ImgBB API key and manual upload verification.
 - [ ] Salon phone, address, hours, social links, and final category/content choices.
 - [ ] Appointment capacity policy and paid-appointment cancellation/refund policy.
-- [~] Local admin provisioning CLI verified; confirm whether this account will be used for evaluation, then provide evaluator credentials securely at submission time.
+- [~] Local admin provisioning CLI verified. Use the actual evaluator account required by the assignment; never place its password in Git or invent credentials.

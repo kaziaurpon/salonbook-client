@@ -33,11 +33,31 @@ export const auth = betterAuth({
         google: {
           clientId: process.env.GOOGLE_CLIENT_ID!,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+          requireEmailVerification: true,
         },
       }
     : {},
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["google"],
+      allowDifferentEmails: false,
+      updateUserInfoOnLink: false,
+    },
+  },
   user: {
     modelName: "users",
+    validateUserInfo: ({ source }) => {
+      if (source.oauth?.providerId === "google") {
+        const googleProfile = source.oauth.profile as { email_verified?: boolean } | undefined;
+        if (googleProfile?.email_verified !== true) {
+          return {
+            error: "email_not_verified",
+            errorDescription: "Use a Google account with a verified email address.",
+          };
+        }
+      }
+    },
     additionalFields: {
       role: {
         type: ["customer", "admin"],

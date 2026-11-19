@@ -58,10 +58,19 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .site-nav .nav-dashboard { border-left: 0; }
 .site-nav .nav-cta { background: var(--brand-peach); box-shadow: 0 .2rem .65rem #315B911C; }
 .nav-cta span { padding-left: .4rem; }
+.nav-profile-wrap { position: relative; }
+.nav-profile-trigger { min-height: 2.6rem; display: inline-flex; align-items: center; gap: .5rem; padding: .28rem .7rem .28rem .3rem; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font-size: .82rem; cursor: pointer; }
+.nav-profile-trigger:hover, .nav-profile-trigger[aria-expanded="true"] { background: #FFFFFFA6; }
+.nav-profile-avatar { width: 2rem; height: 2rem; display: grid; place-items: center; border-radius: 50%; background: var(--brand-peach); font-weight: 800; }
+.nav-profile-menu { position: absolute; z-index: 30; top: calc(100% + .55rem); right: 0; width: 14rem; display: grid; gap: .2rem; padding: .6rem; border: 1px solid #FFFFFF; border-radius: .7rem 1.4rem .7rem .7rem; background: var(--brand-lavender); box-shadow: 0 1rem 2rem #315B9128; }
+.nav-profile-menu p { margin: .3rem .5rem .55rem; overflow: hidden; color: #607895; font-size: .68rem; text-overflow: ellipsis; white-space: nowrap; }
+.nav-profile-menu p strong { display: block; margin-top: .2rem; color: var(--ink); font-size: .82rem; }
+.nav-profile-menu > a, .nav-profile-menu > button { padding: .65rem .55rem; border: 0; border-radius: .4rem; background: transparent; color: var(--ink); font-size: .8rem; text-align: left; text-decoration: none; cursor: pointer; }
+.nav-profile-menu > a:hover, .nav-profile-menu > button:hover { background: #FFFFFFA6; }
 .nav-loading { width: 4.3rem; height: 1.8rem; border-radius: 1rem; background: linear-gradient(90deg,#E9E8F8,#F5B69E,#E9E8F8); background-size: 200% 100%; animation: shimmer 1.3s infinite; }
 .nav-toggle { display: none; }
 .site-footer { padding: 3rem max(1.5rem, calc((100vw - 82rem)/2)) 1.2rem; border-top: 1px solid #315B9124; background: var(--brand-blue); color: var(--ink); }
-.footer-inner { display: grid; grid-template-columns: 1.1fr .7fr 1fr; gap: 3rem; padding: 1rem 0 2.5rem; }
+.footer-inner { display: grid; grid-template-columns: 1.1fr .7fr 1fr 1fr; gap: 2rem; padding: 1rem 0 2.5rem; }
 .footer-brand { color: var(--ink); }
 .footer-brand-block > p, .footer-note > p:not(.footer-label) { max-width: 21rem; color: #405979; font-size: .88rem; line-height: 1.7; }
 .footer-label { margin: .35rem 0 1rem; color: #315B91; font-size: .62rem; font-weight: 800; letter-spacing: .17em; }
@@ -69,6 +78,12 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .footer-links a, .footer-note > a { color: var(--ink); font-size: .85rem; text-decoration: none; }
 .footer-links a:hover, .footer-note > a:hover { color: #8A5547; }
 .footer-note > a { display: inline-flex; gap: .8rem; margin-top: .5rem; font-weight: 750; }
+.footer-contact { display: grid; align-content: start; justify-items: start; gap: .45rem; }
+.footer-contact > p:not(.footer-label) { margin: 0; color: #405979; font-size: .8rem; line-height: 1.55; }
+.footer-contact a, .footer-social-links a { color: var(--ink); text-decoration: none; }
+.footer-social-links { display: flex; flex-wrap: wrap; gap: .5rem .8rem; margin-top: .35rem; }
+.footer-social-links a { font-size: .76rem; font-weight: 750; }
+.footer-social-links span { color: #607895; font-size: .7rem; line-height: 1.5; }
 .footer-bottom { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1rem; border-top: 1px solid #315B9130; color: #405979; font-size: .72rem; }
 
 /* Home: powder-blue canvas, lavender sections, peach calls to action */
@@ -374,6 +389,9 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .site-nav { position: absolute; top: calc(100% + .1rem); right: 0; left: 0; display: none; align-items: stretch; gap: .2rem; padding: .75rem; border: 1px solid #FFFFFF; border-radius: .85rem; background: var(--brand-lavender); box-shadow: 0 1rem 2rem #315B9129; }
   .site-nav.is-open { display: grid; }
   .site-nav > a, .nav-signout { padding: .85rem .7rem; text-align: left; }
+  .nav-profile-wrap { width: 100%; }
+  .nav-profile-trigger { width: 100%; justify-content: flex-start; padding: .5rem .7rem; }
+  .nav-profile-menu { position: static; width: 100%; margin-top: .3rem; box-shadow: none; }
   .site-nav .nav-cta { margin-top: .25rem; text-align: center; }
   .home-hero { grid-template-columns: 1fr; width: min(100% - 2rem,82rem); padding: 2.5rem 0 4rem; }
   .hero-copy { padding: .5rem 0 1.5rem; }

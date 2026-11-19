@@ -9,15 +9,19 @@ export function PublicNavbar() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   async function signOut() {
     await authClient.signOut();
     setMenuOpen(false);
+    setProfileOpen(false);
     router.replace("/");
     router.refresh();
   }
 
-  const user = session?.user as { role?: string } | undefined;
+  const user = session?.user as { role?: string; name?: string } | undefined;
+  const dashboardHref = user?.role === "admin" ? "/dashboard/admin" : "/dashboard/customer";
+  const profileHref = user?.role === "admin" ? "/dashboard/admin/profile" : "/dashboard/customer/profile";
 
   return (
     <header className="site-header">
@@ -35,8 +39,10 @@ export function PublicNavbar() {
           <Link href="/services" onClick={() => setMenuOpen(false)}>Services</Link>
           {isPending ? <span className="nav-loading" aria-label="Loading account" /> : user ? (
             <>
-              <Link className="nav-dashboard" href={user.role === "admin" ? "/dashboard/admin" : "/dashboard/customer"} onClick={() => setMenuOpen(false)}>{user.role === "admin" ? "Admin dashboard" : "My appointments"}</Link>
-              <button className="nav-signout" type="button" onClick={signOut}>Sign out</button>
+              <div className="nav-profile-wrap">
+                <button className="nav-profile-trigger" type="button" aria-expanded={profileOpen} aria-controls="profile-menu" onClick={() => setProfileOpen((open) => !open)}><span className="nav-profile-avatar">{user.name?.slice(0, 1).toUpperCase() || "S"}</span><span>{user.name || "My account"}</span><span aria-hidden="true">⌄</span></button>
+                {profileOpen && <div className="nav-profile-menu" id="profile-menu"><p>Signed in as <strong>{user.name}</strong></p><Link href={dashboardHref} onClick={() => { setMenuOpen(false); setProfileOpen(false); }}>Dashboard</Link><Link href={profileHref} onClick={() => { setMenuOpen(false); setProfileOpen(false); }}>My profile</Link><button className="nav-signout" type="button" onClick={signOut}>Sign out</button></div>}
+              </div>
             </>
           ) : (
             <>
