@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { SalonBookLogo } from "@/components/salonbook-logo";
 
 function dashboardFor(role?: string) {
   return role === "admin" ? "/dashboard/admin" : "/dashboard/customer";
@@ -75,7 +76,7 @@ function LoginForm() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <Link className="brand" href="/">SalonBook</Link>
+        <SalonBookLogo className="brand" />
         <p className="eyebrow">WELCOME BACK</p>
         <h1>Sign in to your account</h1>
         {sessionPending && <p className="auth-hint">Checking your current sign-in…</p>}

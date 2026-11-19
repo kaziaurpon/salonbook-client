@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { SalonBookLogo } from "@/components/salonbook-logo";
 
 export function PublicNavbar() {
   const router = useRouter();
@@ -58,10 +59,7 @@ export function PublicNavbar() {
   return (
     <header className="site-header">
       <div className="site-header-inner">
-        <Link className="site-brand" href="/" aria-label="SalonBook home">
-          <span className="brand-mark" aria-hidden="true">S</span>
-          <span>salon<span className="brand-light">book</span></span>
-        </Link>
+        <SalonBookLogo className="site-brand" />
         <div className="site-nav-wrap">
         <button className="nav-toggle" type="button" aria-expanded={menuOpen} aria-controls="site-navigation" onClick={() => setMenuOpen((open) => !open)}>
           <span className="sr-only">{menuOpen ? "Close" : "Open"} navigation menu</span>

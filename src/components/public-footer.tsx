@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SalonBookLogo } from "@/components/salonbook-logo";
 
 export function PublicFooter() {
   const phone = process.env.NEXT_PUBLIC_SALON_PHONE;
@@ -13,10 +14,7 @@ export function PublicFooter() {
     <footer id="footer" className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand-block">
-          <Link className="site-brand footer-brand" href="/">
-            <span className="brand-mark" aria-hidden="true">S</span>
-            <span>salon<span className="brand-light">book</span></span>
-          </Link>
+          <SalonBookLogo className="site-brand footer-brand" />
           <p>A little time for yourself, made easier to plan.</p>
         </div>
         <div className="footer-links">

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { SalonBookLogo } from "@/components/salonbook-logo";
 import { authenticatedApiFetch } from "@/lib/api";
 
 export function DashboardGate({ role, title }: { role: "admin" | "customer"; title: string }) {
@@ -51,7 +52,7 @@ export function DashboardGate({ role, title }: { role: "admin" | "customer"; tit
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <Link className="brand" href="/">SalonBook</Link>
+        <SalonBookLogo className="brand" />
         <p className="eyebrow">{role.toUpperCase()} DASHBOARD</p>
         <h1>{title}</h1>
         <p>Signed in as {session.user.name}.</p>

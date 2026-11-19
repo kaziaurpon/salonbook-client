@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { SalonBookLogo } from "@/components/salonbook-logo";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function RegisterPage() {
   return (
     <main className="auth-page">
       <section className="auth-card">
-        <Link className="brand" href="/">SalonBook</Link>
+        <SalonBookLogo className="brand" />
         <p className="eyebrow">YOUR SALON, YOUR TIME</p>
         <h1>Create your account</h1>
         <form onSubmit={onSubmit} className="auth-form">
