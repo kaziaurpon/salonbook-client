@@ -26,6 +26,7 @@ export function CustomerAppointments() {
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState("");
   const [payingId, setPayingId] = useState("");
+  const [cancelTarget, setCancelTarget] = useState<Appointment | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -62,6 +63,7 @@ export function CustomerAppointments() {
       const result = await response.json() as { message?: string };
       if (!response.ok) throw new Error(result.message || "Could not cancel the appointment.");
       toast.success(result.message || "Appointment cancelled.");
+      setCancelTarget(null);
       await load();
     } catch (reason) {
       toast.error(reason instanceof Error ? reason.message : "Could not cancel the appointment.");
@@ -106,11 +108,12 @@ export function CustomerAppointments() {
               <div className="appointment-statuses"><span className={`status-pill ${appointment.status}`}>{appointment.status}</span><span className={`status-pill ${appointment.paymentStatus}`}>{appointment.paymentStatus}</span><strong>৳{appointment.servicePrice.toLocaleString()}</strong></div>
               {appointment.paymentStatus === "unpaid" && <p className="appointment-payment-note">{appointment.status === "confirmed" ? "Secure test-mode checkout is available for this confirmed appointment." : "Payment is unavailable while an appointment is pending or cancelled."}</p>}
               {appointment.status === "confirmed" && appointment.paymentStatus === "unpaid" && <button className="button-primary appointment-pay-button" disabled={payingId === appointment._id} onClick={() => void payNow(appointment._id)}>{payingId === appointment._id ? "Opening Checkout…" : "Pay now"}</button>}
-              {appointment.status === "pending" && <button className="text-button danger-text" disabled={busyId === appointment._id} onClick={() => void cancel(appointment._id)}>{busyId === appointment._id ? "Cancelling…" : "Cancel request"}</button>}
+              {appointment.status === "pending" && <button className="text-button danger-text" disabled={busyId === appointment._id} onClick={() => setCancelTarget(appointment)}>Cancel request</button>}
             </article>
           ))}
         </div>
       )}
+      {cancelTarget && <div className="admin-dialog-backdrop" role="presentation"><section className="admin-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="customer-cancel-title"><p className="eyebrow">YOUR APPOINTMENT</p><h2 id="customer-cancel-title">Cancel this request?</h2><p>Your pending {cancelTarget.serviceId?.serviceName || "salon service"} request for {new Date(cancelTarget.appointmentDate).toLocaleDateString()} at {cancelTarget.timeSlot} will be cancelled.</p><div><button className="secondary-button" onClick={() => setCancelTarget(null)} disabled={busyId === cancelTarget._id}>Keep request</button><button className="primary-button" onClick={() => void cancel(cancelTarget._id)} disabled={busyId === cancelTarget._id}>{busyId === cancelTarget._id ? "Cancelling…" : "Confirm cancellation"}</button></div></section></div>}
     </section>
   );
 }
