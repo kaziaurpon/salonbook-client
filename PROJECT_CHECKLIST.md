@@ -16,7 +16,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [~] Authentication foundation is implemented: Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and live-role guards. End-to-end auth still needs local credentials and account testing.
 - [~] Public service browsing, service model/API, protected details, admin service management/image upload, and appointment request/status workflows are implemented; full dashboard overview and payments remain.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [~] Required meaningful commit totals are in progress: 3/20 client, 3/12 server (latest service browsing commits are pushed).
+- [~] Required meaningful commit totals are in progress: 4/20 client, 5/12 server (latest server auth-ID fix is local and not pushed).
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -24,8 +24,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Separate client and server repositories; no parent repository.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
-- [~] Meaningful client commits: 3/20; continue with meaningful messages.
-- [~] Meaningful server commits: 3/12; continue with meaningful messages.
+- [~] Meaningful client commits: 4/20; continue with meaningful messages.
+- [~] Meaningful server commits: 5/12; continue with meaningful messages.
 - [ ] Client README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Server README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Production deployment and working live site URL.
