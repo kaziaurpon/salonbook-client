@@ -14,9 +14,9 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] User confirmed both apps and the MongoDB connection run locally.
 - [~] READMEs exist, but the full assignment sections/links and feature instructions remain to be completed.
 - [~] Authentication foundation is implemented: Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and live-role guards. End-to-end auth still needs local credentials and account testing.
-- [~] Public service browsing, service model/API, protected details, admin service management/image upload, and appointment request/status workflows are implemented; full dashboard overview and payments remain.
+- [~] Public service browsing, admin service/image management, dashboard overview, appointment lifecycle, and Stripe test-mode payment implementation are complete; end-to-end payment/webhook verification still needs local Stripe setup.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [~] Required meaningful commit totals are in progress: 4/20 client, 5/12 server. The client branch currently has one previously made local commit that is not pushed.
+- [~] Required meaningful commit totals are in progress: 10/20 client and 7/12 server before the current payment commits. Client is 5 commits ahead of GitHub; server is 2 commits ahead.
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -24,8 +24,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Separate client and server repositories; no parent repository.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
-- [~] Meaningful client commits: 4/20; continue with meaningful messages.
-- [~] Meaningful server commits: 5/12; continue with meaningful messages. Current local branch matches its GitHub remote.
+- [~] Meaningful client commits: 10/20 before the current payment commit; continue with meaningful messages.
+- [~] Meaningful server commits: 7/12 before the current payment commit; continue with meaningful messages.
 - [ ] Client README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Server README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Production deployment and working live site URL.
@@ -74,8 +74,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Customer can cancel only their own pending request; cannot cancel confirmed/cancelled requests.
 - [x] Customer appointment overview totals: total, pending, confirmed, cancelled requests; admin appointment queue also shows the same status totals.
 - [x] Customer appointment list shows service image/name/category, date/time, price, appointment status, payment status, and message.
-- [ ] Customer can view appointment details and payment status/history.
-- [ ] Stripe payment flow is not implemented yet. No appointment can be paid in the current app; when added, restrict checkout to confirmed and unpaid appointments.
+- [~] Customer sees appointment/payment status and their own history; a separate full appointment detail page remains future work.
+- [x] Customer can create Checkout only for their own confirmed, unpaid appointment; Pending, Cancelled, already paid, other-customer, and admin requests are rejected server-side.
 - [ ] Customer profile page supports permitted profile edits.
 
 ## Admin dashboard and management
@@ -89,48 +89,48 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Admin sees all appointment requests with customer/service details, date/time, message, price, and statuses.
 - [x] Admin can confirm only pending requests; can cancel pending or confirmed requests. Server guards status transitions and returns conflict responses when a request has changed.
 - [ ] Admin can list/view registered customers and block/unblock customers.
-- [ ] Admin can view transactions with customer, service, appointment date, amount, currency, Stripe reference, status, date.
-- [ ] Admin cannot manually mark a payment successful.
+- [x] Admin can view transactions read-only with customer, service, appointment date, amount/currency, Stripe session reference, status, and payment date.
+- [x] No admin transaction mutation route exists; only the verified webhook can record successful payment.
 - [ ] Admin profile page supports permitted profile edits.
 
 ## Stripe payment and transactions
 
-- [ ] Backend creates Stripe Checkout only for an eligible confirmed appointment.
-- [ ] Success and cancel pages show appropriate status and guidance.
-- [ ] Stripe webhook signature is verified before any payment update.
-- [ ] Only a verified successful webhook sets appointment payment status to paid.
-- [ ] Verified webhook stores transaction; webhook handling is idempotent.
-- [ ] Failed/expired checkout, cancelled checkout, and webhook errors handled without falsely marking paid.
-- [ ] Payment processing has a meaningful loading state and toast/error feedback.
+- [x] Backend creates test-mode Stripe Checkout only for an eligible confirmed, unpaid appointment owned by the caller; amount is read from the saved appointment.
+- [x] Success/cancel pages give payment status guidance; success page polls authenticated API status and never trusts the Checkout redirect/session id to mark paid.
+- [x] Webhook uses Express raw request bytes and verifies Stripe's signature before processing.
+- [x] Only a signed `checkout.session.completed` event with paid Checkout session and matching server appointment/customer/amount/currency updates payment state.
+- [x] Verified webhook atomically stores the minimal transaction record and marks appointment paid; unique Stripe session reference and MongoDB transaction make retries idempotent.
+- [x] Checkout creation, payment-status lookup, and customer ownership are server guarded; admin transaction API is read-only.
+- [x] Checkout loading, success/cancel guidance, toasts, unavailable states, webhook failures, and signature failures are handled without falsely marking paid.
 
 ## Profile, data model, and security
 
-- [ ] Four business collections: users (Better Auth), services, appointments, transactions; references are correct and no redundant business collections.
+- [x] Four business collections: users (Better Auth), services, appointments, transactions; references are correct and no redundant business collections.
 - [x] Better Auth `users` records include name, email, image, role, isBlocked; profile phone remains future work.
 - [x] Service model includes name, category, description, positive price, positive duration, image, status, and createdAt.
 - [x] Appointment fields include serviceId, customerId, date, time, message, servicePrice, paymentStatus, status, and createdAt.
-- [ ] Transaction fields include appointmentId, customerId, amount, currency, stripeSessionId, status, createdAt.
+- [x] Transaction fields include only appointmentId, customerId, amount, currency, stripeSessionId, status, createdAt (plus MongoDB's required document id).
 - [ ] User profile update allows name/image/phone only; cannot change role/isBlocked or another user's data.
 - [x] Sensitive MongoDB, Better Auth, Google, Stripe, ImgBB, and application URL values are environment-only; examples contain names/empty values and `.env` files are ignored.
-- [ ] Server-side authorization, input validation, error handling, and production CORS are correct.
+- [~] Server-side authorization, webhook signature/body handling, payment-state validation, and errors are implemented; production CORS/domain configuration remains.
 
 ## UX, reliability, and final verification
 
-- [x] Meaningful loaders for service fetch, appointment slots, booking submission, and customer/admin appointment dashboards; payment loading remains for the future Stripe flow.
-- [ ] Toast notifications for success/failure; no browser `alert()` for ordinary feedback.
-- [~] Handle API failures, invalid forms/routes, unauthorized access, upload failures, and booking conflicts. Payment failures/cancellation await the future Stripe flow.
+- [x] Meaningful loaders for service fetch, appointment slots, booking submission, customer/admin dashboards, and Stripe Checkout return status.
+- [x] Toast notifications for success/failure; no browser `alert()` for ordinary feedback.
+- [x] Handle API failures, invalid forms/routes, unauthorized access, upload failures, booking conflicts, cancelled Checkout, and webhook errors.
 - [ ] Dashboard layout has responsive sidebar/main area, role-based navigation, statistic cards, and appropriate tables/lists.
 - [x] Search by service name and sort by price work on the client and API; paginated API and category filtering are also available.
 - [ ] Production deep links reload without 404; private routes work after refresh and remain authenticated.
 - [ ] No CORS/404/504 issues on production.
-- [~] Client and server builds pass after appointment work; local appointment lifecycle and ownership rules, service CRUD/uploads, Stripe, and deployment still need manual verification.
+- [~] Client and server builds pass after Stripe implementation; the user confirmed a successful local Stripe test payment/webhook. Full appointment edge cases, service CRUD/uploads, and deployment still need manual verification.
 - [ ] No secrets are exposed in client bundles, repository history, logs, or README.
 
 ## Decisions still to confirm or configure
 
 - [ ] Production hosting/domains and allowed CORS/auth callback URLs.
 - [ ] Google OAuth client credentials and callback configuration (for local: `http://localhost:3000/api/auth/callback/google`).
-- [ ] Stripe test/live credentials and webhook endpoint configuration.
+- [~] Stripe local test keys and CLI webhook secret; production test-mode endpoint still needs configuring at `https://<your-api-domain>/api/payments/webhook`.
 - [ ] ImgBB API key.
 - [ ] Salon phone, address, hours, social links, and final category/content choices.
 - [ ] Appointment capacity policy and paid-appointment cancellation/refund policy.

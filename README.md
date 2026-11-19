@@ -16,7 +16,7 @@ Sign-up and sign-in support email/password and Google. Better Auth owns the `use
 
 The public `/services` page reads active services from the API and supports name search, category filtering, and price sorting. Signed-in users can open service details. Admins can manage the service catalog at `/dashboard/admin/services`.
 
-Customers can request an appointment from an active service detail page and manage pending requests at `/dashboard/customer`. Admins can review and update appointment requests at `/dashboard/admin/appointments`.
+Customers can request an appointment from an active service detail page and manage requests at `/dashboard/customer`. Only a confirmed, unpaid request shows **Pay now**; checkout opens Stripe's hosted test-mode page. Return pages show payment state but never change it—the API waits for its verified webhook. Admins can review and update appointment requests at `/dashboard/admin/appointments` and inspect webhook-recorded payments read-only at `/dashboard/admin/transactions`.
 
 To provision an admin, add `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` temporarily to your ignored `.env.local`, then run `npm run provision:admin -- --confirm-admin-provision`. The local CLI uses Better Auth to create the account and sets its role in the same Better Auth `users` collection. Remove those temporary admin credential values after provisioning. There is no public admin creation endpoint.
 

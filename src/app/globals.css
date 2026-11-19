@@ -208,12 +208,19 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .admin-dashboard-actions { padding: clamp(1.3rem,4vw,2.5rem); border: 1px solid #FFFFFFB8; border-radius: 1.5rem 1.5rem 3rem 1.5rem; background: #E9E8F8B8; }
 .admin-dashboard-actions h2 { margin: 0 0 .5rem; font: 500 clamp(1.7rem,4vw,2.4rem) Georgia,serif; letter-spacing: -.04em; }
 .admin-dashboard-actions > div:first-child > p:last-child { color: #405979; }
-.admin-action-links { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; margin-top: 1.5rem; }
+.admin-action-links { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,15rem),1fr)); gap: 1rem; margin-top: 1.5rem; }
 .admin-action-card { min-height: 10rem; display: flex; flex-direction: column; gap: .8rem; padding: 1.3rem; border: 1px solid #8DB9F070; border-radius: .9rem 2rem .9rem .9rem; background: #F7F7FC; text-decoration: none; transition: transform .18s ease,box-shadow .18s ease; }
 .admin-action-card:hover { transform: translateY(-3px); box-shadow: 0 .8rem 1.8rem #315B9120; }
 .admin-action-card span { color: #315B91; font-size: .67rem; font-weight: 800; letter-spacing: .14em; }
 .admin-action-card strong { font: 500 1.55rem Georgia,serif; }
 .admin-action-card small { color: #405979; line-height: 1.5; }
+.transaction-list { display: grid; gap: .8rem; }
+.transaction-item { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1.2rem; border: 1px solid #FFFFFF; border-radius: .9rem .9rem 2rem .9rem; background: var(--brand-lavender); }
+.transaction-item h2 { margin: .2rem 0 .5rem; font: 500 1.4rem Georgia,serif; }
+.transaction-item p { margin: .3rem 0; color: #405979; font-size: .87rem; }
+.transaction-item small { display: block; margin-top: .4rem; color: #405979; }
+.transaction-item code { overflow-wrap: anywhere; }
+.transaction-item > strong { white-space: nowrap; font-size: 1.15rem; }
 .admin-pagination { display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 1.3rem 0; color: #405979; font-size: .9rem; }
 .admin-dialog-backdrop { position: fixed; z-index: 60; inset: 0; display: grid; place-items: center; padding: 1rem; background: #1C2D4570; backdrop-filter: blur(5px); }
 .admin-confirm-dialog { width: min(100%,30rem); padding: 1.5rem; border: 1px solid #FFFFFFB8; border-radius: 1.2rem 1.2rem 2.5rem 1.2rem; background: var(--brand-lavender); box-shadow: 0 2rem 5rem #14223C50; }
@@ -255,6 +262,15 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .appointment-statuses { display: grid; justify-items: end; gap: .45rem; }
 .appointment-statuses strong { color: var(--ink); }
 .appointment-payment-note { grid-column: 2 / -1; margin: -.25rem 0 0; color: #405979; font-size: .78rem; line-height: 1.45; }
+.appointment-pay-button { grid-column: 2 / -1; justify-self: start; min-height: 2.5rem; padding: .6rem .9rem; font-size: .83rem; }
+.payment-return-page { min-height: 65vh; display: grid; place-items: center; padding: 3rem 1rem; background: radial-gradient(ellipse at 50% 20%,#E9E8F8 0,transparent 58%); }
+.payment-return-card { width: min(100%,38rem); padding: clamp(1.5rem,5vw,3rem); border: 1px solid #FFFFFF; border-radius: 1.2rem 1.2rem 3rem 1.2rem; background: var(--brand-lavender); text-align: center; box-shadow: 0 1rem 3rem #315B9124; }
+.payment-return-mark { width: 4.2rem; height: 4.2rem; display: grid; place-items: center; margin: 1rem auto; border-radius: 50% 50% 50% 14%; background: var(--brand-peach); color: var(--ink); font: 700 1.8rem Georgia,serif; }
+.payment-return-paid .payment-return-mark { background: var(--brand-blue); }
+.payment-return-card h1 { max-width: none; font: 500 clamp(2rem,6vw,3rem) Georgia,serif; letter-spacing: -.045em; }
+.payment-return-card > p:not(.eyebrow) { color: #405979; line-height: 1.65; }
+.payment-return-card > div { display: flex; justify-content: center; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+.payment-return-card > div a { display: inline-flex; align-items: center; justify-content: center; min-height: 2.9rem; }
 .admin-appointment-item { grid-template-columns: 5rem minmax(0,1fr) auto minmax(7rem,auto); }
 .appointment-item > .text-button, .appointment-item > .admin-item-actions { justify-self: end; }
 .customer-appointments .appointments-heading { margin-bottom: 1.5rem; }
@@ -325,7 +341,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .admin-services-page, .customer-appointments { width: min(100% - 2rem,82rem); padding: 2rem 0; }
   .admin-overview-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
-@media (max-width: 560px) { .admin-overview-grid, .admin-action-links { grid-template-columns: 1fr; } .admin-dashboard-mark { width: 3.8rem; height: 3.8rem; border-radius: 1.2rem .4rem; font-size: 2.2rem; } .admin-pagination { gap: .55rem; font-size: .8rem; } }
+@media (max-width: 560px) { .admin-overview-grid { grid-template-columns: 1fr; } .admin-dashboard-mark { width: 3.8rem; height: 3.8rem; border-radius: 1.2rem .4rem; font-size: 2.2rem; } .admin-pagination { gap: .55rem; font-size: .8rem; } .transaction-item { align-items: start; flex-direction: column-reverse; } }
 @media (max-width: 620px) { .admin-shell-header { flex-wrap: wrap; } .admin-shell-header nav { order: 3; width: 100%; justify-content: space-between; } .admin-shell-header nav a { padding-inline: .55rem; font-size: .76rem; } }
 @media (max-width: 540px) {
   .admin-services-heading, .appointments-heading { align-items: start; flex-direction: column; }

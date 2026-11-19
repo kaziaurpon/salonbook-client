@@ -25,6 +25,7 @@ export function CustomerAppointments() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState("");
+  const [payingId, setPayingId] = useState("");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -65,6 +66,21 @@ export function CustomerAppointments() {
     }
   }
 
+  async function payNow(id: string) {
+    setPayingId(id);
+    try {
+      const response = await authenticatedApiFetch(`/api/appointments/${id}/checkout`, { method: "POST" });
+      const result = await response.json() as { url?: string; message?: string };
+      if (!response.ok || !result.url) throw new Error(result.message || "Could not open Stripe Checkout.");
+      const checkoutUrl = new URL(result.url);
+      if (checkoutUrl.protocol !== "https:" || checkoutUrl.hostname !== "checkout.stripe.com") throw new Error("The payment provider returned an invalid checkout link.");
+      window.location.assign(checkoutUrl.toString());
+    } catch (reason) {
+      toast.error(reason instanceof Error ? reason.message : "Could not open Stripe Checkout.");
+      setPayingId("");
+    }
+  }
+
   if (isPending || !session || (session.user as typeof session.user & { role?: string }).role !== "customer") return <main className="auth-page"><p>Checking customer access…</p></main>;
 
   const count = (status: Appointment["status"]) => appointments.filter((item) => item.status === status).length;
@@ -84,7 +100,8 @@ export function CustomerAppointments() {
               {appointment.serviceId?.image && <img src={appointment.serviceId.image} alt="" />}
               <div className="appointment-main"><p className="service-category">{appointment.serviceId?.category || "Salon service"}</p><h3>{appointment.serviceId?.serviceName || "Service unavailable"}</h3><p>{new Date(appointment.appointmentDate).toLocaleDateString()} · {appointment.timeSlot}</p><p>Requested {new Date(appointment.createdAt).toLocaleString()}</p>{appointment.message && <p className="appointment-message">“{appointment.message}”</p>}</div>
               <div className="appointment-statuses"><span className={`status-pill ${appointment.status}`}>{appointment.status}</span><span className={`status-pill ${appointment.paymentStatus}`}>{appointment.paymentStatus}</span><strong>৳{appointment.servicePrice.toLocaleString()}</strong></div>
-              {appointment.paymentStatus === "unpaid" && <p className="appointment-payment-note">{appointment.status === "confirmed" ? "Online payment is not enabled yet." : "Payment is unavailable while an appointment is pending or cancelled."}</p>}
+              {appointment.paymentStatus === "unpaid" && <p className="appointment-payment-note">{appointment.status === "confirmed" ? "Secure test-mode checkout is available for this confirmed appointment." : "Payment is unavailable while an appointment is pending or cancelled."}</p>}
+              {appointment.status === "confirmed" && appointment.paymentStatus === "unpaid" && <button className="button-primary appointment-pay-button" disabled={payingId === appointment._id} onClick={() => void payNow(appointment._id)}>{payingId === appointment._id ? "Opening Checkout…" : "Pay now"}</button>}
               {appointment.status === "pending" && <button className="text-button danger-text" disabled={busyId === appointment._id} onClick={() => void cancel(appointment._id)}>{busyId === appointment._id ? "Cancelling…" : "Cancel request"}</button>}
             </article>
           ))}
