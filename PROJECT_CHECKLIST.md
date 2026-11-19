@@ -38,6 +38,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [~] Authenticated navbar state is shown; profile dropdown and name display remain to be added.
 - [~] Footer has logo, description, navigation, and copyright; salon contact/address/hours and social links remain to be supplied.
 - [x] Original responsive salon-themed public design implemented for desktop, tablet, and mobile with reusable components.
+- [x] Shared Powder Blue `#8DB9F0`, Lavender `#E9E8F8`, and Peach `#F5B69E` design tokens and 60/30/10 guidance applied across current page styles; future page guidance documented in `DESIGN_SYSTEM.md`.
 - [ ] Working links/buttons, status badges, confirmation dialogs; avoid unnecessary animation/clutter.
 - [x] Home banner has title, description, original salon-inspired CSS illustration, and Explore Services CTA.
 - [x] Home featured section requests up to six active services from the API; cards show image, name, category, price, duration, short description, and details link (actual count depends on active database records).

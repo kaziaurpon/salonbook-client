@@ -3,5 +3,5 @@
 import { Toaster } from "sonner";
 
 export function ToastProvider() {
-  return <Toaster richColors position="top-right" />;
+  return <Toaster richColors position="top-right" theme="light" toastOptions={{ classNames: { toast: "salon-toast" } }} />;
 }

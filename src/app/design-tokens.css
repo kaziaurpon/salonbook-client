@@ -1,0 +1,19 @@
+:root {
+  color-scheme: light;
+  --brand-blue: #8DB9F0;
+  --brand-lavender: #E9E8F8;
+  --brand-peach: #F5B69E;
+  --ink: #1E2B43;
+  --muted-ink: #4F5F78;
+  --blue-deep: #315B91;
+  --blue-border: #839DC0;
+  --peach-deep: #8A5547;
+  --surface: var(--brand-lavender);
+  --surface-light: #F8F8FD;
+  --line: #A9B9D1;
+  --status-danger-bg: #FCE9E7;
+  --status-danger-text: #8B3832;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  background: var(--brand-blue);
+}
