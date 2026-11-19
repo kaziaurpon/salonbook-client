@@ -41,7 +41,7 @@ export default function RegisterPage() {
   async function googleSignUp() {
     setLoading(true);
     try {
-      const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/complete" });
+      const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/complete", errorCallbackURL: "/login?error=google-link-required" });
       if (result.error) throw new Error(result.error.message || "Google sign in is not configured yet.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not start Google sign in.");

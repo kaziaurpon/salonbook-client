@@ -64,7 +64,7 @@ function LoginForm() {
   async function googleLogin() {
     setLoading(true);
     try {
-      const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/complete" });
+      const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/complete", errorCallbackURL: "/login?error=google-link-required" });
       if (result.error) throw new Error(result.error.message || "Google sign in is not configured yet.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not start Google sign in.");
@@ -79,7 +79,7 @@ function LoginForm() {
         <p className="eyebrow">WELCOME BACK</p>
         <h1>Sign in to your account</h1>
         {sessionPending && <p className="auth-hint">Checking your current sign-in…</p>}
-        {search.get("error") && <p className="form-error">Sign in was not completed. Please try again.</p>}
+        {search.get("error") === "google-link-required" || search.get("error") === "account_not_linked" ? <p className="form-error">This Google email may already have a SalonBook account. First sign in here with that account’s email and password, then open My profile and choose “Link Google account”. Use the same email address.</p> : search.get("error") && <p className="form-error">Google sign-in could not be completed. Check the OAuth setup and try again.</p>}
         <form onSubmit={onSubmit} className="auth-form">
           <label>Email<input name="email" type="email" autoComplete="email" required /></label>
           <label>Password<input name="password" type="password" autoComplete="current-password" required /></label>

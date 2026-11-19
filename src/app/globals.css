@@ -266,6 +266,9 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .profile-form input:disabled { color: #66788F; }
 .profile-form small { color: #607895; font-size: .72rem; font-weight: 400; line-height: 1.5; }
 .profile-form-wide { grid-column: 1 / -1; }
+.profile-google-link { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid #8DB9F055; border-radius: .75rem; background: #FFFFFF80; }
+.profile-google-link > div { display: grid; gap: .35rem; }
+.profile-google-link .secondary-button { flex: 0 0 auto; }
 .profile-locked-fields { display: flex; flex-wrap: wrap; gap: .8rem; padding: 1rem; border-radius: .6rem; background: #8DB9F034; }
 .profile-locked-fields span { display: flex; gap: .4rem; align-items: center; color: #405979; font-size: .8rem; }
 .profile-locked-fields strong { color: var(--ink); text-transform: capitalize; }

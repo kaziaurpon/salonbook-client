@@ -18,7 +18,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [~] Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and current-role guards are implemented. Local email/password persistence and API authorization were verified; Google OAuth still needs a real browser consent test.
 - [~] Public service browsing, admin service/image management, dashboards, appointments, and Stripe test-mode payment are implemented. Signed Stripe test-event replay, invalid-signature rejection, and payment idempotency were verified locally.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [~] Required meaningful commit totals currently synced to origin: client 14/20 and server 10/12. This audit is organized as six distinct client commits and two distinct server commits; after all eight are committed, the assignment commit counts will be 20/20 and 12/12.
+- [~] Local Git history now contains 20 client commits and 12 server commits. The client has six commits ahead of GitHub and the server has two; pending working-tree changes still need the user's commits and both repos need pushing to sync.
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -26,8 +26,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Separate client and server repositories; no parent repository.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
-- [~] Meaningful client commits: 14/20 before this audit; commit the six documented audit changes to reach 20/20.
-- [~] Meaningful server commits: 10/12 before this audit; commit the unused-dependency cleanup and readiness endpoint changes separately to reach 12/12.
+- [x] Meaningful client commit minimum: 20 commits exist in local history; six are ahead of origin and local working-tree changes remain uncommitted.
+- [x] Meaningful server commit minimum: 12 commits exist in local history; two are ahead of origin.
 - [x] Client README includes description, features, stack, install/run instructions, environment variable names, live link placeholder, and both repository links.
 - [x] Server README includes description, features, stack, install/run instructions, environment variable names, live link placeholder, and both repository links.
 - [ ] Production deployment and working live site URL.
@@ -63,8 +63,9 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Client dashboard route gates redirect unauthenticated users and wrong-role visits; session is Better Auth cookie-based.
 - [x] Blocked accounts are signed out from client dashboard gates and denied by protected Express APIs.
 - [x] Better Auth session hook updates client auth state; app uses session state on protected dashboard routes.
+- [x] Profile settings let a signed-in user explicitly link a verified Google account to the same email; different-email linking remains disallowed. Login gives a clear recovery path for `account_not_linked`.
 - [x] Local email/password session persistence, JWT handoff, customer API access, admin-route denial to customers, blocked-user denial, and profile role/block-field rejection were verified against MongoDB and Express. Admin provisioning was previously confirmed by the user.
-- [~] Google OAuth still requires a browser consent test with Google credentials and the configured callback.
+- [~] Google OAuth account linking and sign-in still require a browser consent test with Google credentials and the configured callback.
 
 ## Service details, booking, and customer dashboard
 
@@ -89,10 +90,11 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Service image upload uses the server-only ImgBB key; file type/size and upload failures are handled.
 - [x] Admin destructive actions use an in-app confirmation dialog and CRUD actions report success/failure with toast notifications.
 - [x] Only active services are public and available for future booking.
-- [x] Admin sees all appointment requests with customer/service details, date/time, message, price, and statuses.
+- [x] Admin sees all appointment requests with customer/service details, date/time, message, price, and statuses; the API returns paginated records and global status totals.
 - [x] Admin can confirm only pending requests; can cancel pending or confirmed requests. Server guards status transitions and returns conflict responses when a request has changed.
+- [x] Admin appointment cancellation and customer pending-request cancellation require an in-app confirmation dialog; both paths show toast feedback.
 - [x] Admin can search and paginate registered customers, view profile and appointment details, and block/unblock customer accounts through admin-only Express APIs.
-- [x] Admin can view transactions read-only with customer, service, appointment date, amount/currency, Stripe session reference, status, and payment date.
+- [x] Admin can view paginated, read-only transactions with customer, service, appointment date, amount/currency, Stripe session reference, status, and payment date.
 - [x] No admin transaction mutation route exists; only the verified webhook can record successful payment.
 - [x] Admin profile page supports permitted name, profile image URL, and phone edits through the authenticated Express API.
 
@@ -129,7 +131,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Search by service name and sort by price work on the client and API; paginated API and category filtering are also available.
 - [~] Latest local production build direct HTTP reload returned 200 for home, service list/detail (including invalid ID), payment return, and customer/admin dashboard/profile/transaction routes. Protected API requests reject missing auth and enforce current role; production route reload still needs post-deploy verification.
 - [~] Local CORS and route behavior passed; production CORS/404/504 behavior is pending deployment.
-- [~] Client and server builds pass. Client lint now exits successfully with eight Next.js image-optimization warnings for external service/profile image URLs. Local direct reload returned 200 across tested routes. Stripe webhook signature, retry idempotency, and invalid-signature rejection passed. Manual CRUD/image upload and appointment edge cases remain to be retested.
+- [~] Latest client production build and server TypeScript build pass. Client lint exits successfully with eight Next.js image-optimization warnings for externally hosted images. Better Auth logs five MongoDB index-creation errors during static generation, although a prior read-only check found all five indexes present. Local direct reload returned 200 across tested routes. Stripe webhook signature, retry idempotency, and invalid-signature rejection passed. Newly added admin pagination and Google linking need browser verification; manual CRUD/image upload and appointment edge cases remain to be retested.
 - [x] Git-history scan found no tracked `.env` files or credential patterns in either repo. Environment files are ignored and examples contain variable names with blank values only.
 
 ## Decisions still to confirm or configure
