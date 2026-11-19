@@ -72,7 +72,9 @@ export function AdminServicesManager() {
     } else if (user.role !== "admin") {
       router.replace("/dashboard/customer");
     } else {
-      void loadServices();
+      let active = true;
+      queueMicrotask(() => { if (active) void loadServices(); });
+      return () => { active = false; };
     }
   }, [isPending, loadServices, router, session]);
 

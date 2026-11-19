@@ -48,7 +48,7 @@ export function AdminCustomersManager({ detail = false }: { detail?: boolean }) 
       }
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Could not load customer data."); }
     finally { setLoading(false); }
-  }, [customerId, detail, page, reload, search]);
+  }, [customerId, detail, page, search]);
 
   useEffect(() => {
     if (isPending) return;
@@ -56,8 +56,10 @@ export function AdminCustomersManager({ detail = false }: { detail?: boolean }) 
     const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
     if (user.isBlocked) { void authClient.signOut().then(() => router.replace("/login")); return; }
     if (user.role !== "admin") { router.replace("/dashboard/customer"); return; }
-    void load();
-  }, [isPending, load, router, session]);
+    let active = true;
+    queueMicrotask(() => { if (active) void load(); });
+    return () => { active = false; };
+  }, [isPending, load, reload, router, session]);
 
   async function changeBlockedStatus() {
     if (!pendingAction) return;

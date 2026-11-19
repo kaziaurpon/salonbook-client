@@ -51,7 +51,11 @@ export function AdminAppointments() {
     const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
     if (user.isBlocked) void authClient.signOut().then(() => router.replace("/login"));
     else if (user.role !== "admin") router.replace("/dashboard/customer");
-    else void load();
+    else {
+      let active = true;
+      queueMicrotask(() => { if (active) void load(); });
+      return () => { active = false; };
+    }
   }, [isPending, load, router, session]);
 
   async function updateStatus(item: Appointment, status: "confirmed" | "cancelled") {
