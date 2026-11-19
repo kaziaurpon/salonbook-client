@@ -25,7 +25,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
 - [~] Meaningful client commits: 4/20; continue with meaningful messages.
-- [~] Meaningful server commits: 5/12; continue with meaningful messages.
+- [~] Meaningful server commits: 5/12; continue with meaningful messages. Current local branch matches its GitHub remote.
 - [ ] Client README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Server README: description, features, stack, install/run instructions, environment variable names, live link, client/server repository links.
 - [ ] Production deployment and working live site URL.
@@ -60,7 +60,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Client dashboard route gates redirect unauthenticated users and wrong-role visits; session is Better Auth cookie-based.
 - [x] Blocked accounts are signed out from client dashboard gates and denied by protected Express APIs.
 - [x] Better Auth session hook updates client auth state; app uses session state on protected dashboard routes.
-- [~] Auth feature builds successfully and the local admin provisioning CLI has created/promoted an account in MongoDB; email/password login, Google OAuth, and separate customer/admin API flows still need local verification.
+- [~] Auth feature builds successfully and the local admin provisioning CLI has created/promoted an account in MongoDB; email/password login, Google OAuth, and separate customer/admin API flows still need local verification. The recent build environment could not create Better Auth indexes, so confirm Atlas connectivity and index creation from the user's machine before relying on fresh auth records.
 
 ## Service details, booking, and customer dashboard
 
