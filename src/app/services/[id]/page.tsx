@@ -65,7 +65,7 @@ export default function ServiceDetailsPage() {
     const controller = new AbortController();
     setSlotsLoading(true);
     setBookingError("");
-    void authenticatedApiFetch(`/api/appointments/available-slots?date=${encodeURIComponent(date)}`, { signal: controller.signal })
+    void authenticatedApiFetch(`/api/appointments/available-slots?serviceId=${encodeURIComponent(params.id)}&date=${encodeURIComponent(date)}`, { signal: controller.signal })
       .then(async (response) => {
         const result = await response.json() as { slots?: Slot[]; message?: string };
         if (!response.ok || !result.slots) throw new Error(result.message || "Could not load available times.");
@@ -77,7 +77,7 @@ export default function ServiceDetailsPage() {
       })
       .finally(() => { if (!controller.signal.aborted) setSlotsLoading(false); });
     return () => controller.abort();
-  }, [date, session]);
+  }, [date, params.id, session]);
 
   async function submitBooking(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

@@ -82,8 +82,9 @@ export function CustomerAppointments() {
           {appointments.map((appointment) => (
             <article className="appointment-item" key={appointment._id}>
               {appointment.serviceId?.image && <img src={appointment.serviceId.image} alt="" />}
-              <div className="appointment-main"><p className="service-category">{appointment.serviceId?.category || "Salon service"}</p><h3>{appointment.serviceId?.serviceName || "Service unavailable"}</h3><p>{new Date(appointment.appointmentDate).toLocaleDateString()} · {appointment.timeSlot}</p><p>Requested {new Date(appointment.createdAt).toLocaleDateString()}</p>{appointment.message && <p className="appointment-message">“{appointment.message}”</p>}</div>
+              <div className="appointment-main"><p className="service-category">{appointment.serviceId?.category || "Salon service"}</p><h3>{appointment.serviceId?.serviceName || "Service unavailable"}</h3><p>{new Date(appointment.appointmentDate).toLocaleDateString()} · {appointment.timeSlot}</p><p>Requested {new Date(appointment.createdAt).toLocaleString()}</p>{appointment.message && <p className="appointment-message">“{appointment.message}”</p>}</div>
               <div className="appointment-statuses"><span className={`status-pill ${appointment.status}`}>{appointment.status}</span><span className={`status-pill ${appointment.paymentStatus}`}>{appointment.paymentStatus}</span><strong>৳{appointment.servicePrice.toLocaleString()}</strong></div>
+              {appointment.paymentStatus === "unpaid" && <p className="appointment-payment-note">{appointment.status === "confirmed" ? "Online payment is not enabled yet." : "Payment is unavailable while an appointment is pending or cancelled."}</p>}
               {appointment.status === "pending" && <button className="text-button danger-text" disabled={busyId === appointment._id} onClick={() => void cancel(appointment._id)}>{busyId === appointment._id ? "Cancelling…" : "Cancel request"}</button>}
             </article>
           ))}

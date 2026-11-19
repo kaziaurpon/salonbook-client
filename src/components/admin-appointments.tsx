@@ -28,6 +28,8 @@ export function AdminAppointments() {
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState("");
 
+  const count = (status: Appointment["status"]) => appointments.filter((item) => item.status === status).length;
+
   const load = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -73,12 +75,13 @@ export function AdminAppointments() {
   return (
     <main className="admin-services-page">
       <header className="admin-services-heading"><div><Link className="brand" href="/dashboard/admin">← Admin dashboard</Link><p className="eyebrow">BOOKING QUEUE</p><h1>Appointment requests</h1><p>Review customer requests and update their status.</p></div><button className="secondary-button admin-refresh" onClick={() => void load()} disabled={loading}>Refresh</button></header>
+      {!loading && !error && <section className="appointment-stats" aria-label="Appointment request totals"><article><span>All requests</span><strong>{appointments.length}</strong></article><article><span>Pending</span><strong>{count("pending")}</strong></article><article><span>Confirmed</span><strong>{count("confirmed")}</strong></article><article><span>Cancelled</span><strong>{count("cancelled")}</strong></article></section>}
       {loading ? <p className="service-message">Loading appointment requests…</p> : error ? <div className="service-message service-error"><p>{error}</p><button onClick={() => void load()}>Try again</button></div> : appointments.length === 0 ? <p className="service-message">There are no appointment requests yet.</p> : (
         <div className="appointment-list">
           {appointments.map((item) => (
             <article className="appointment-item admin-appointment-item" key={item._id}>
               {item.serviceId?.image && <img src={item.serviceId.image} alt="" />}
-              <div className="appointment-main"><p className="service-category">{item.serviceId?.category || "Salon service"}</p><h3>{item.serviceId?.serviceName || "Service unavailable"}</h3><p>{new Date(item.appointmentDate).toLocaleDateString()} · {item.timeSlot}</p><p>Customer: {item.customer?.name || "Unknown"} · {item.customer?.email || "No email"}</p><p>Requested {new Date(item.createdAt).toLocaleDateString()}</p>{item.message && <p className="appointment-message">“{item.message}”</p>}</div>
+              <div className="appointment-main"><p className="service-category">{item.serviceId?.category || "Salon service"}</p><h3>{item.serviceId?.serviceName || "Service unavailable"}</h3><p>{new Date(item.appointmentDate).toLocaleDateString()} · {item.timeSlot}</p><p>Customer: {item.customer?.name || "Unknown"} · {item.customer?.email || "No email"}</p><p>Requested {new Date(item.createdAt).toLocaleString()}</p>{item.message && <p className="appointment-message">“{item.message}”</p>}</div>
               <div className="appointment-statuses"><span className={`status-pill ${item.status}`}>{item.status}</span><span className={`status-pill ${item.paymentStatus}`}>{item.paymentStatus}</span><strong>৳{item.servicePrice.toLocaleString()}</strong></div>
               <div className="admin-item-actions">
                 {item.status === "pending" && <button className="text-button" disabled={busyId === item._id} onClick={() => void updateStatus(item, "confirmed")}>Confirm</button>}

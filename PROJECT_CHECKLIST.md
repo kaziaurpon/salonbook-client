@@ -70,12 +70,12 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Only authenticated customers can request appointments; admins cannot book as customers.
 - [x] Booking form: date, predefined time slot, optional message; validation and toast feedback.
 - [x] New appointment defaults to pending/unpaid; stores service/customer references and service price snapshot.
-- [x] Prevent duplicate active requests for the same date and time slot with a unique active-slot reservation.
+- [x] Prevent duplicate active requests for the same service/date/time across customers with a server check, unique reservation key, and a clear 409 conflict response.
 - [x] Customer can cancel only their own pending request; cannot cancel confirmed/cancelled requests.
-- [x] Customer appointment overview totals: total, pending, confirmed, cancelled requests.
+- [x] Customer appointment overview totals: total, pending, confirmed, cancelled requests; admin appointment queue also shows the same status totals.
 - [x] Customer appointment list shows service image/name/category, date/time, price, appointment status, payment status, and message.
 - [ ] Customer can view appointment details and payment status/history.
-- [ ] Customer can pay only for confirmed, unpaid appointments; cannot pay pending/cancelled appointments.
+- [ ] Stripe payment flow is not implemented yet. No appointment can be paid in the current app; when added, restrict checkout to confirmed and unpaid appointments.
 - [ ] Customer profile page supports permitted profile edits.
 
 ## Admin dashboard and management
@@ -87,7 +87,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Admin destructive actions use an in-app confirmation dialog and CRUD actions report success/failure with toast notifications.
 - [x] Only active services are public and available for future booking.
 - [x] Admin sees all appointment requests with customer/service details, date/time, message, price, and statuses.
-- [x] Admin can confirm only pending requests; can cancel pending or confirmed requests.
+- [x] Admin can confirm only pending requests; can cancel pending or confirmed requests. Server guards status transitions and returns conflict responses when a request has changed.
 - [ ] Admin can list/view registered customers and block/unblock customers.
 - [ ] Admin can view transactions with customer, service, appointment date, amount, currency, Stripe reference, status, date.
 - [ ] Admin cannot manually mark a payment successful.
@@ -116,14 +116,14 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 ## UX, reliability, and final verification
 
-- [ ] Meaningful loaders for service fetch, dashboard data, booking submission, payment processing.
+- [x] Meaningful loaders for service fetch, appointment slots, booking submission, and customer/admin appointment dashboards; payment loading remains for the future Stripe flow.
 - [ ] Toast notifications for success/failure; no browser `alert()` for ordinary feedback.
-- [ ] Handle API failures, invalid forms/routes, unauthorized access, upload failures, booking conflicts, payment failures/cancellation.
+- [~] Handle API failures, invalid forms/routes, unauthorized access, upload failures, and booking conflicts. Payment failures/cancellation await the future Stripe flow.
 - [ ] Dashboard layout has responsive sidebar/main area, role-based navigation, statistic cards, and appropriate tables/lists.
 - [x] Search by service name and sort by price work on the client and API; paginated API and category filtering are also available.
 - [ ] Production deep links reload without 404; private routes work after refresh and remain authenticated.
 - [ ] No CORS/404/504 issues on production.
-- [~] Builds pass after service and booking work; local service CRUD, appointment lifecycle, ownership rules, image uploads, Stripe, and deployment still need manual verification.
+- [~] Client and server builds pass after appointment work; local appointment lifecycle and ownership rules, service CRUD/uploads, Stripe, and deployment still need manual verification.
 - [ ] No secrets are exposed in client bundles, repository history, logs, or README.
 
 ## Decisions still to confirm or configure

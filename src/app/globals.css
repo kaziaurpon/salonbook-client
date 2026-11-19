@@ -254,6 +254,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .appointment-message { font-style: italic; }
 .appointment-statuses { display: grid; justify-items: end; gap: .45rem; }
 .appointment-statuses strong { color: var(--ink); }
+.appointment-payment-note { grid-column: 2 / -1; margin: -.25rem 0 0; color: #405979; font-size: .78rem; line-height: 1.45; }
 .admin-appointment-item { grid-template-columns: 5rem minmax(0,1fr) auto minmax(7rem,auto); }
 .appointment-item > .text-button, .appointment-item > .admin-item-actions { justify-self: end; }
 .customer-appointments .appointments-heading { margin-bottom: 1.5rem; }
