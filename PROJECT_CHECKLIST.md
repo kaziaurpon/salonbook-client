@@ -18,7 +18,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [~] Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and current-role guards are implemented. Local email/password persistence and API authorization were verified; Google OAuth still needs a real browser consent test.
 - [~] Public service browsing, admin service/image management, dashboards, appointments, and Stripe test-mode payment are implemented. Signed Stripe test-event replay, invalid-signature rejection, and payment idempotency were verified locally.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [~] Local Git history now contains 20 client commits and 12 server commits. The client has six commits ahead of GitHub and the server has two; pending working-tree changes still need the user's commits and both repos need pushing to sync.
+- [~] Local Git history now contains 23 client commits and 14 server commits. The client has nine commits ahead of GitHub and the server has four; pending client working-tree changes still need the user's commit and both repos need pushing to sync.
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -26,8 +26,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Separate client and server repositories; no parent repository.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
-- [x] Meaningful client commit minimum: 20 commits exist in local history; six are ahead of origin and local working-tree changes remain uncommitted.
-- [x] Meaningful server commit minimum: 12 commits exist in local history; two are ahead of origin.
+- [x] Meaningful client commit minimum: 23 commits exist in local history; nine are ahead of origin and local working-tree changes remain uncommitted.
+- [x] Meaningful server commit minimum: 14 commits exist in local history; four are ahead of origin.
 - [x] Client README includes description, features, stack, install/run instructions, environment variable names, live link placeholder, and both repository links.
 - [x] Server README includes description, features, stack, install/run instructions, environment variable names, live link placeholder, and both repository links.
 - [ ] Production deployment and working live site URL.
@@ -35,14 +35,14 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 ## Shared layout and public pages
 
-- [x] SalonBook home page has an original salon-inspired banner illustration, featured active services from the API, category links, and a useful appointment-planning section.
-- [x] Public navbar links to Home, Browse Services, Sign In, and Sign Up; signed-in users see their role-appropriate dashboard and Sign Out.
-- [x] Authenticated navbar includes the user's name, profile link, role-appropriate dashboard link, and sign out.
+- [x] SalonBook home page has a salon photo in a custom color-matched hero frame, featured active services from the API, category links, and a useful appointment-planning/about section.
+- [x] Public navbar links to Home, Browse Services, Sign In, and Sign Up; signed-in users see their role-appropriate dashboard and Log out.
+- [x] Authenticated navbar includes the user's name, profile link, role-appropriate dashboard link, and Log out. About Us scrolls to the footer; only the selected Home/Browse Services/About Us navigation item is highlighted.
 - [~] Footer includes salon contact/address/hours and social-link fields; real values must be supplied in client environment variables before production.
 - [x] Original responsive salon-themed public design implemented for desktop, tablet, and mobile with reusable components.
 - [x] Shared Powder Blue `#8DB9F0`, Lavender `#E9E8F8`, and Peach `#F5B69E` design tokens and 60/30/10 guidance applied across current page styles; future page guidance documented in `DESIGN_SYSTEM.md`.
 - [ ] Working links/buttons, status badges, confirmation dialogs; avoid unnecessary animation/clutter.
-- [x] Home banner has title, description, original salon-inspired CSS illustration, and Explore Services CTA.
+- [x] Home banner has title, description, salon-themed photo, and Explore Services CTA.
 - [x] Home featured section loads six active services from the API; cards show service image, name, category, price, duration, short description, and details link. Six requested core services now lead the newest-first featured selection.
 - [x] Home categories are loaded from the API with a matching active-service image and link to the Browse Services filter.
 - [x] Additional appointment-planning section explains how to find a service and request a time.

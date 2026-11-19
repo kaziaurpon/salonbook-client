@@ -10,7 +10,7 @@ export function PublicFooter() {
     ["TikTok", process.env.NEXT_PUBLIC_TIKTOK_URL],
   ].filter((item): item is [string, string] => Boolean(item[1]?.startsWith("https://")));
   return (
-    <footer className="site-footer">
+    <footer id="footer" className="site-footer">
       <div className="footer-inner">
         <div className="footer-brand-block">
           <Link className="site-brand footer-brand" href="/">

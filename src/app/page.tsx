@@ -53,11 +53,10 @@ export default function HomePage() {
             </div>
             <div className="hero-proof"><span className="proof-stars" aria-label="A thoughtful experience">✳ ✳ ✳</span><span>Care, at your pace</span></div>
           </div>
-          <div className="hero-art" aria-label="Abstract warm-toned salon-inspired illustration" role="img">
-            <div className="art-sun" /><div className="art-arch art-arch-back" /><div className="art-arch art-arch-front" />
-            <div className="art-leaf leaf-one" /><div className="art-leaf leaf-two" /><div className="art-leaf leaf-three" />
-            <div className="art-vase" /><div className="art-orbit" />
-            <div className="art-label"><span>YOUR TIME</span><strong>Well spent.</strong></div>
+          <div className="hero-art">
+            <img className="hero-photo" src="/images/salon-barbershop.jpg" alt="Barber chairs and styling tools inside a modern barbershop" fetchPriority="high" />
+            <span className="hero-photo-kicker"><span aria-hidden="true">✳</span> THE SALON, IN FOCUS</span>
+            <div className="art-label"><span>YOUR NEXT VISIT</span><strong>Starts here.</strong><small>Thoughtful care, at your pace.</small></div>
           </div>
           <div className="hero-index"><span>01</span><span className="index-line" /><span>CARE, CONSIDERED</span></div>
         </section>
@@ -85,9 +84,9 @@ export default function HomePage() {
           ) : <p className="category-hint">Service categories will appear here when they are available.</p>}
         </section>
 
-        <section className="visit-section page-section" aria-labelledby="visit-heading">
+        <section id="about" className="visit-section page-section" aria-labelledby="visit-heading">
           <div className="visit-visual"><div className="visit-visual-circle"><span>YOUR<br />NEXT<br /><em>MOMENT</em></span></div><span className="visit-stamp">A LITTLE TIME FOR YOU · A LITTLE TIME FOR YOU ·</span></div>
-          <div className="visit-copy"><p className="eyebrow">SIMPLE FROM THE START</p><h2 id="visit-heading">Make room for a visit that feels like yours.</h2><p>Explore the menu, choose the service you want, and request an available time. We’ll keep your appointment details together so you can focus on looking forward to it.</p><ol className="visit-steps"><li><span>01</span> Find a service you love</li><li><span>02</span> Pick a date and open time</li><li><span>03</span> Send your appointment request</li></ol><Link className="button-primary" href="/services">Find your service <span aria-hidden="true">↗</span></Link></div>
+          <div className="visit-copy"><p className="eyebrow">ABOUT SALONBOOK</p><h2 id="visit-heading">A little more care, made easier to find.</h2><p>SalonBook brings salon services, clear pricing, and available appointment times together in one place. Choose the care that suits you, send a request, then follow its status from your personal dashboard.</p><ol className="visit-steps"><li><span>01</span> Explore salon services</li><li><span>02</span> Choose a date and open time</li><li><span>03</span> Track your appointment</li></ol><Link className="button-primary" href="/services">Find your service <span aria-hidden="true">↗</span></Link></div>
         </section>
       </main>
     </PublicShell>
