@@ -40,21 +40,25 @@ export function AdminServicesManager() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [pendingDelete, setPendingDelete] = useState<Service | null>(null);
 
   const loadServices = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await authenticatedApiFetch("/api/admin/services");
-      const result = await readMessage(response) as ApiResult<{ services: Service[] }>;
+      const response = await authenticatedApiFetch(`/api/admin/services?page=${page}&limit=12`);
+      const result = await readMessage(response) as ApiResult<{ services: Service[]; pages: number }>;
       setServices(result.services);
+      setPages(result.pages || 1);
     } catch (reason) {
       const message = reason instanceof Error ? reason.message : "Could not load the service list.";
       setError(message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     if (isPending) return;
@@ -133,11 +137,11 @@ export function AdminServicesManager() {
   }
 
   async function deleteService(service: Service) {
-    if (!window.confirm(`Delete “${service.serviceName}”? This cannot be undone.`)) return;
     try {
       const response = await authenticatedApiFetch(`/api/admin/services/${service._id}`, { method: "DELETE" });
       await readMessage(response);
       toast.success("Service deleted.");
+      setPendingDelete(null);
       await loadServices();
     } catch (reason) {
       toast.error(reason instanceof Error ? reason.message : "Could not delete the service.");
@@ -200,13 +204,15 @@ export function AdminServicesManager() {
                 <div className="admin-item-actions">
                   <button className="text-button" onClick={() => beginEdit(service)}>Edit</button>
                   <button className="text-button" onClick={() => void toggleStatus(service)}>{service.status === "active" ? "Deactivate" : "Activate"}</button>
-                  <button className="text-button danger-text" onClick={() => void deleteService(service)}>Delete</button>
+                  <button className="text-button danger-text" onClick={() => setPendingDelete(service)}>Delete</button>
                 </div>
               </article>
             ))}
           </div>
         )}
+        {!loading && !error && pages > 1 && <nav className="admin-pagination" aria-label="Service list pages"><button className="secondary-button" disabled={page <= 1} onClick={() => setPage((current) => Math.max(1, current - 1))}>Previous</button><span>Page {page} of {pages}</span><button className="secondary-button" disabled={page >= pages} onClick={() => setPage((current) => Math.min(pages, current + 1))}>Next</button></nav>}
       </section>
+      {pendingDelete && <div className="admin-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setPendingDelete(null); }}><section className="admin-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-service-title" aria-describedby="delete-service-description"><p className="eyebrow">REMOVE FROM CATALOG</p><h2 id="delete-service-title">Delete this service?</h2><p id="delete-service-description">“{pendingDelete.serviceName}” will be permanently removed. Existing appointment records remain in your history.</p><div><button className="secondary-button" onClick={() => setPendingDelete(null)}>Keep service</button><button className="danger-button" onClick={() => void deleteService(pendingDelete)}>Delete service</button></div></section></div>}
     </main>
   );
 }

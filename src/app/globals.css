@@ -23,6 +23,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .text-button { padding: .45rem .55rem; border: 0; background: transparent; color: #315B91; font-size: .85rem; font-weight: 750; cursor: pointer; }
 .text-button:hover { text-decoration: underline; }
 .danger-text { color: #9E4E42; }
+.danger-button { min-height: 2.8rem; padding: .7rem 1rem; border: 1px solid #B76F62; border-radius: .65rem; background: #F5B69E; color: #382D3A; font-weight: 800; cursor: pointer; }
 .auth-form, .booking-form { display: grid; gap: 1rem; }
 .auth-form label, .booking-form label, .admin-service-form label { display: grid; gap: .45rem; color: var(--ink); font-size: .9rem; font-weight: 700; }
 .auth-form input, .booking-form input, .booking-form select, .booking-form textarea, .admin-service-form input:not([type="file"]), .admin-service-form textarea, .service-controls input, .service-controls select { width: 100%; min-width: 0; min-height: 2.9rem; padding: .7rem .8rem; border: 1px solid #839DC0; border-radius: .55rem; background: #F8F8FD; color: var(--ink); }
@@ -184,6 +185,41 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 
 /* Admin and customer dashboard surfaces */
 .admin-services-page, .customer-appointments { min-height: 100vh; width: min(100% - 3rem,82rem); max-width: 82rem; margin: 0 auto; padding: clamp(1.25rem,4vw,3rem) 0; color: var(--ink); }
+.admin-dashboard-page { position: relative; overflow: hidden; }
+.admin-shell-header { min-height: 4.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .7rem max(1rem,calc((100vw - 82rem)/2)); border-bottom: 1px solid #315B9128; background: #E9E8F8C9; backdrop-filter: blur(14px); }
+.admin-shell-brand { display: inline-flex; align-items: center; gap: .55rem; color: var(--ink); font: 700 1.1rem Georgia,serif; text-decoration: none; white-space: nowrap; }
+.admin-shell-brand > span { color: #315B91; font: 1.4rem Arial,sans-serif; }
+.admin-shell-brand > small { padding: .25rem .4rem; border-radius: 999px; background: var(--brand-peach); font: 800 .58rem Arial,sans-serif; letter-spacing: .08em; }
+.admin-shell-header nav { display: flex; align-items: center; gap: .25rem; padding: .25rem; border: 1px solid #FFFFFFA6; border-radius: 999px; background: #F7F7FC; }
+.admin-shell-header nav a, .admin-shell-exit { padding: .62rem .8rem; border-radius: 999px; color: #405979; font-size: .82rem; text-decoration: none; }
+.admin-shell-header nav a:hover { background: var(--brand-blue); color: var(--ink); }
+.admin-shell-exit { white-space: nowrap; }
+.admin-dashboard-page::before { position: absolute; z-index: -1; top: 1rem; right: -10rem; width: 32rem; height: 32rem; border-radius: 50%; background: radial-gradient(circle, #E9E8F899 0, #E9E8F800 70%); content: ""; }
+.admin-dashboard-mark { width: 5.5rem; height: 5.5rem; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid #FFFFFFB0; border-radius: 1.7rem .6rem 1.7rem .6rem; background: var(--brand-peach); color: var(--ink); font: italic 3rem Georgia,serif; transform: rotate(5deg); box-shadow: 0 1rem 2.2rem #315B9124; }
+.admin-overview-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 1rem; margin: 2.5rem 0 3.5rem; }
+.admin-overview-card { min-height: 11rem; display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem; border: 1px solid #FFFFFFB8; border-radius: 1.1rem 1.1rem 2.2rem 1.1rem; background: var(--brand-lavender); box-shadow: 0 .8rem 2rem #315B9114; }
+.admin-overview-card:nth-child(2) { background: #F2F2FC; }
+.admin-overview-card:nth-child(3) { background: #DDEBFA; }
+.admin-overview-card:nth-child(4) { background: #F5B69E; }
+.admin-overview-card > p { margin: 0; color: #405979; font-size: .86rem; font-weight: 750; }
+.admin-overview-card strong { font: 500 clamp(2.2rem,4vw,3.5rem)/1 Georgia,serif; letter-spacing: -.06em; }
+.admin-overview-card > span { color: #405979; font-size: .75rem; line-height: 1.5; }
+.overview-skeleton { color: #405979; animation: shimmer 1.3s infinite alternate; }
+.admin-dashboard-actions { padding: clamp(1.3rem,4vw,2.5rem); border: 1px solid #FFFFFFB8; border-radius: 1.5rem 1.5rem 3rem 1.5rem; background: #E9E8F8B8; }
+.admin-dashboard-actions h2 { margin: 0 0 .5rem; font: 500 clamp(1.7rem,4vw,2.4rem) Georgia,serif; letter-spacing: -.04em; }
+.admin-dashboard-actions > div:first-child > p:last-child { color: #405979; }
+.admin-action-links { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; margin-top: 1.5rem; }
+.admin-action-card { min-height: 10rem; display: flex; flex-direction: column; gap: .8rem; padding: 1.3rem; border: 1px solid #8DB9F070; border-radius: .9rem 2rem .9rem .9rem; background: #F7F7FC; text-decoration: none; transition: transform .18s ease,box-shadow .18s ease; }
+.admin-action-card:hover { transform: translateY(-3px); box-shadow: 0 .8rem 1.8rem #315B9120; }
+.admin-action-card span { color: #315B91; font-size: .67rem; font-weight: 800; letter-spacing: .14em; }
+.admin-action-card strong { font: 500 1.55rem Georgia,serif; }
+.admin-action-card small { color: #405979; line-height: 1.5; }
+.admin-pagination { display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 1.3rem 0; color: #405979; font-size: .9rem; }
+.admin-dialog-backdrop { position: fixed; z-index: 60; inset: 0; display: grid; place-items: center; padding: 1rem; background: #1C2D4570; backdrop-filter: blur(5px); }
+.admin-confirm-dialog { width: min(100%,30rem); padding: 1.5rem; border: 1px solid #FFFFFFB8; border-radius: 1.2rem 1.2rem 2.5rem 1.2rem; background: var(--brand-lavender); box-shadow: 0 2rem 5rem #14223C50; }
+.admin-confirm-dialog h2 { margin: 0 0 .7rem; font: 500 1.8rem Georgia,serif; }
+.admin-confirm-dialog > p:not(.eyebrow) { color: #405979; line-height: 1.6; }
+.admin-confirm-dialog > div { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .65rem; margin-top: 1.3rem; }
 .admin-services-heading, .appointments-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.7rem; }
 .admin-services-heading .brand { margin-bottom: 1.5rem; color: #315B91; }
 .admin-services-heading h1 { max-width: none; margin: .25rem 0; color: var(--ink); font-family: Georgia,serif; font-size: clamp(2rem,5vw,3.25rem); font-weight: 500; letter-spacing: -.045em; }
@@ -286,7 +322,10 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .service-detail-page { width: min(100% - 2rem,76rem); padding-top: 2rem; }
   .service-detail-card > img { max-height: 22rem; }
   .admin-services-page, .customer-appointments { width: min(100% - 2rem,82rem); padding: 2rem 0; }
+  .admin-overview-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
+@media (max-width: 560px) { .admin-overview-grid, .admin-action-links { grid-template-columns: 1fr; } .admin-dashboard-mark { width: 3.8rem; height: 3.8rem; border-radius: 1.2rem .4rem; font-size: 2.2rem; } .admin-pagination { gap: .55rem; font-size: .8rem; } }
+@media (max-width: 620px) { .admin-shell-header { flex-wrap: wrap; } .admin-shell-header nav { order: 3; width: 100%; justify-content: space-between; } .admin-shell-header nav a { padding-inline: .55rem; font-size: .76rem; } }
 @media (max-width: 540px) {
   .admin-services-heading, .appointments-heading { align-items: start; flex-direction: column; }
   .admin-service-form { grid-template-columns: 1fr; }

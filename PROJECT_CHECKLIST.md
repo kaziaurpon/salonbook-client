@@ -80,10 +80,11 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 ## Admin dashboard and management
 
-- [ ] Admin dashboard overview: registered customers, active services, appointment totals/statuses, successful payments.
-- [x] Admin services list, create, update, delete, activate/deactivate; API checks admin role.
+- [x] Admin dashboard overview: registered customers, active services, appointment totals/statuses, and appointments marked paid; counts are served from the protected admin API.
+- [x] Admin services list, create, update, delete, activate/deactivate; API checks admin role and the list is paginated.
 - [x] Service form: name, category, description, positive price, positive duration, image upload, status active by default.
 - [x] Service image upload uses the server-only ImgBB key; file type/size and upload failures are handled.
+- [x] Admin destructive actions use an in-app confirmation dialog and CRUD actions report success/failure with toast notifications.
 - [x] Only active services are public and available for future booking.
 - [x] Admin sees all appointment requests with customer/service details, date/time, message, price, and statuses.
 - [x] Admin can confirm only pending requests; can cancel pending or confirmed requests.
