@@ -2,14 +2,31 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, Suspense, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+
+function dashboardFor(role?: string) {
+  return role === "admin" ? "/dashboard/admin" : "/dashboard/customer";
+}
 
 function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
+  const { data: session, isPending: sessionPending } = authClient.useSession();
   const [loading, setLoading] = useState(false);
+
+  // If someone returns to /login with an active session, take them to the
+  // dashboard instead of showing a sign-in form that cannot help them.
+  useEffect(() => {
+    if (sessionPending || !session) return;
+    const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
+    if (user.isBlocked) {
+      void authClient.signOut().then(() => router.replace("/login"));
+      return;
+    }
+    window.location.replace(dashboardFor(user.role));
+  }, [router, session, sessionPending]);
 
   async function finishLogin() {
     const result = await authClient.getSession();
@@ -19,9 +36,11 @@ function LoginForm() {
       await authClient.signOut();
       throw new Error("This account is blocked. Contact the salon administrator.");
     }
-    toast.success("Signed in successfully.");
-    router.replace(user.role === "admin" ? "/dashboard/admin" : "/dashboard/customer");
-    router.refresh();
+    const destination = dashboardFor(user.role);
+    toast.success("Signed in successfully. Opening your dashboard…");
+    // A full navigation ensures the freshly issued Better Auth cookie is
+    // present when the protected App Router dashboard loads.
+    window.location.assign(destination);
   }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -59,6 +78,7 @@ function LoginForm() {
         <Link className="brand" href="/">SalonBook</Link>
         <p className="eyebrow">WELCOME BACK</p>
         <h1>Sign in to your account</h1>
+        {sessionPending && <p className="auth-hint">Checking your current sign-in…</p>}
         {search.get("error") && <p className="form-error">Sign in was not completed. Please try again.</p>}
         <form onSubmit={onSubmit} className="auth-form">
           <label>Email<input name="email" type="email" autoComplete="email" required /></label>

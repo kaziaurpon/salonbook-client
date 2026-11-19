@@ -35,7 +35,7 @@ export function PublicNavbar() {
           <Link href="/services" onClick={() => setMenuOpen(false)}>Services</Link>
           {isPending ? <span className="nav-loading" aria-label="Loading account" /> : user ? (
             <>
-              <Link className="nav-dashboard" href={user.role === "admin" ? "/dashboard/admin" : "/dashboard/customer"} onClick={() => setMenuOpen(false)}>My dashboard</Link>
+              <Link className="nav-dashboard" href={user.role === "admin" ? "/dashboard/admin" : "/dashboard/customer"} onClick={() => setMenuOpen(false)}>{user.role === "admin" ? "Admin dashboard" : "My appointments"}</Link>
               <button className="nav-signout" type="button" onClick={signOut}>Sign out</button>
             </>
           ) : (

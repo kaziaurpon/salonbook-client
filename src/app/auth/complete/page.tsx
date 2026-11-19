@@ -24,8 +24,7 @@ export default function AuthCompletePage() {
         return;
       }
       toast.success("Signed in successfully.");
-      router.replace(user.role === "admin" ? "/dashboard/admin" : "/dashboard/customer");
-      router.refresh();
+      window.location.replace(user.role === "admin" ? "/dashboard/admin" : "/dashboard/customer");
     });
     return () => { active = false; };
   }, [router]);
