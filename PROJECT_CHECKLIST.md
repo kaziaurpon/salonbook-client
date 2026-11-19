@@ -76,7 +76,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Customer appointment list shows service image/name/category, date/time, price, appointment status, payment status, and message.
 - [~] Customer sees appointment/payment status and their own history; a separate full appointment detail page remains future work.
 - [x] Customer can create Checkout only for their own confirmed, unpaid appointment; Pending, Cancelled, already paid, other-customer, and admin requests are rejected server-side.
-- [ ] Customer profile page supports permitted profile edits.
+- [x] Customer profile page supports permitted name, profile image URL, and phone edits through the authenticated Express API.
 
 ## Admin dashboard and management
 
@@ -88,10 +88,10 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Only active services are public and available for future booking.
 - [x] Admin sees all appointment requests with customer/service details, date/time, message, price, and statuses.
 - [x] Admin can confirm only pending requests; can cancel pending or confirmed requests. Server guards status transitions and returns conflict responses when a request has changed.
-- [ ] Admin can list/view registered customers and block/unblock customers.
+- [x] Admin can search and paginate registered customers, view profile and appointment details, and block/unblock customer accounts through admin-only Express APIs.
 - [x] Admin can view transactions read-only with customer, service, appointment date, amount/currency, Stripe session reference, status, and payment date.
 - [x] No admin transaction mutation route exists; only the verified webhook can record successful payment.
-- [ ] Admin profile page supports permitted profile edits.
+- [x] Admin profile page supports permitted name, profile image URL, and phone edits through the authenticated Express API.
 
 ## Stripe payment and transactions
 
@@ -106,11 +106,11 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 ## Profile, data model, and security
 
 - [x] Four business collections: users (Better Auth), services, appointments, transactions; references are correct and no redundant business collections.
-- [x] Better Auth `users` records include name, email, image, role, isBlocked; profile phone remains future work.
+- [x] Better Auth `users` records include name, email, image, phone, role, and isBlocked; the additional phone field is not accepted through public Better Auth input.
 - [x] Service model includes name, category, description, positive price, positive duration, image, status, and createdAt.
 - [x] Appointment fields include serviceId, customerId, date, time, message, servicePrice, paymentStatus, status, and createdAt.
 - [x] Transaction fields include only appointmentId, customerId, amount, currency, stripeSessionId, status, createdAt (plus MongoDB's required document id).
-- [ ] User profile update allows name/image/phone only; cannot change role/isBlocked or another user's data.
+- [x] User profile update accepts only name/image/phone; strict server validation rejects role/isBlocked, email, or user-id fields and only updates the ID from the verified token.
 - [x] Sensitive MongoDB, Better Auth, Google, Stripe, ImgBB, and application URL values are environment-only; examples contain names/empty values and `.env` files are ignored.
 - [~] Server-side authorization, webhook signature/body handling, payment-state validation, and errors are implemented; production CORS/domain configuration remains.
 
@@ -118,8 +118,10 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 - [x] Meaningful loaders for service fetch, appointment slots, booking submission, customer/admin dashboards, and Stripe Checkout return status.
 - [x] Toast notifications for success/failure; no browser `alert()` for ordinary feedback.
+- [x] Admin and customer dashboard navigation uses role-specific responsive sidebar layouts; server API roles remain authoritative.
+- [x] Admin overview includes customer, blocked-customer, active-service, appointment-status, and successful-payment totals; customer and transaction management routes are linked in the admin navigation.
 - [x] Handle API failures, invalid forms/routes, unauthorized access, upload failures, booking conflicts, cancelled Checkout, and webhook errors.
-- [ ] Dashboard layout has responsive sidebar/main area, role-based navigation, statistic cards, and appropriate tables/lists.
+- [x] Dashboard layout has responsive sidebar/main area, role-based navigation, statistic cards, and appropriate tables/lists.
 - [x] Search by service name and sort by price work on the client and API; paginated API and category filtering are also available.
 - [ ] Production deep links reload without 404; private routes work after refresh and remain authenticated.
 - [ ] No CORS/404/504 issues on production.
