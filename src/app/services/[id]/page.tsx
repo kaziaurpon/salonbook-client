@@ -58,24 +58,25 @@ export default function ServiceDetailsPage() {
 
   useEffect(() => {
     if (!date || !session) {
-      setSlots([]);
-      setTimeSlot("");
       return;
     }
     const controller = new AbortController();
-    setSlotsLoading(true);
-    setBookingError("");
-    void authenticatedApiFetch(`/api/appointments/available-slots?serviceId=${encodeURIComponent(params.id)}&date=${encodeURIComponent(date)}`, { signal: controller.signal })
-      .then(async (response) => {
-        const result = await response.json() as { slots?: Slot[]; message?: string };
-        if (!response.ok || !result.slots) throw new Error(result.message || "Could not load available times.");
-        setSlots(result.slots);
-        setTimeSlot("");
-      })
-      .catch((reason: unknown) => {
-        if (!controller.signal.aborted) setBookingError(reason instanceof Error ? reason.message : "Could not load available times.");
-      })
-      .finally(() => { if (!controller.signal.aborted) setSlotsLoading(false); });
+    queueMicrotask(() => {
+      if (controller.signal.aborted) return;
+      setSlotsLoading(true);
+      setBookingError("");
+      void authenticatedApiFetch(`/api/appointments/available-slots?serviceId=${encodeURIComponent(params.id)}&date=${encodeURIComponent(date)}`, { signal: controller.signal })
+        .then(async (response) => {
+          const result = await response.json() as { slots?: Slot[]; message?: string };
+          if (!response.ok || !result.slots) throw new Error(result.message || "Could not load available times.");
+          setSlots(result.slots);
+          setTimeSlot("");
+        })
+        .catch((reason: unknown) => {
+          if (!controller.signal.aborted) setBookingError(reason instanceof Error ? reason.message : "Could not load available times.");
+        })
+        .finally(() => { if (!controller.signal.aborted) setSlotsLoading(false); });
+    });
     return () => controller.abort();
   }, [date, params.id, session]);
 
@@ -119,7 +120,7 @@ export default function ServiceDetailsPage() {
           {user.role === "admin" ? <p className="detail-note">Admin accounts cannot request customer appointments.</p> : (
             <form className="booking-form" onSubmit={submitBooking}>
               <h2>Request an appointment</h2>
-              <label>Appointment date<input type="date" required min={new Date().toLocaleDateString("en-CA")} value={date} onChange={(event) => setDate(event.target.value)} /></label>
+              <label>Appointment date<input type="date" required min={new Date().toLocaleDateString("en-CA")} value={date} onChange={(event) => { setDate(event.target.value); setSlots([]); setTimeSlot(""); setBookingError(""); }} /></label>
               <label>Available time
                 <select required value={timeSlot} onChange={(event) => setTimeSlot(event.target.value)} disabled={!date || slotsLoading}>
                   <option value="">{!date ? "Choose a date first" : slotsLoading ? "Loading available times…" : "Choose a time"}</option>

@@ -16,21 +16,24 @@ export default function HomePage() {
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true);
-    setError("");
-    void Promise.all([
-      fetch(`${apiUrl}/api/services/featured?limit=6`, { signal: controller.signal }),
-      fetch(`${apiUrl}/api/services/categories`, { signal: controller.signal }),
-    ]).then(async ([featuredResponse, categoriesResponse]) => {
-      if (!featuredResponse.ok || !categoriesResponse.ok) throw new Error("We couldn’t reach the salon menu. Please try again.");
-      const featuredResult = await featuredResponse.json() as { services: PublicService[] };
-      const categoryResult = await categoriesResponse.json() as { categories: string[] };
-      setServices(featuredResult.services);
-      setCategories(categoryResult.categories);
-    }).catch((reason: unknown) => {
-      if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Could not load salon information.");
-    }).finally(() => {
-      if (!controller.signal.aborted) setLoading(false);
+    queueMicrotask(() => {
+      if (controller.signal.aborted) return;
+      setLoading(true);
+      setError("");
+      void Promise.all([
+        fetch(`${apiUrl}/api/services/featured?limit=6`, { signal: controller.signal }),
+        fetch(`${apiUrl}/api/services/categories`, { signal: controller.signal }),
+      ]).then(async ([featuredResponse, categoriesResponse]) => {
+        if (!featuredResponse.ok || !categoriesResponse.ok) throw new Error("We couldn’t reach the salon menu. Please try again.");
+        const featuredResult = await featuredResponse.json() as { services: PublicService[] };
+        const categoryResult = await categoriesResponse.json() as { categories: string[] };
+        setServices(featuredResult.services);
+        setCategories(categoryResult.categories);
+      }).catch((reason: unknown) => {
+        if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Could not load salon information.");
+      }).finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
     });
     return () => controller.abort();
   }, [retry]);

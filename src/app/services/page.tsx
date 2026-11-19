@@ -19,19 +19,24 @@ export default function BrowseServicesPage() {
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
-    setCategory(query.get("category") || "");
-    setSearch(query.get("q") || "");
+    let active = true;
+    queueMicrotask(() => {
+      if (!active) return;
+      setCategory(query.get("category") || "");
+      setSearch(query.get("q") || "");
+    });
+    return () => { active = false; };
   }, []);
 
   useEffect(() => {
     const controller = new AbortController();
     const timer = window.setTimeout(() => {
-      setLoading(true);
-      setError("");
       const params = new URLSearchParams();
       if (search.trim()) params.set("q", search.trim());
       if (category) params.set("category", category);
       if (sort !== "newest") params.set("sort", sort);
+      setLoading(true);
+      setError("");
       void Promise.all([
         fetch(`${apiUrl}/api/services?${params.toString()}`, { signal: controller.signal }),
         fetch(`${apiUrl}/api/services/categories`, { signal: controller.signal }),
