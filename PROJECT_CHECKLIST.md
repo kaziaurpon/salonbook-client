@@ -43,8 +43,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Shared Powder Blue `#8DB9F0`, Lavender `#E9E8F8`, and Peach `#F5B69E` design tokens and 60/30/10 guidance applied across current page styles; future page guidance documented in `DESIGN_SYSTEM.md`.
 - [ ] Working links/buttons, status badges, confirmation dialogs; avoid unnecessary animation/clutter.
 - [x] Home banner has title, description, original salon-inspired CSS illustration, and Explore Services CTA.
-- [~] Home featured section requests up to six active services from the API; cards show all required fields. Current configured database has only one active service, so the requirement to display at least six is waiting on five more real service records.
-- [x] Home categories are loaded from the API and link to the matching Browse Services filter.
+- [x] Home featured section loads six active services from the API; cards show service image, name, category, price, duration, short description, and details link. Six requested core services now lead the newest-first featured selection.
+- [x] Home categories are loaded from the API with a matching active-service image and link to the Browse Services filter.
 - [x] Additional appointment-planning section explains how to find a service and request a time.
 - [x] Public Browse Services page shows active services in responsive cards when records exist.
 - [x] Public Services page shows active-only service cards; API supports search by name, category filter, and price sorting.
@@ -140,6 +140,6 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [~] Google OAuth credentials and browser test (local callback: `http://localhost:3000/api/auth/callback/google`).
 - [~] Stripe was verified locally in test mode. After deployment configure `https://<api-domain>/api/payments/webhook`.
 - [~] ImgBB API key is configured locally; a fresh manual upload verification is still needed.
-- [ ] Add five more real active salon service records through Admin → Manage Services; current MongoDB count is one active service out of one total.
+- [x] Seeded nine requested active services with category-matched ImgBB-hosted images; the six core services appear in Featured and the three nail/spa services remain available in Browse Services. Existing Hair Wash remains active under the matching Hair category; the public list now has the eight requested categories.
 - [ ] Salon phone, address, hours, social links, and final category/content choices.
 - [~] Local admin provisioning CLI verified. Use the actual evaluator account required by the assignment; never place its password in Git or invent credentials.

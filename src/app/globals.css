@@ -150,12 +150,16 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .category-section { display: grid; grid-template-columns: .8fr 1.2fr; gap: 3rem; align-items: start; }
 .category-intro h2 { font-size: clamp(2.2rem,4vw,3.2rem); }
 .category-intro > p:last-child { max-width: 26rem; color: #405979; line-height: 1.7; }
-.category-pills { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .7rem; }
-.category-pill { min-height: 4.3rem; display: flex; align-items: center; gap: .9rem; padding: .9rem 1rem; border: 1px solid #FFFFFF; border-radius: .65rem; background: var(--brand-lavender); color: var(--ink); text-decoration: none; transition: border-color .18s, transform .18s; }
-.category-pill:hover { transform: translateY(-2px); border-color: #D28D79; }
-.category-number { color: #8A5547; font-size: .65rem; font-weight: 800; letter-spacing: .1em; }
-.category-arrow { margin-left: auto; color: #8A5547; }
-.category-placeholder { min-height: 4.3rem; border-radius: .65rem; background: #E9E8F8A8; }
+.category-cards { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .8rem; }
+.category-card { overflow: hidden; border: 1px solid #FFFFFF; border-radius: .8rem; background: var(--brand-lavender); color: var(--ink); text-decoration: none; box-shadow: 0 .6rem 1.3rem #315B9112; transition: transform .22s ease, box-shadow .22s ease; }
+.category-card:hover { transform: translateY(-4px); box-shadow: 0 .9rem 1.8rem #315B9122; }
+.category-card-image-wrap { position: relative; height: 8.5rem; overflow: hidden; background: #D9E6F5; }
+.category-card-image { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .4s ease; }
+.category-card:hover .category-card-image { transform: scale(1.05); }
+.category-number { position: absolute; top: .65rem; left: .65rem; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border: 1px solid #FFFFFFB8; border-radius: 50%; background: #E9E8F8E8; color: #405F8D; font-size: .62rem; font-weight: 800; letter-spacing: .04em; }
+.category-card-label { min-height: 3rem; display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .7rem .85rem; font-size: .88rem; font-weight: 750; }
+.category-arrow { color: #8A5547; }
+.category-placeholder { min-height: 11.5rem; border-radius: .8rem; background: #E9E8F8A8; }
 .category-hint { color: #405979; line-height: 1.6; }
 .visit-section { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem,8vw,7rem); align-items: center; }
 .visit-visual { position: relative; min-height: 25rem; display: grid; place-items: center; overflow: hidden; border: 1px solid #FFFFFFA6; border-radius: .9rem; background: radial-gradient(ellipse at 50% 50%,#F5B69E99,transparent 42%), var(--brand-lavender); }
@@ -409,7 +413,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .service-grid, .service-detail-card { grid-template-columns: 1fr; }
   .service-card-image { height: 16rem; }
   .service-description { min-height: 0; }
-  .category-pills { grid-template-columns: 1fr; }
+  .category-card-image-wrap { height: 7rem; }
   .visit-section { grid-template-columns: 1fr; }
   .visit-visual { min-height: 21rem; }
   .browse-page { padding-top: 2rem; }

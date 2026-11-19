@@ -72,7 +72,7 @@ export default function BrowseServicesPage() {
           <div className="service-controls">
             <label>Search services<input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Try a haircut or facial" /></label>
             <label>Category<select value={category} onChange={(event) => setCategory(event.target.value)}><option value="">All categories</option>{categories.map((item) => <option key={item} value={item}>{item}</option>)}</select></label>
-            <label>Sort by<select value={sort} onChange={(event) => setSort(event.target.value)}><option value="newest">Recently added</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option></select></label>
+            <label>Sort by<select value={sort} onChange={(event) => setSort(event.target.value)}><option value="newest">Recommended</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option></select></label>
           </div>
         </section>
 

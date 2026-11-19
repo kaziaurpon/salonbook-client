@@ -6,10 +6,11 @@ import { PublicShell } from "@/components/public-shell";
 import { ServiceCard, type PublicService } from "@/components/service-card";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+type PublicCategory = { name: string; image: string };
 
 export default function HomePage() {
   const [services, setServices] = useState<PublicService[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<PublicCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
@@ -22,11 +23,11 @@ export default function HomePage() {
       setError("");
       void Promise.all([
         fetch(`${apiUrl}/api/services/featured?limit=6`, { signal: controller.signal }),
-        fetch(`${apiUrl}/api/services/categories`, { signal: controller.signal }),
+        fetch(`${apiUrl}/api/services/category-cards`, { signal: controller.signal }),
       ]).then(async ([featuredResponse, categoriesResponse]) => {
         if (!featuredResponse.ok || !categoriesResponse.ok) throw new Error("We couldn’t reach the salon menu. Please try again.");
         const featuredResult = await featuredResponse.json() as { services: PublicService[] };
-        const categoryResult = await categoriesResponse.json() as { categories: string[] };
+        const categoryResult = await categoriesResponse.json() as { categories: PublicCategory[] };
         setServices(featuredResult.services);
         setCategories(categoryResult.categories);
       }).catch((reason: unknown) => {
@@ -79,8 +80,8 @@ export default function HomePage() {
 
         <section className="category-section page-section" aria-labelledby="category-heading">
           <div className="category-intro"><p className="eyebrow">FIND YOUR KIND OF CARE</p><h2 id="category-heading">What are you in the mood for?</h2><p>Start with a category, then discover the details that feel right for you.</p></div>
-          {error ? <p className="category-hint">Categories will appear when the service menu is available.</p> : loading ? <div className="category-pills" aria-busy="true"><span className="category-placeholder" /><span className="category-placeholder" /><span className="category-placeholder" /></div> : categories.length ? (
-            <div className="category-pills">{categories.map((category, index) => <Link className="category-pill" key={category} href={`/services?category=${encodeURIComponent(category)}`}><span className="category-number">0{index + 1}</span><span>{category}</span><span className="category-arrow" aria-hidden="true">↗</span></Link>)}</div>
+          {error ? <p className="category-hint">Categories will appear when the service menu is available.</p> : loading ? <div className="category-cards" aria-busy="true" aria-label="Loading service categories">{Array.from({ length: 4 }, (_, index) => <span className="category-placeholder" key={index} />)}</div> : categories.length ? (
+            <div className="category-cards">{categories.map((category, index) => <Link className="category-card" key={category.name} href={`/services?category=${encodeURIComponent(category.name)}`}><div className="category-card-image-wrap"><img src={category.image} alt="" className="category-card-image" loading="lazy" /><span className="category-number">0{index + 1}</span></div><div className="category-card-label"><span>{category.name}</span><span className="category-arrow" aria-hidden="true">↗</span></div></Link>)}</div>
           ) : <p className="category-hint">Service categories will appear here when they are available.</p>}
         </section>
 
