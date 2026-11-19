@@ -24,7 +24,7 @@ export function PaymentSuccessStatus() {
     const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
     if (user.isBlocked) { void authClient.signOut().then(() => router.replace("/login")); return; }
     if (user.role !== "customer") { router.replace("/dashboard/admin"); return; }
-    if (!appointmentId) { setStage("error"); setMessage("The appointment reference is missing. Check your appointment history for the latest status."); return; }
+    if (!appointmentId) return;
 
     let stopped = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -52,5 +52,7 @@ export function PaymentSuccessStatus() {
     return () => { stopped = true; if (timer) clearTimeout(timer); };
   }, [appointmentId, isPending, router, session]);
 
-  return <PublicShell><main className="payment-return-page"><section className={`payment-return-card ${stage === "paid" ? "payment-return-paid" : ""}`} aria-live="polite"><p className="eyebrow">SALONBOOK · CHECKOUT</p><span className="payment-return-mark" aria-hidden="true">{stage === "paid" ? "✓" : stage === "error" ? "!" : "…"}</span><h1>{stage === "paid" ? "Payment confirmed" : stage === "waiting" ? "Still confirming" : stage === "error" ? "Payment status" : "Thank you"}</h1><p>{message}</p>{stage === "waiting" && <p>Stripe has not delivered a verified confirmation yet. Your appointment will remain unpaid until the webhook arrives.</p>}<div><Link className="button-primary" href="/dashboard/customer">View appointments</Link>{stage === "waiting" && <button className="secondary-button" onClick={() => window.location.reload()}>Check again</button>}</div></section></main></PublicShell>;
+  const displayStage: Stage = !isPending && session && !appointmentId ? "error" : stage;
+  const displayMessage = displayStage === "error" && !appointmentId ? "The appointment reference is missing. Check your appointment history for the latest status." : message;
+  return <PublicShell><main className="payment-return-page"><section className={`payment-return-card ${displayStage === "paid" ? "payment-return-paid" : ""}`} aria-live="polite"><p className="eyebrow">SALONBOOK · CHECKOUT</p><span className="payment-return-mark" aria-hidden="true">{displayStage === "paid" ? "✓" : displayStage === "error" ? "!" : "…"}</span><h1>{displayStage === "paid" ? "Payment confirmed" : displayStage === "waiting" ? "Still confirming" : displayStage === "error" ? "Payment status" : "Thank you"}</h1><p>{displayMessage}</p>{displayStage === "waiting" && <p>Stripe has not delivered a verified confirmation yet. Your appointment will remain unpaid until the webhook arrives.</p>}<div><Link className="button-primary" href="/dashboard/customer">View appointments</Link>{displayStage === "waiting" && <button className="secondary-button" onClick={() => window.location.reload()}>Check again</button>}</div></section></main></PublicShell>;
 }
