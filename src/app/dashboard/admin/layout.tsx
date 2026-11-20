@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { SalonBookLogo } from "@/components/salonbook-logo";
+import { requireSalonBookUser } from "@/lib/server-auth-redirect";
 
-export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  await requireSalonBookUser("admin");
   const links = [["Overview", "/dashboard/admin"], ["Services", "/dashboard/admin/services"], ["Appointments", "/dashboard/admin/appointments"], ["Customers", "/dashboard/admin/customers"], ["Transactions", "/dashboard/admin/transactions"], ["My profile", "/dashboard/admin/profile"]];
   return <div className="dashboard-frame admin-dashboard-frame">
     <aside className="dashboard-sidebar"><SalonBookLogo href="/dashboard/admin" className="dashboard-brand" badge="ADMIN" /><p className="dashboard-nav-label">WORKSPACE</p><nav aria-label="Admin navigation">{links.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}</nav><Link href="/" className="dashboard-site-link">View public site ↗</Link></aside>

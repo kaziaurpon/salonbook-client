@@ -6,10 +6,7 @@ import { FormEvent, Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { SalonBookLogo } from "@/components/salonbook-logo";
-
-function dashboardFor(role?: string) {
-  return role === "admin" ? "/dashboard/admin" : "/dashboard/customer";
-}
+import { authCompletePath, postAuthPath } from "@/lib/auth-redirect";
 
 function LoginForm() {
   const router = useRouter();
@@ -17,17 +14,18 @@ function LoginForm() {
   const { data: session, isPending: sessionPending } = authClient.useSession();
   const [loading, setLoading] = useState(false);
 
-  // If someone returns to /login with an active session, take them to the
-  // dashboard instead of showing a sign-in form that cannot help them.
+  const callbackUrl = search.get("callbackUrl");
+
+  // Keep already-authenticated users on the same role-aware redirect path.
   useEffect(() => {
     if (sessionPending || !session) return;
     const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
     if (user.isBlocked) {
-      void authClient.signOut().then(() => router.replace("/login"));
+      void authClient.signOut().then(() => router.replace("/account/blocked"));
       return;
     }
-    window.location.replace(dashboardFor(user.role));
-  }, [router, session, sessionPending]);
+    window.location.replace(postAuthPath(user.role, callbackUrl));
+  }, [callbackUrl, router, session, sessionPending]);
 
   async function finishLogin() {
     const result = await authClient.getSession();
@@ -35,10 +33,11 @@ function LoginForm() {
     const user = result.data.user as typeof result.data.user & { role?: string; isBlocked?: boolean };
     if (user.isBlocked) {
       await authClient.signOut();
-      throw new Error("This account is blocked. Contact the salon administrator.");
+      router.replace("/account/blocked");
+      return;
     }
-    const destination = dashboardFor(user.role);
-    toast.success("Signed in successfully. Opening your dashboard…");
+    const destination = postAuthPath(user.role, callbackUrl);
+    toast.success("Signed in successfully.");
     // A full navigation ensures the freshly issued Better Auth cookie is
     // present when the protected App Router dashboard loads.
     window.location.assign(destination);
@@ -65,7 +64,8 @@ function LoginForm() {
   async function googleLogin() {
     setLoading(true);
     try {
-      const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/complete", errorCallbackURL: "/login?error=google-link-required" });
+      const errorUrl = new URLSearchParams({ error: "google-link-required", ...(callbackUrl ? { callbackUrl } : {}) });
+      const result = await authClient.signIn.social({ provider: "google", callbackURL: authCompletePath(callbackUrl), errorCallbackURL: `/login?${errorUrl.toString()}` });
       if (result.error) throw new Error(result.error.message || "Google sign in is not configured yet.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not start Google sign in.");
@@ -88,7 +88,7 @@ function LoginForm() {
         </form>
         <div className="auth-divider"><span>or</span></div>
         <button className="secondary-button" disabled={loading} onClick={googleLogin}>Continue with Google</button>
-        <p className="auth-switch">New to SalonBook? <Link href="/register">Create an account</Link></p>
+        <p className="auth-switch">New to SalonBook? <Link href={`/register${callbackUrl ? `?${new URLSearchParams({ callbackUrl }).toString()}` : ""}`}>Create an account</Link></p>
       </section>
     </main>
   );

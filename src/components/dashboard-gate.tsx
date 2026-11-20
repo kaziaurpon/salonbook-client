@@ -15,12 +15,13 @@ export function DashboardGate({ role, title }: { role: "admin" | "customer"; tit
   useEffect(() => {
     if (isPending) return;
     if (!session) {
-      router.replace("/login");
+      const requestedPath = typeof window === "undefined" ? "/" : `${window.location.pathname}${window.location.search}`;
+      router.replace(`/login?${new URLSearchParams({ callbackUrl: requestedPath }).toString()}`);
       return;
     }
     const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
     if (user.isBlocked) {
-      void authClient.signOut().then(() => router.replace("/login"));
+      void authClient.signOut().then(() => router.replace("/account/blocked"));
     } else if (user.role !== role) {
       router.replace(user.role === "admin" ? "/dashboard/admin" : "/dashboard/customer");
     }

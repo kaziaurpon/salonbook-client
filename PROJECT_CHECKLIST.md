@@ -59,6 +59,10 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Registration fields include full name, email, password, and optional profile image URL (assignment permits URL or upload).
 - [x] Password validation: minimum six characters, at least one uppercase and one lowercase letter; server-side Better Auth hook plus client validation.
 - [x] Loading states, toast success/error feedback, and role-based post-auth redirects.
+- [x] After email/password or Google authentication, admins always go to `/dashboard/admin`; customers return to a validated internal callback path or go to `/` by default. The same redirect rule applies to registration and already-signed-in visitors of login/register.
+- [x] Protected service details and dashboard routes preserve the requested URL for sign-in, reject unsafe external/encoded callback paths, and verify the current session and role in server layouts before rendering protected content.
+- [x] Blocked accounts are sent to a clear public blocked-account page; blocked users are not redirected to a dashboard or callback destination.
+- [x] `/signin` and `/signup` aliases preserve query parameters and route to the existing login/register pages.
 - [x] Public registration cannot set role/isBlocked; admin promotion is available only through a local CLI provisioning command.
 - [x] Express verifies JWT signature, issuer, audience, and expiry through Better Auth JWKS, then reads current role and isBlocked from Better Auth's users collection.
 - [x] Express server-side auth and role guard middleware; protected customer/admin API examples included.

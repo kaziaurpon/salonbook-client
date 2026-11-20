@@ -1,15 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { SalonBookLogo } from "@/components/salonbook-logo";
+import { authCompletePath, postAuthPath } from "@/lib/auth-redirect";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const search = useSearchParams();
+  const callbackUrl = search.get("callbackUrl");
+  const { data: session, isPending: sessionPending } = authClient.useSession();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (sessionPending || !session) return;
+    const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
+    if (user.isBlocked) {
+      void authClient.signOut().then(() => router.replace("/account/blocked"));
+      return;
+    }
+    window.location.replace(postAuthPath(user.role, callbackUrl));
+  }, [callbackUrl, router, session, sessionPending]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,12 +40,22 @@ export default function RegisterPage() {
         email: String(form.get("email")),
         password,
         ...(String(form.get("image")).trim() ? { image: String(form.get("image")).trim() } : {}),
-        callbackURL: "/dashboard/customer",
+        callbackURL: authCompletePath(callbackUrl),
       });
       if (result.error) throw new Error(result.error.message || "Could not create your account.");
+      const current = await authClient.getSession();
+      if (current.error || !current.data) {
+        router.replace(`/login${callbackUrl ? `?${new URLSearchParams({ callbackUrl }).toString()}` : ""}`);
+        return;
+      }
+      const user = current.data.user as typeof current.data.user & { role?: string; isBlocked?: boolean };
+      if (user.isBlocked) {
+        await authClient.signOut();
+        router.replace("/account/blocked");
+        return;
+      }
       toast.success("Your SalonBook account is ready.");
-      router.replace("/dashboard/customer");
-      router.refresh();
+      window.location.assign(postAuthPath(user.role, callbackUrl));
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not create your account.");
     } finally {
@@ -42,7 +66,8 @@ export default function RegisterPage() {
   async function googleSignUp() {
     setLoading(true);
     try {
-      const result = await authClient.signIn.social({ provider: "google", callbackURL: "/auth/complete", errorCallbackURL: "/login?error=google-link-required" });
+      const errorUrl = new URLSearchParams({ error: "google-link-required", ...(callbackUrl ? { callbackUrl } : {}) });
+      const result = await authClient.signIn.social({ provider: "google", callbackURL: authCompletePath(callbackUrl), errorCallbackURL: `/login?${errorUrl.toString()}` });
       if (result.error) throw new Error(result.error.message || "Google sign in is not configured yet.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not start Google sign in.");
@@ -65,8 +90,12 @@ export default function RegisterPage() {
         </form>
         <div className="auth-divider"><span>or</span></div>
         <button className="secondary-button" disabled={loading} onClick={googleSignUp}>Continue with Google</button>
-        <p className="auth-switch">Already registered? <Link href="/login">Sign in</Link></p>
+        <p className="auth-switch">Already registered? <Link href={`/login${callbackUrl ? `?${new URLSearchParams({ callbackUrl }).toString()}` : ""}`}>Sign in</Link></p>
       </section>
     </main>
   );
+}
+
+export default function RegisterPage() {
+  return <Suspense fallback={<main className="auth-page"><p>Loading account setup…</p></main>}><RegisterForm /></Suspense>;
 }

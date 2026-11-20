@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
+import { loginPathFor } from "@/lib/auth-redirect";
 import { PublicShell } from "@/components/public-shell";
 
 type Service = {
@@ -35,12 +36,12 @@ export default function ServiceDetailsPage() {
   useEffect(() => {
     if (isPending) return;
     if (!session) {
-      router.replace("/login");
+      router.replace(loginPathFor(`${window.location.pathname}${window.location.search}`));
       return;
     }
     const user = session.user as typeof session.user & { isBlocked?: boolean };
     if (user.isBlocked) {
-      void authClient.signOut().then(() => router.replace("/login"));
+      void authClient.signOut().then(() => router.replace("/account/blocked"));
       return;
     }
     const controller = new AbortController();
