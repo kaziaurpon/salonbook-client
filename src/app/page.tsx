@@ -78,7 +78,21 @@ export default function HomePage() {
         </section>
 
         <section className="category-section page-section" aria-labelledby="category-heading">
-          <div className="category-intro"><p className="eyebrow">FIND YOUR KIND OF CARE</p><h2 id="category-heading">What are you in the mood for?</h2><p>Start with a category, then discover the details that feel right for you.</p></div>
+          <div className="category-intro">
+            <p className="eyebrow">FIND YOUR KIND OF CARE</p>
+            <h2 id="category-heading">What are you in the mood for?</h2>
+            <p>Start with a category, then discover the details that feel right for you.</p>
+            <div className="category-guide">
+              <span className="category-guide-kicker">A LITTLE CARE, YOUR WAY</span>
+              <p>From a fresh cut and beard tidy to color, skin care, and time to unwind, find the salon care that fits your day.</p>
+              {!loading && categories.length > 0 && (
+                <div className="category-quick-links" aria-label="Popular salon categories">
+                  {categories.slice(0, 6).map((category) => <Link key={category.name} href={`/services?category=${encodeURIComponent(category.name)}`}>{category.name}<span aria-hidden="true">↗</span></Link>)}
+                </div>
+              )}
+              <span className="category-guide-signoff">GOOD CARE STARTS WITH A MOMENT FOR YOU</span>
+            </div>
+          </div>
           {error ? <p className="category-hint">Categories will appear when the service menu is available.</p> : loading ? <div className="category-cards" aria-busy="true" aria-label="Loading service categories">{Array.from({ length: 4 }, (_, index) => <span className="category-placeholder" key={index} />)}</div> : categories.length ? (
             <div className="category-cards">{categories.map((category, index) => <Link className="category-card" key={category.name} href={`/services?category=${encodeURIComponent(category.name)}`}><div className="category-card-image-wrap"><img src={category.image} alt="" className="category-card-image" loading="lazy" /><span className="category-number">0{index + 1}</span></div><div className="category-card-label"><span>{category.name}</span><span className="category-arrow" aria-hidden="true">↗</span></div></Link>)}</div>
           ) : <p className="category-hint">Service categories will appear here when they are available.</p>}
