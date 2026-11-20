@@ -48,6 +48,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Home categories are loaded from the API with a matching active-service image and link to the Browse Services filter.
 - [x] Additional appointment-planning section explains how to find a service and request a time.
 - [x] Public Browse Services page shows active services in responsive cards when records exist.
+- [x] Browse page hero typography and spacing are compact so search/filter and the start of the service list fit into the first screen on common desktop viewports; public nav label is “Services”.
 - [x] Public Services page shows active-only service cards; API supports search by name, category filter, and price sorting.
 - [x] Services page has loading, API error/retry, empty, and invalid service route states.
 

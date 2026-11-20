@@ -68,7 +68,7 @@ export function PublicNavbar() {
         <nav id="site-navigation" className={`site-nav${menuOpen ? " is-open" : ""}`} aria-label="Main navigation">
           <div className="site-nav-links">
             <Link href="/" aria-current={isActive("/") ? "page" : undefined} onClick={goHome}>Home</Link>
-            <Link href="/services" {...linkProps("/services")}>Browse Services</Link>
+            <Link href="/services" {...linkProps("/services")}>Services</Link>
             <Link className={hash === "#footer" ? "is-active" : undefined} href="#footer" aria-current={hash === "#footer" ? "location" : undefined} onClick={goToFooter}>About Us</Link>
           </div>
           <div className="site-account-actions">

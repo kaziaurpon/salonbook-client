@@ -188,12 +188,13 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .visit-steps li span { color: #8A5547; font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
 
 /* Service menu, detail, and booking */
-.browse-page { width: min(100% - 3rem,82rem); margin: 0 auto; padding: 3rem 0 5rem; }
-.browse-hero { position: relative; padding: 2.8rem 0 3rem; border-bottom: 1px solid #315B9133; }
-.browse-hero h1 { max-width: 11ch; font-size: clamp(3.3rem,7vw,6rem); }
-.browse-hero > p:not(.eyebrow) { max-width: 36rem; color: #405979; font-size: 1rem; line-height: 1.8; }
-.browse-count { display: inline-block; padding: .55rem .8rem; border: 1px solid #FFFFFF; border-radius: 999px; background: var(--brand-lavender); color: #315B91; font-size: .75rem; font-weight: 750; }
-.browse-controls-wrap { margin: 2rem 0 1.5rem; padding: 1rem 1.2rem 1.2rem; border: 1px solid #FFFFFF; border-radius: .85rem; background: var(--brand-lavender); box-shadow: 0 .6rem 1.6rem #315B9118; }
+.browse-page { width: min(100% - 3rem,82rem); margin: 0 auto; padding: 1.6rem 0 5rem; }
+.browse-hero { position: relative; padding: 1.2rem 0 1.35rem; border-bottom: 1px solid #315B9133; }
+.browse-hero .eyebrow { margin-bottom: .45rem; font-size: .61rem; }
+.browse-hero h1 { max-width: none; font-size: clamp(2.6rem,4.5vw,4.1rem); line-height: 1; }
+.browse-hero > p:not(.eyebrow) { max-width: 42rem; margin: .55rem 0 .7rem; color: #405979; font-size: .88rem; line-height: 1.55; }
+.browse-count { display: inline-block; padding: .38rem .68rem; border: 1px solid #FFFFFF; border-radius: 999px; background: var(--brand-lavender); color: #315B91; font-size: .66rem; font-weight: 750; }
+.browse-controls-wrap { margin: 1rem 0 1.05rem; padding: .8rem 1rem .95rem; border: 1px solid #FFFFFF; border-radius: .85rem; background: var(--brand-lavender); box-shadow: 0 .6rem 1.6rem #315B9118; }
 .browse-controls-title { display: flex; justify-content: space-between; margin: 0 .1rem .8rem; color: #405979; font-size: .58rem; font-weight: 800; letter-spacing: .17em; }
 .service-controls { display: grid; grid-template-columns: minmax(14rem,2fr) minmax(11rem,1fr) minmax(11rem,1fr); gap: .85rem; margin: 0; }
 .service-controls label { display: grid; gap: .4rem; color: var(--ink); font-size: .82rem; font-weight: 700; }
@@ -433,10 +434,11 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .category-card-image-wrap { height: 7rem; }
   .visit-section { grid-template-columns: 1fr; }
   .visit-visual { min-height: 21rem; }
-  .browse-page { padding-top: 2rem; }
-  .browse-hero { padding: 2rem 0 2.5rem; }
-  .browse-hero h1 { font-size: clamp(3rem,13vw,4.8rem); }
-  .browse-controls-wrap { padding: .85rem; }
+  .browse-page { padding-top: 1rem; }
+  .browse-hero { padding: 1rem 0 1.1rem; }
+  .browse-hero h1 { max-width: 15ch; font-size: clamp(2.5rem,10vw,3.8rem); }
+  .browse-hero > p:not(.eyebrow) { max-width: 35rem; font-size: .84rem; }
+  .browse-controls-wrap { margin-top: .8rem; padding: .75rem; }
   .results-heading span { font-size: .52rem; }
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem 1rem; }
   .footer-brand-block { grid-column: 1 / -1; }
