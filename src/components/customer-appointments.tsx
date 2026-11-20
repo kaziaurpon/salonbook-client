@@ -76,7 +76,12 @@ export function CustomerAppointments() {
     setPayingId(id);
     try {
       const response = await authenticatedApiFetch(`/api/appointments/${id}/checkout`, { method: "POST" });
-      const result = await response.json() as { url?: string; message?: string };
+      const result = await response.json() as { url?: string; message?: string; paymentStatus?: "paid" | "unpaid" };
+      if (response.ok && result.paymentStatus === "paid") {
+        toast.success(result.message || "Payment confirmed.");
+        await load();
+        return;
+      }
       if (!response.ok || !result.url) throw new Error(result.message || "Could not open Stripe Checkout.");
       const checkoutUrl = new URL(result.url);
       if (checkoutUrl.protocol !== "https:" || checkoutUrl.hostname !== "checkout.stripe.com") throw new Error("The payment provider returned an invalid checkout link.");
