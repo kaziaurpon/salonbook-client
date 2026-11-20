@@ -68,7 +68,7 @@ export function PublicNavbar() {
     router.refresh();
   }
 
-  const user = session?.user as { role?: string; name?: string } | undefined;
+  const user = session?.user as { role?: string; name?: string; image?: string | null } | undefined;
   const dashboardHref = user?.role === "admin" ? "/dashboard/admin" : "/dashboard/customer";
   const profileHref = user?.role === "admin" ? "/dashboard/admin/profile" : "/dashboard/customer/profile";
   const isActive = (href: string) => href === "/" ? pathname === "/" && hash !== "#about" : href === "/services" ? pathname === "/services" || pathname.startsWith("/services/") : pathname === href;
@@ -92,7 +92,7 @@ export function PublicNavbar() {
           <div className="site-account-actions">
             {isPending ? <span className="nav-loading" aria-label="Loading account" /> : user ? (
               <div className="nav-profile-wrap" ref={profileWrapRef}>
-                <button className="nav-profile-trigger" type="button" aria-expanded={profileOpen} aria-controls="profile-menu" onClick={() => setProfileOpen((open) => !open)}><span className="nav-profile-avatar">{user.name?.slice(0, 1).toUpperCase() || "S"}</span><span>{user.name || "My account"}</span><span aria-hidden="true">⌄</span></button>
+                <button className="nav-profile-trigger" type="button" aria-expanded={profileOpen} aria-controls="profile-menu" onClick={() => setProfileOpen((open) => !open)}>{user.image ? <img className="nav-profile-avatar" src={user.image} alt="" referrerPolicy="no-referrer" /> : <span className="nav-profile-avatar">{user.name?.slice(0, 1).toUpperCase() || "S"}</span>}<span>{user.name || "My account"}</span><span aria-hidden="true">⌄</span></button>
                 {profileOpen && <div className="nav-profile-menu" id="profile-menu"><p>Signed in as <strong>{user.name}</strong></p><Link href={dashboardHref} onClick={() => { setMenuOpen(false); setProfileOpen(false); }}>Dashboard</Link><Link href={profileHref} onClick={() => { setMenuOpen(false); setProfileOpen(false); }}>My profile</Link><button className="nav-signout" type="button" onClick={signOut}>Log out</button></div>}
               </div>
             ) : <><Link className="nav-signin" href="/login" aria-current={pathname === "/login" ? "page" : undefined} onClick={() => setMenuOpen(false)}>Sign In</Link><Link className="nav-cta" href="/register" aria-current={pathname === "/register" ? "page" : undefined} onClick={() => setMenuOpen(false)}>Sign Up <span aria-hidden="true">↗</span></Link></>}
