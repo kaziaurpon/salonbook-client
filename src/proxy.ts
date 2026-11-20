@@ -10,7 +10,7 @@ function hasBetterAuthSessionCookie(request: NextRequest) {
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const isServiceDetail = /^\/services\/[^/]+\/?$/.test(pathname);
-  const isDashboard = /^\/dashboard\/(admin|customer)(?:\/|$)/.test(pathname);
+  const isDashboard = pathname === "/dashboard" || pathname.startsWith("/dashboard/");
   if (!isServiceDetail && !isDashboard) return NextResponse.next();
 
   const requestedPath = `${pathname}${search}`;
