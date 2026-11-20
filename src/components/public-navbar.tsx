@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
@@ -14,12 +14,29 @@ export function PublicNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [hash, setHash] = useState("");
+  const profileWrapRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const syncHash = () => setHash(window.location.hash);
     syncHash();
     window.addEventListener("hashchange", syncHash);
     return () => window.removeEventListener("hashchange", syncHash);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!profileOpen) return;
+    function dismissProfile(event: PointerEvent) {
+      if (event.target instanceof Node && !profileWrapRef.current?.contains(event.target)) setProfileOpen(false);
+    }
+    function dismissProfileOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setProfileOpen(false);
+    }
+    document.addEventListener("pointerdown", dismissProfile);
+    document.addEventListener("keydown", dismissProfileOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", dismissProfile);
+      document.removeEventListener("keydown", dismissProfileOnEscape);
+    };
+  }, [profileOpen]);
 
   function goHome(event: MouseEvent<HTMLAnchorElement>) {
     setMenuOpen(false);
@@ -74,7 +91,7 @@ export function PublicNavbar() {
           </div>
           <div className="site-account-actions">
             {isPending ? <span className="nav-loading" aria-label="Loading account" /> : user ? (
-              <div className="nav-profile-wrap">
+              <div className="nav-profile-wrap" ref={profileWrapRef}>
                 <button className="nav-profile-trigger" type="button" aria-expanded={profileOpen} aria-controls="profile-menu" onClick={() => setProfileOpen((open) => !open)}><span className="nav-profile-avatar">{user.name?.slice(0, 1).toUpperCase() || "S"}</span><span>{user.name || "My account"}</span><span aria-hidden="true">⌄</span></button>
                 {profileOpen && <div className="nav-profile-menu" id="profile-menu"><p>Signed in as <strong>{user.name}</strong></p><Link href={dashboardHref} onClick={() => { setMenuOpen(false); setProfileOpen(false); }}>Dashboard</Link><Link href={profileHref} onClick={() => { setMenuOpen(false); setProfileOpen(false); }}>My profile</Link><button className="nav-signout" type="button" onClick={signOut}>Log out</button></div>}
               </div>
