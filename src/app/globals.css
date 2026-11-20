@@ -78,21 +78,26 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .nav-loading { width: 4.3rem; height: 1.8rem; border-radius: 1rem; background: linear-gradient(90deg,#E9E8F8,#F5B69E,#E9E8F8); background-size: 200% 100%; animation: shimmer 1.3s infinite; }
 .nav-toggle { display: none; }
 .site-footer { scroll-margin-top: 5.5rem; padding: 3rem max(1.5rem, calc((100vw - 82rem)/2)) 1.2rem; border-top: 1px solid #315B9124; background: var(--brand-blue); color: var(--ink); }
-.footer-inner { display: grid; grid-template-columns: 1.1fr .7fr 1fr 1fr; gap: 2rem; padding: 1rem 0 2.5rem; }
+.footer-inner { display: grid; grid-template-columns: 1.1fr .72fr 1.22fr 1.25fr; gap: clamp(1.25rem,3vw,2.6rem); padding: 1rem 0 2.5rem; }
 .footer-brand { color: var(--ink); }
-.footer-brand-block > p, .footer-note > p:not(.footer-label) { max-width: 21rem; color: #405979; font-size: .88rem; line-height: 1.7; }
+.footer-brand-block > p { max-width: 18rem; margin: .8rem 0 1.15rem; color: #405979; font-size: .86rem; line-height: 1.7; }
+.footer-brand-description span { display: block; }
 .footer-label { margin: .35rem 0 1rem; color: #315B91; font-size: .62rem; font-weight: 800; letter-spacing: .17em; }
-.footer-links { display: grid; align-content: start; justify-items: start; gap: .7rem; }
-.footer-links a, .footer-note > a { color: var(--ink); font-size: .85rem; text-decoration: none; }
-.footer-links a:hover, .footer-note > a:hover { color: #8A5547; }
-.footer-note > a { display: inline-flex; gap: .8rem; margin-top: .5rem; font-weight: 750; }
-.footer-contact { display: grid; align-content: start; justify-items: start; gap: .45rem; }
-.footer-contact > p:not(.footer-label) { margin: 0; color: #405979; font-size: .8rem; line-height: 1.55; }
-.footer-contact a, .footer-social-links a { color: var(--ink); text-decoration: none; }
-.footer-social-links { display: flex; flex-wrap: wrap; gap: .5rem .8rem; margin-top: .35rem; }
-.footer-social-links a { font-size: .76rem; font-weight: 750; }
-.footer-social-links span { color: #607895; font-size: .7rem; line-height: 1.5; }
-.footer-bottom { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1rem; border-top: 1px solid #315B9130; color: #405979; font-size: .72rem; }
+.footer-links, .footer-categories { display: grid; align-content: start; justify-items: start; gap: .68rem; }
+.footer-links a, .footer-category-list a { color: var(--ink); font-size: .82rem; text-decoration: none; transition: color .16s ease, transform .16s ease; }
+.footer-links a:hover, .footer-category-list a:hover { color: #8A5547; transform: translateX(2px); }
+.footer-category-list { display: grid; justify-items: start; gap: .68rem; }
+.footer-contact { display: grid; align-content: start; justify-items: start; gap: .68rem; }
+.footer-contact > a, .footer-contact > p:not(.footer-label) { display: grid; grid-template-columns: 5.8rem minmax(0,1fr); gap: .5rem; align-items: start; margin: 0; color: #263650; font-size: .76rem; line-height: 1.55; text-decoration: none; overflow-wrap: anywhere; }
+.footer-contact > a:hover { color: #8A5547; }
+.footer-contact > a span, .footer-contact > p > span { color: #49688F; font-size: .56rem; font-weight: 800; letter-spacing: .1em; }
+.footer-social-links { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .2rem; }
+.footer-social-links a { width: 2.25rem; height: 2.25rem; display: grid; place-items: center; border: 1px solid #FFFFFF; border-radius: 50%; background: #E9E8F8; color: #263650; text-decoration: none; transition: background .16s ease, transform .16s ease; }
+.footer-social-links a:hover { background: #F5B69E; transform: translateY(-2px); }
+.footer-social-links svg { width: 1.1rem; height: 1.1rem; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1rem; border-top: 1px solid #315B9130; color: #405979; font-size: .72rem; line-height: 1.6; }
+.footer-bottom > span:last-child { text-align: right; }
+.footer-bottom strong { color: var(--ink); font-weight: 800; }
 
 /* Home: powder-blue canvas, lavender sections, peach calls to action */
 .home-hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.04fr .96fr; align-items: center; width: min(100% - 3rem, 82rem); min-height: min(43rem, calc(100svh - 5rem)); margin: 0 auto; padding: 4rem 0; }
@@ -388,6 +393,8 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .category-section { grid-template-columns: 1fr; gap: 1.4rem; }
   .visit-section { gap: 2.5rem; }
   .service-card-image { height: 13rem; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 1.7rem 1.3rem; }
+  .footer-brand-block, .footer-contact { grid-column: 1 / -1; }
 }
 @media (max-width: 760px) {
   .service-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -440,9 +447,10 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .browse-hero > p:not(.eyebrow) { max-width: 35rem; font-size: .84rem; }
   .browse-controls-wrap { margin-top: .8rem; padding: .75rem; }
   .results-heading span { font-size: .52rem; }
-  .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem 1rem; }
-  .footer-brand-block { grid-column: 1 / -1; }
+  .footer-inner { gap: 1.4rem 1rem; }
+  .footer-contact { grid-column: 1 / -1; }
   .footer-bottom { flex-direction: column; gap: .4rem; }
+  .footer-bottom > span:last-child { text-align: left; }
   .service-detail-page { width: min(100% - 2rem,76rem); padding-top: 2rem; }
   .service-detail-card > img { max-height: 22rem; }
   .admin-services-page, .customer-appointments { width: min(100% - 2rem,82rem); padding: 2rem 0; }
@@ -460,6 +468,8 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .admin-item-actions { grid-column: 1 / -1; }
 }
 @media (max-width: 480px) {
+  .footer-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  .footer-brand-block, .footer-contact { grid-column: auto; }
   .appointment-item, .admin-appointment-item { grid-template-columns: 3.25rem minmax(0,1fr); }
   .appointment-item > img { width: 3.25rem; height: 3.25rem; }
   .appointment-statuses, .appointment-item > .text-button, .appointment-item > .admin-item-actions { grid-column: 1 / -1; grid-row: auto; justify-self: start; }

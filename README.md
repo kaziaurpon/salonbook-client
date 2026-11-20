@@ -57,14 +57,15 @@ ADMIN_NAME (temporary provisioning only)
 ADMIN_EMAIL (temporary provisioning only)
 ADMIN_PASSWORD (temporary provisioning only)
 NEXT_PUBLIC_SALON_PHONE
+NEXT_PUBLIC_SALON_EMAIL
 NEXT_PUBLIC_SALON_ADDRESS
 NEXT_PUBLIC_SALON_HOURS
 NEXT_PUBLIC_INSTAGRAM_URL
 NEXT_PUBLIC_FACEBOOK_URL
-NEXT_PUBLIC_TIKTOK_URL
+NEXT_PUBLIC_X_URL
 ```
 
-The `NEXT_PUBLIC_` salon contact variables are public display information, not secrets. They are currently placeholders until the salon's real contact details and social links are supplied.
+The `NEXT_PUBLIC_` salon contact variables are public display information, not secrets. The footer has the current SalonBook phone, email, address, opening hours, and platform home links as defaults; set these variables only when replacing them with updated public business details or profile links.
 
 ## Deployment — Vercel
 
