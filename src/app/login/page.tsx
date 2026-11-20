@@ -9,6 +9,7 @@ import { SalonBookLogo } from "@/components/salonbook-logo";
 import { AuthVisual } from "@/components/auth-visual";
 import { GoogleMark } from "@/components/google-mark";
 import { authCompletePath, postAuthPath } from "@/lib/auth-redirect";
+import { queueAuthFeedback } from "@/lib/auth-feedback";
 
 function LoginForm() {
   const router = useRouter();
@@ -17,17 +18,25 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   const callbackUrl = search.get("callbackUrl");
+  const authenticationError = search.get("error");
+
+  useEffect(() => {
+    if (!authenticationError) return;
+    toast.error(authenticationError === "google-link-required" || authenticationError === "account_not_linked"
+      ? "This Google account needs to be linked from your SalonBook profile first."
+      : "Google sign in could not be completed. Check the OAuth setup and try again.");
+  }, [authenticationError]);
 
   // Keep already-authenticated users on the same role-aware redirect path.
   useEffect(() => {
-    if (sessionPending || !session) return;
+    if (loading || sessionPending || !session) return;
     const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
     if (user.isBlocked) {
       void authClient.signOut().then(() => router.replace("/account/blocked"));
       return;
     }
     window.location.replace(postAuthPath(user.role, callbackUrl));
-  }, [callbackUrl, router, session, sessionPending]);
+  }, [callbackUrl, loading, router, session, sessionPending]);
 
   async function finishLogin() {
     const result = await authClient.getSession();
@@ -39,7 +48,7 @@ function LoginForm() {
       return;
     }
     const destination = postAuthPath(user.role, callbackUrl);
-    toast.success("Signed in successfully.");
+    queueAuthFeedback({ type: "success", message: "Signed in successfully." });
     // A full navigation ensures the freshly issued Better Auth cookie is
     // present when the protected App Router dashboard loads.
     window.location.assign(destination);

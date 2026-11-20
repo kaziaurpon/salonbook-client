@@ -5,6 +5,7 @@ import { Suspense, useEffect } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { postAuthPath } from "@/lib/auth-redirect";
+import { queueAuthFeedback } from "@/lib/auth-feedback";
 
 function AuthCompleteContent() {
   const router = useRouter();
@@ -25,7 +26,7 @@ function AuthCompleteContent() {
         router.replace("/account/blocked");
         return;
       }
-      toast.success("Signed in successfully.");
+      queueAuthFeedback({ type: "success", message: "Signed in successfully." });
       window.location.replace(postAuthPath(user.role, callbackUrl));
     });
     return () => { active = false; };

@@ -6,11 +6,23 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { SalonBookLogo } from "@/components/salonbook-logo";
 import { authenticatedApiFetch } from "@/lib/api";
+import { toast } from "sonner";
 
 export function DashboardGate({ role, title }: { role: "admin" | "customer"; title: string }) {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
   const [apiStatus, setApiStatus] = useState("Checking secure API connection…");
+
+  async function signOut() {
+    try {
+      const result = await authClient.signOut();
+      if (result.error) throw new Error(result.error.message || "Could not sign out. Please try again.");
+      toast.success("Signed out successfully.");
+      router.replace("/login");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not sign out. Please try again.");
+    }
+  }
 
   useEffect(() => {
     if (isPending) return;
@@ -60,7 +72,7 @@ export function DashboardGate({ role, title }: { role: "admin" | "customer"; tit
         <p className="api-status">{apiStatus}</p>
         {role === "admin" && <Link className="service-link" href="/dashboard/admin/services">Manage salon services →</Link>}
         {role === "admin" && <Link className="service-link" href="/dashboard/admin/appointments">Review appointment requests →</Link>}
-        <button className="secondary-button" onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => router.replace("/login") } })}>Sign out</button>
+        <button className="secondary-button" onClick={() => void signOut()}>Sign out</button>
       </section>
     </main>
   );

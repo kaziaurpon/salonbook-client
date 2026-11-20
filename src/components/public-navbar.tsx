@@ -6,6 +6,7 @@ import type { MouseEvent } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { SalonBookLogo } from "@/components/salonbook-logo";
+import { toast } from "sonner";
 
 export function PublicNavbar() {
   const router = useRouter();
@@ -61,11 +62,17 @@ export function PublicNavbar() {
   }
 
   async function signOut() {
-    await authClient.signOut();
-    setMenuOpen(false);
-    setProfileOpen(false);
-    router.replace("/");
-    router.refresh();
+    try {
+      const result = await authClient.signOut();
+      if (result.error) throw new Error(result.error.message || "Could not sign out. Please try again.");
+      setMenuOpen(false);
+      setProfileOpen(false);
+      toast.success("Signed out successfully.");
+      router.replace("/");
+      router.refresh();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not sign out. Please try again.");
+    }
   }
 
   const user = session?.user as { role?: string; name?: string; image?: string | null } | undefined;

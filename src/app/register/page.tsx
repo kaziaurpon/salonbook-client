@@ -9,6 +9,7 @@ import { SalonBookLogo } from "@/components/salonbook-logo";
 import { AuthVisual } from "@/components/auth-visual";
 import { GoogleMark } from "@/components/google-mark";
 import { authCompletePath, postAuthPath } from "@/lib/auth-redirect";
+import { queueAuthFeedback } from "@/lib/auth-feedback";
 
 function RegisterForm() {
   const router = useRouter();
@@ -18,14 +19,14 @@ function RegisterForm() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (sessionPending || !session) return;
+    if (loading || sessionPending || !session) return;
     const user = session.user as typeof session.user & { role?: string; isBlocked?: boolean };
     if (user.isBlocked) {
       void authClient.signOut().then(() => router.replace("/account/blocked"));
       return;
     }
     window.location.replace(postAuthPath(user.role, callbackUrl));
-  }, [callbackUrl, router, session, sessionPending]);
+  }, [callbackUrl, loading, router, session, sessionPending]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -56,7 +57,7 @@ function RegisterForm() {
         router.replace("/account/blocked");
         return;
       }
-      toast.success("Your SalonBook account is ready.");
+      queueAuthFeedback({ type: "success", message: "Your SalonBook account is ready." });
       window.location.assign(postAuthPath(user.role, callbackUrl));
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not create your account.");

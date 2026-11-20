@@ -467,8 +467,9 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 /* Feedback */
 .service-message { max-width: 42rem; margin: 3rem auto; text-align: center; }
 .service-message button { justify-self: center; }
-.salon-toast { border: 1px solid #FFFFFF !important; border-radius: .7rem !important; background: var(--brand-lavender) !important; color: var(--ink) !important; box-shadow: 0 .7rem 1.5rem #315B9129 !important; }
+.salon-toast { border: 1px solid #FFFFFF !important; border-radius: .7rem !important; background: #F5B69E !important; color: var(--ink) !important; box-shadow: 0 .7rem 1.5rem #315B9129 !important; }
 .salon-toast [data-title] { color: var(--ink) !important; }
+.salon-toast [data-description] { color: #405979 !important; }
 .salon-toast[data-type="success"] { border-color: #839DC0 !important; }
 .salon-toast[data-type="error"] { border-color: #D28D79 !important; }
 
