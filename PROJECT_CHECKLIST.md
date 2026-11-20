@@ -37,7 +37,8 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 
 - [x] SalonBook home page has a salon photo in a custom color-matched hero frame, featured active services from the API, category links, and a useful appointment-planning/about section.
 - [x] Public navbar links to Home, Browse Services, Sign In, and Sign Up; signed-in users see their role-appropriate dashboard and Log out.
-- [x] Authenticated navbar includes the user's name, profile link, role-appropriate dashboard link, and Log out. About Us scrolls to the footer; only the selected Home/Browse Services/About Us navigation item is highlighted.
+- [x] Authenticated navbar includes the user's name, profile link, role-appropriate dashboard link, and Log out. About Us navigates to the home page's `#about` section from any public page, and only the selected Home/Services/About Us item is highlighted.
+- [x] About section keeps its framed layout and uses the exact user-supplied model photo with a theme-matched blue/lavender/peach overlay.
 - [x] Consistent scissors/comb SalonBook logo appears in the navbar, footer, dashboards, auth screens, and Peach `#F5B69E` favicon; the wordmark uses a vintage script style.
 - [x] Footer includes the supplied phone, email, address, weekly opening hours, navigation links, five working category links, Instagram/Facebook/X icons linking to platform home pages, logo/description, and copyright/byline; public `NEXT_PUBLIC_` variables can override business details or social URLs.
 - [x] Original responsive salon-themed public design implemented for desktop, tablet, and mobile with reusable components.

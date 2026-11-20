@@ -204,16 +204,17 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .category-arrow { color: #8A5547; }
 .category-placeholder { min-height: 11.5rem; border-radius: .8rem; background: #E9E8F8A8; }
 .category-hint { color: #405979; line-height: 1.6; }
-.visit-section { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(2rem,8vw,7rem); align-items: center; }
-.visit-visual { position: relative; min-height: 25rem; display: grid; place-items: center; overflow: hidden; border: 1px solid #FFFFFFA6; border-radius: .9rem; background: radial-gradient(ellipse at 50% 50%,#F5B69E99,transparent 42%), var(--brand-lavender); }
-.visit-visual::before, .visit-visual::after { position: absolute; border: 1px solid #315B9140; border-radius: 50%; content: ""; }
-.visit-visual::before { width: 22rem; height: 22rem; }.visit-visual::after { width: 17rem; height: 17rem; }
-.visit-visual-circle { z-index: 1; width: 13rem; height: 13rem; display: grid; place-items: center; border: 1px solid #FFFFFF; border-radius: 50%; background: var(--brand-blue); color: var(--ink); text-align: center; box-shadow: 0 .8rem 2rem #315B9128; transform: rotate(-8deg); }
-.visit-visual-circle span { font-family: Georgia,serif; font-size: 1.35rem; letter-spacing: .12em; line-height: 1.45; }
-.visit-visual-circle em { color: #8A5547; font-style: italic; }
-.visit-stamp { position: absolute; bottom: 1.2rem; color: #405979; font-size: .55rem; font-weight: 800; letter-spacing: .22em; }
+.visit-section { display: grid; grid-template-columns: .6fr 1.4fr; gap: clamp(1.5rem,2.5vw,2rem); align-items: center; }
+.visit-visual { position: relative; min-height: 25rem; overflow: hidden; border: 1px solid #FFFFFFA6; border-radius: .9rem; background: var(--brand-lavender); isolation: isolate; box-shadow: 0 1rem 2rem #315B9120; }
+.visit-photo { position: absolute; z-index: -2; inset: 0; background-color: #BBCFE8; background-image: url("/images/about-salon.jpg"); background-position: center; background-size: contain; background-repeat: no-repeat; filter: saturate(.88); }
+.visit-photo-shade { position: absolute; z-index: -1; inset: 0; background: linear-gradient(180deg,#1B355312 0%,#1B355300 58%,#1B35534D 100%),linear-gradient(130deg,#8DB9F018 0%,transparent 53%,#F5B69E30 100%); }
+.visit-image-kicker { position: absolute; top: 1rem; left: 1rem; display: inline-flex; align-items: center; gap: .45rem; padding: .55rem .75rem; border: 1px solid #FFFFFFA8; border-radius: 999px; background: #E9E8F8E8; color: var(--ink); font-size: .56rem; font-weight: 800; letter-spacing: .1em; box-shadow: 0 .4rem 1rem #172B4520; }
+.visit-image-kicker span { color: #A46551; font-size: .85rem; }
+.visit-image-caption { position: absolute; right: .85rem; bottom: .85rem; width: min(68%,16rem); display: grid; gap: .2rem; padding: .65rem .8rem; border: 1px solid #FFFFFFD9; border-radius: .6rem .9rem .6rem .9rem; background: #E9E8F8E8; color: var(--ink); box-shadow: 0 .5rem 1.2rem #172B4526; }
+.visit-image-caption span { color: #405F8D; font-size: .52rem; font-weight: 800; letter-spacing: .13em; }
+.visit-image-caption strong { font: 500 1.05rem/1.1 Georgia,"Times New Roman",serif; }
 .visit-copy h2 { max-width: 13ch; }
-.visit-copy > p:not(.eyebrow) { max-width: 38rem; color: #405979; line-height: 1.8; }
+.visit-copy > p:not(.eyebrow) { max-width: none; color: #405979; line-height: 1.8; }
 .visit-steps { display: grid; gap: .8rem; margin: 1.7rem 0 2rem; padding: 0; list-style: none; }
 .visit-steps li { display: flex; align-items: center; gap: 1rem; color: var(--ink); font-size: .92rem; }
 .visit-steps li span { color: #8A5547; font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
@@ -421,7 +422,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .home-hero { min-height: auto; padding: 3.5rem 0 4rem; }
   .hero-art { min-height: 28rem; }
   .category-section { grid-template-columns: 1fr; gap: 1.4rem; }
-  .visit-section { gap: 2.5rem; }
+  .visit-section { grid-template-columns: .8fr 1.2fr; gap: 2rem; }
   .service-card-image { height: 13rem; }
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 1.7rem 1.3rem; }
   .footer-brand-block, .footer-contact { grid-column: 1 / -1; }
@@ -478,7 +479,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .service-description { min-height: 0; }
   .category-card-image-wrap { height: 7rem; }
   .visit-section { grid-template-columns: 1fr; }
-  .visit-visual { min-height: 21rem; }
+  .visit-visual { width: min(100%,24rem); min-height: 26rem; justify-self: center; }
   .browse-page { padding-top: 1rem; }
   .browse-hero { padding: 1rem 0 1.1rem; }
   .browse-hero h1 { max-width: 15ch; font-size: clamp(2.5rem,10vw,3.8rem); }

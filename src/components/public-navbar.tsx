@@ -31,15 +31,16 @@ export function PublicNavbar() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function goToFooter(event: MouseEvent<HTMLAnchorElement>) {
-    event.preventDefault();
+  function goToAbout(event: MouseEvent<HTMLAnchorElement>) {
     setMenuOpen(false);
     setProfileOpen(false);
-    const footer = document.getElementById("footer");
-    if (!footer) return;
-    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#footer`);
-    setHash("#footer");
-    footer.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (pathname !== "/") return;
+    event.preventDefault();
+    const about = document.getElementById("about");
+    if (!about) return;
+    window.history.pushState(null, "", `${window.location.pathname}${window.location.search}#about`);
+    setHash("#about");
+    about.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   async function signOut() {
@@ -53,7 +54,7 @@ export function PublicNavbar() {
   const user = session?.user as { role?: string; name?: string } | undefined;
   const dashboardHref = user?.role === "admin" ? "/dashboard/admin" : "/dashboard/customer";
   const profileHref = user?.role === "admin" ? "/dashboard/admin/profile" : "/dashboard/customer/profile";
-  const isActive = (href: string) => href === "/" ? pathname === "/" && hash !== "#footer" : href === "/services" ? hash !== "#footer" && (pathname === "/services" || pathname.startsWith("/services/")) : pathname === href;
+  const isActive = (href: string) => href === "/" ? pathname === "/" && hash !== "#about" : href === "/services" ? pathname === "/services" || pathname.startsWith("/services/") : pathname === href;
   const linkProps = (href: string) => ({ "aria-current": isActive(href) ? "page" as const : undefined, onClick: () => setMenuOpen(false) });
 
   return (
@@ -69,7 +70,7 @@ export function PublicNavbar() {
           <div className="site-nav-links">
             <Link href="/" aria-current={isActive("/") ? "page" : undefined} onClick={goHome}>Home</Link>
             <Link href="/services" {...linkProps("/services")}>Services</Link>
-            <Link className={hash === "#footer" ? "is-active" : undefined} href="#footer" aria-current={hash === "#footer" ? "location" : undefined} onClick={goToFooter}>About Us</Link>
+            <Link className={pathname === "/" && hash === "#about" ? "is-active" : undefined} href="/#about" aria-current={pathname === "/" && hash === "#about" ? "location" : undefined} onClick={goToAbout}>About Us</Link>
           </div>
           <div className="site-account-actions">
             {isPending ? <span className="nav-loading" aria-label="Loading account" /> : user ? (

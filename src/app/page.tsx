@@ -85,7 +85,12 @@ export default function HomePage() {
         </section>
 
         <section id="about" className="visit-section page-section" aria-labelledby="visit-heading">
-          <div className="visit-visual"><div className="visit-visual-circle"><span>YOUR<br />NEXT<br /><em>MOMENT</em></span></div><span className="visit-stamp">A LITTLE TIME FOR YOU · A LITTLE TIME FOR YOU ·</span></div>
+          <div className="visit-visual">
+            <div className="visit-photo" role="img" aria-label="A salon interior with thoughtful care details" />
+            <span className="visit-photo-shade" aria-hidden="true" />
+            <span className="visit-image-kicker"><span aria-hidden="true">✳</span> SALONBOOK · PERSONAL CARE</span>
+            <div className="visit-image-caption"><span>YOUR NEXT MOMENT</span><strong>Care, at your pace.</strong><small>Find a service that feels right for you.</small></div>
+          </div>
           <div className="visit-copy"><p className="eyebrow">ABOUT SALONBOOK</p><h2 id="visit-heading">A little more care, made easier to find.</h2><p>SalonBook brings salon services, clear pricing, and available appointment times together in one place. Choose the care that suits you, send a request, then follow its status from your personal dashboard.</p><ol className="visit-steps"><li><span>01</span> Explore salon services</li><li><span>02</span> Choose a date and open time</li><li><span>03</span> Track your appointment</li></ol><Link className="button-primary" href="/services">Find your service <span aria-hidden="true">↗</span></Link></div>
         </section>
       </main>
