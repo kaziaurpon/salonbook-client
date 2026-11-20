@@ -473,6 +473,128 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .salon-toast[data-type="success"] { border-color: #839DC0 !important; }
 .salon-toast[data-type="error"] { border-color: #D28D79 !important; }
 
+/* Customer dashboard: SalonBook blue, lavender and peach workspace */
+.customer-appointments { width: min(100% - 1.5rem, 90rem); padding-top: clamp(1.4rem,3vw,2.6rem); }
+.customer-appointments .appointments-heading { align-items: center; margin-bottom: 1.4rem; }
+.customer-appointments .appointments-heading h1 { margin: .25rem 0 .35rem; color: var(--ink); font: 500 clamp(2rem,4.6vw,3.25rem)/1.05 Georgia,serif; letter-spacing: -.045em; }
+.customer-appointments .appointments-heading > div:first-child > p:last-child { margin: .45rem 0 0; color: #405979; }
+.customer-heading-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; }
+.customer-heading-actions a { min-height: 2.85rem; display: inline-flex; align-items: center; gap: .65rem; text-decoration: none; }
+.customer-welcome-strip { min-height: 8.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin: 1.3rem 0 1.1rem; padding: clamp(1.2rem,3vw,2rem); border: 1px solid #FFFFFFC9; border-radius: 1.15rem 1.15rem 2.6rem 1.15rem; background: linear-gradient(110deg,#E9E8F8 0%,#F2F2FC 58%,#F5B69E 160%); box-shadow: 0 .8rem 2rem #315B9112; }
+.customer-welcome-strip > div { display: grid; gap: .45rem; }
+.customer-welcome-strip > div > span { color: #315B91; font-size: .62rem; font-weight: 800; letter-spacing: .15em; }
+.customer-welcome-strip strong { color: var(--ink); font: 500 clamp(1.4rem,3vw,2rem) Georgia,serif; }
+.customer-welcome-strip small { color: #405979; font-size: .84rem; }
+.customer-welcome-strip > a { display: inline-flex; align-items: center; gap: .5rem; flex: 0 0 auto; padding: .8rem 1rem; border-radius: 999px; background: #F5B69E; color: var(--ink); font-size: .82rem; font-weight: 750; text-decoration: none; }
+.customer-stats { gap: .75rem; margin: 0 0 1rem; }
+.customer-stats article { min-height: 7.3rem; gap: .35rem; padding: 1rem 1.1rem; border-top-color: #8DB9F0; border-radius: .9rem .9rem 1.8rem .9rem; background: #E9E8F8; }
+.customer-stats article:nth-child(2) { border-top-color: #F5B69E; background: #F5B69E; }
+.customer-stats article:nth-child(3) { border-top-color: #315B91; background: #DDEBFA; }
+.customer-stats article:nth-child(4) { border-top-color: #839DC0; background: #F2F2FC; }
+.customer-stats article > span { color: #405979; font-size: .75rem; font-weight: 750; }
+.customer-stats article strong { font: 500 2rem/1 Georgia,serif; }
+.customer-stats article small { color: #607895; font-size: .68rem; }
+.customer-appointments-panel { overflow: hidden; border: 1px solid #FFFFFF; border-radius: 1rem 1rem 2.4rem 1rem; background: #F7F7FC; box-shadow: 0 .8rem 2rem #315B9110; }
+.customer-appointments-panel > header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.3rem; border-bottom: 1px solid #315B911A; }
+.customer-appointments-panel > header .eyebrow { margin-bottom: .3rem; }
+.customer-appointments-panel > header h2 { margin: 0; color: var(--ink); font: 500 clamp(1.45rem,3vw,1.9rem) Georgia,serif; }
+.customer-appointments-panel > header p:not(.eyebrow) { margin: .35rem 0 0; color: #607895; font-size: .8rem; }
+.customer-appointments-panel > header > a { display: inline-flex; gap: .4rem; color: #315B91; font-size: .83rem; font-weight: 750; text-decoration: none; white-space: nowrap; }
+.customer-appointment-list { gap: 0; padding: 0 1rem; }
+.customer-appointment-list .appointment-item { grid-template-columns: 4.4rem minmax(0,1fr) auto; gap: .9rem; margin: 0; padding: 1rem .25rem; border: 0; border-bottom: 1px solid #315B9118; border-radius: 0; background: transparent; }
+.customer-appointment-list .appointment-item:last-child { border-bottom: 0; }
+.customer-appointment-list .appointment-item > img, .customer-service-placeholder { width: 4.4rem; height: 4.4rem; border-radius: .75rem  .75rem 1.2rem .75rem; object-fit: cover; }
+.customer-service-placeholder { display: grid; place-items: center; background: #DDEBFA; color: #315B91; font-size: 1.4rem; }
+.customer-appointment-list .appointment-main h3 { margin: .15rem 0 .3rem; font-size: 1rem; }
+.customer-appointment-list .appointment-main p:not(.service-category) { font-size: .78rem; }
+.customer-requested-date { color: #73849A !important; font-size: .68rem !important; }
+.customer-appointment-actions { grid-column: 2 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: .45rem; }
+.customer-appointment-actions .secondary-button, .customer-appointment-actions .button-primary { min-height: 2.35rem; padding: .5rem .8rem; font-size: .76rem; text-decoration: none; }
+.customer-appointment-actions .appointment-pay-button { grid-column: auto; }
+.customer-appointment-actions .text-button { padding: .5rem .6rem; font-size: .76rem; }
+.customer-empty { display: grid; justify-items: start; gap: .55rem; padding: 2rem 1.3rem; }
+.customer-empty > span { color: #C17C63; font-size: 1.5rem; }
+.customer-empty h3 { margin: 0; font: 500 1.55rem Georgia,serif; }
+.customer-empty p { max-width: 32rem; margin: 0 0 .5rem; color: #607895; line-height: 1.55; }
+.customer-empty a { text-decoration: none; }
+.customer-appointment-details dl { display: grid; gap: .7rem; margin: 1.2rem 0; }
+.customer-appointment-details dl > div { display: flex; justify-content: space-between; gap: 1rem; padding-bottom: .55rem; border-bottom: 1px solid #315B9120; }
+.customer-appointment-details dt { color: #607895; font-size: .84rem; }
+.customer-appointment-details dd { margin: 0; color: var(--ink); font-size: .84rem; font-weight: 700; text-align: right; }
+.customer-appointment-filters { display: flex; align-items: center; flex-wrap: wrap; gap: .45rem; margin: .2rem 0 1rem; }
+.customer-appointment-filters button { min-height: 2.5rem; display: inline-flex; align-items: center; gap: .5rem; padding: .45rem .8rem; border: 1px solid #FFFFFF; border-radius: 999px; background: #F7F7FC; color: #405979; font: inherit; font-size: .78rem; cursor: pointer; }
+.customer-appointment-filters button span { min-width: 1.25rem; padding: .12rem .32rem; border-radius: 999px; background: #DDEBFA; color: #315B91; font-size: .67rem; font-weight: 750; text-align: center; }
+.customer-appointment-filters button.active { border-color: #F5B69E; background: #F5B69E; color: var(--ink); font-weight: 750; }
+.customer-appointment-filters button.active span { background: #FFFFFFA8; color: var(--ink); }
+.customer-table-head, .customer-table-row { min-width: 58rem; display: grid; grid-template-columns: minmax(12rem,1.7fr) minmax(7.5rem,1fr) minmax(4.5rem,.55fr) minmax(6.5rem,.75fr) minmax(5.5rem,.65fr) minmax(8.5rem,1fr) minmax(10rem,1.2fr); align-items: center; gap: .65rem; }
+.customer-table-head { padding: .75rem 1.2rem; border-bottom: 1px solid #315B9120; color: #607895; font-size: .62rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+.customer-appointments-table .customer-appointment-list { overflow-x: auto; padding: 0 1.2rem; }
+.customer-table-row { min-height: 5.2rem; padding: .7rem 0; border-bottom: 1px solid #315B9118; }
+.customer-table-row:last-child { border-bottom: 0; }
+.customer-table-service { min-width: 0; display: flex; align-items: center; gap: .65rem; }
+.customer-table-service > img, .customer-table-service > .customer-service-placeholder { width: 3.2rem; height: 3.2rem; flex: 0 0 auto; border-radius: .6rem .6rem 1rem .6rem; object-fit: cover; }
+.customer-table-service > div { min-width: 0; }
+.customer-table-service .service-category { margin: 0; color: #315B91; font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.customer-table-service h3 { overflow: hidden; margin: .2rem 0 0; color: var(--ink); font-size: .8rem; text-overflow: ellipsis; white-space: nowrap; }
+.customer-table-date { display: grid; gap: .2rem; }
+.customer-table-date strong, .customer-table-price { color: var(--ink); font-size: .76rem; }
+.customer-table-date span { color: #607895; font-size: .7rem; }
+.customer-table-row > .status-pill { justify-self: start; font-size: .67rem; }
+.customer-table-requested { color: #607895; font-size: .67rem; line-height: 1.35; }
+.customer-table-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .3rem; }
+.customer-table-actions .secondary-button, .customer-table-actions .button-primary, .customer-table-actions .text-button { min-height: 2.15rem; padding: .38rem .58rem; font-size: .68rem; white-space: nowrap; }
+.customer-table-actions .button-primary { text-decoration: none; }
+.customer-filter-empty { padding: 1.7rem 1rem; color: #607895; font-size: .87rem; }
+.customer-profile-page { width: min(100% - 1.5rem, 82rem); }
+.customer-profile-layout { display: grid; grid-template-columns: minmax(0,1.7fr) minmax(15rem,.8fr); align-items: start; gap: 1rem; }
+.customer-profile-form { background: #E9E8F8D9; }
+.profile-form .profile-image-file { min-height: auto; padding: .55rem; border-style: dashed; background: #FFFFFF80; font-size: .75rem; }
+.profile-form .profile-image-file::file-selector-button { margin-right: .7rem; padding: .45rem .7rem; border: 0; border-radius: 999px; background: #DDEBFA; color: #315B91; font: inherit; font-weight: 750; cursor: pointer; }
+.customer-profile-photo { display: flex; align-items: center; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #315B9120; }
+.customer-profile-photo h2 { margin: .15rem 0; color: var(--ink); font: 500 1.5rem Georgia,serif; }
+.customer-profile-photo p:last-child { margin: .25rem 0 0; color: #607895; font-size: .8rem; }
+.customer-profile-avatar { width: 4.4rem; height: 4.4rem; display: grid; place-items: center; overflow: hidden; flex: 0 0 auto; border: 3px solid #FFFFFF; border-radius: 50%; background: #F5B69E; color: var(--ink); font: 500 1.7rem Georgia,serif; }
+.customer-profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.customer-profile-aside { display: grid; gap: .9rem; }
+.customer-profile-aside > section { padding: 1.2rem; border: 1px solid #FFFFFF; border-radius: .9rem .9rem 1.8rem .9rem; background: #F7F7FC; }
+.customer-profile-aside h2 { margin: .2rem 0 1rem; font: 500 1.45rem Georgia,serif; }
+.customer-profile-aside > section:first-child > div { display: flex; justify-content: space-between; gap: .7rem; padding: .75rem 0; border-bottom: 1px solid #315B911A; color: #607895; font-size: .84rem; }
+.customer-profile-aside > section:first-child > div strong { color: var(--ink); text-transform: capitalize; }
+.customer-profile-aside > section:first-child > div strong.active { color: #315B91; }
+.customer-profile-aside > section:first-child > div strong.blocked { color: #8B3832; }
+.customer-profile-aside > section:first-child > p:last-child, .customer-profile-visit p { color: #607895; font-size: .8rem; line-height: 1.55; }
+.customer-profile-visit { background: linear-gradient(145deg,#F5B69E,#F4C7B5) !important; }
+.customer-profile-visit > span { color: #315B91; font-size: 1.2rem; }
+.customer-profile-visit h2 { margin: .55rem 0 .35rem; }
+.customer-profile-visit a { color: var(--ink); font-size: .83rem; font-weight: 750; text-decoration: none; }
+.customer-profile-submit { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.customer-profile-submit .primary-button { flex: 0 0 auto; }
+@media (max-width: 850px) {
+  .customer-profile-layout { grid-template-columns: 1fr; }
+  .customer-profile-aside { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 620px) {
+  .customer-appointments { width: min(100% - 1rem,90rem); }
+  .customer-appointments .appointments-heading { align-items: start; flex-direction: column; }
+  .customer-welcome-strip { align-items: start; flex-direction: column; }
+  .customer-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .customer-appointment-list { padding-inline: .7rem; }
+  .customer-appointments-table .customer-appointment-list { padding-inline: 1rem; }
+  .customer-table-head { display: none; }
+  .customer-table-row { min-width: 58rem; }
+  .customer-appointment-list .appointment-item { grid-template-columns: 3.5rem minmax(0,1fr); gap: .7rem; }
+  .customer-appointment-list .appointment-item > img, .customer-service-placeholder { width: 3.5rem; height: 3.5rem; }
+  .customer-appointment-list .appointment-statuses { grid-column: 2; display: flex; align-items: center; justify-content: start; flex-wrap: wrap; justify-items: start; }
+  .customer-appointment-list .appointment-payment-note { grid-column: 2; }
+  .customer-appointment-actions { grid-column: 2; }
+  .customer-profile-aside { grid-template-columns: 1fr; }
+  .customer-profile-form { grid-template-columns: 1fr; }
+  .customer-profile-form .profile-form-wide { grid-column: 1; }
+  .customer-profile-submit { align-items: start; flex-direction: column; }
+  .customer-appointment-details dl > div { align-items: start; flex-direction: column; gap: .2rem; }
+  .customer-appointment-details dd { text-align: left; }
+}
+
 @media (max-width: 850px) {
   .auth-layout { width: min(100%,42rem); grid-template-columns: 1fr; }
   .auth-page-split .auth-card { padding: clamp(1.5rem,6vw,3.5rem); }
