@@ -6,6 +6,8 @@ import { FormEvent, Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { SalonBookLogo } from "@/components/salonbook-logo";
+import { AuthVisual } from "@/components/auth-visual";
+import { GoogleMark } from "@/components/google-mark";
 import { authCompletePath, postAuthPath } from "@/lib/auth-redirect";
 
 function RegisterForm() {
@@ -76,7 +78,8 @@ function RegisterForm() {
   }
 
   return (
-    <main className="auth-page">
+    <main className="auth-page auth-page-split">
+      <div className="auth-layout">
       <section className="auth-card">
         <SalonBookLogo className="brand" />
         <p className="eyebrow">YOUR SALON, YOUR TIME</p>
@@ -89,9 +92,11 @@ function RegisterForm() {
           <button disabled={loading}>{loading ? "Creating account…" : "Create account"}</button>
         </form>
         <div className="auth-divider"><span>or</span></div>
-        <button className="secondary-button" disabled={loading} onClick={googleSignUp}>Continue with Google</button>
+        <button className="secondary-button google-auth-button" disabled={loading} onClick={googleSignUp}><GoogleMark />Continue with Google</button>
         <p className="auth-switch">Already registered? <Link href={`/login${callbackUrl ? `?${new URLSearchParams({ callbackUrl }).toString()}` : ""}`}>Sign in</Link></p>
       </section>
+      <AuthVisual />
+      </div>
     </main>
   );
 }

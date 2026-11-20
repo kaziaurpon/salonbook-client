@@ -63,6 +63,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Protected service details and dashboard routes preserve the requested URL for sign-in, reject unsafe external/encoded callback paths, and verify the current session and role in server layouts before rendering protected content.
 - [x] Blocked accounts are sent to a clear public blocked-account page; blocked users are not redirected to a dashboard or callback destination.
 - [x] `/signin` and `/signup` aliases preserve query parameters and route to the existing login/register pages.
+- [x] Login and registration use a responsive split layout with the form on the left, salon image and original SalonBook message on the right, plus a Google mark in both Google sign-in buttons.
 - [x] Public registration cannot set role/isBlocked; admin promotion is available only through a local CLI provisioning command.
 - [x] Express verifies JWT signature, issuer, audience, and expiry through Better Auth JWKS, then reads current role and isBlocked from Better Auth's users collection.
 - [x] Express server-side auth and role guard middleware; protected customer/admin API examples included.
