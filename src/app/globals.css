@@ -30,8 +30,8 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .danger-button { min-height: 2.8rem; padding: .7rem 1rem; border: 1px solid #B76F62; border-radius: .65rem; background: #F5B69E; color: #382D3A; font-weight: 800; cursor: pointer; }
 .auth-form, .booking-form { display: grid; gap: 1rem; }
 .auth-form label, .booking-form label, .admin-service-form label { display: grid; gap: .45rem; color: var(--ink); font-size: .9rem; font-weight: 700; }
-.auth-form input, .booking-form input, .booking-form select, .booking-form textarea, .admin-service-form input:not([type="file"]), .admin-service-form textarea, .service-controls input, .service-controls select { width: 100%; min-width: 0; min-height: 2.9rem; padding: .7rem .8rem; border: 1px solid #839DC0; border-radius: .55rem; background: #F8F8FD; color: var(--ink); }
-.auth-form input:focus, .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus, .admin-service-form input:focus, .admin-service-form textarea:focus, .service-controls input:focus, .service-controls select:focus { border-color: #315B91; outline: 3px solid #315B912B; }
+.auth-form input, .booking-form input, .booking-form select, .booking-form textarea, .admin-service-form input:not([type="file"]), .admin-service-form select, .admin-service-form textarea, .service-controls input, .service-controls select { width: 100%; min-width: 0; min-height: 2.9rem; padding: .7rem .8rem; border: 1px solid #839DC0; border-radius: .55rem; background: #F8F8FD; color: var(--ink); }
+.auth-form input:focus, .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus, .admin-service-form input:focus, .admin-service-form select:focus, .admin-service-form textarea:focus, .service-controls input:focus, .service-controls select:focus { border-color: #315B91; outline: 3px solid #315B912B; }
 .auth-form small { color: var(--muted-ink); font-weight: 400; }
 .form-error, .booking-error { padding: .75rem; border-radius: .55rem; background: #FCE9E7; color: #8B3832; }
 .auth-switch { margin: 1.4rem 0 0; color: var(--muted-ink); text-align: center; }
@@ -318,7 +318,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .admin-shell-exit { white-space: nowrap; }
 .admin-dashboard-page::before { position: absolute; z-index: -1; top: 1rem; right: -10rem; width: 32rem; height: 32rem; border-radius: 50%; background: radial-gradient(circle, #E9E8F899 0, #E9E8F800 70%); content: ""; }
 .admin-dashboard-mark { width: 5.5rem; height: 5.5rem; display: grid; place-items: center; flex: 0 0 auto; border: 1px solid #FFFFFFB0; border-radius: 1.7rem .6rem 1.7rem .6rem; background: var(--brand-peach); color: var(--ink); font: italic 3rem Georgia,serif; transform: rotate(5deg); box-shadow: 0 1rem 2.2rem #315B9124; }
-.admin-overview-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 1rem; margin: 2.5rem 0 3.5rem; }
+.admin-overview-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; margin: 2.5rem 0 3.5rem; }
 .admin-overview-card { min-height: 11rem; display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem; border: 1px solid #FFFFFFB8; border-radius: 1.1rem 1.1rem 2.2rem 1.1rem; background: var(--brand-lavender); box-shadow: 0 .8rem 2rem #315B9114; }
 .admin-overview-card:nth-child(2) { background: #F2F2FC; }
 .admin-overview-card:nth-child(3) { background: #DDEBFA; }
@@ -360,6 +360,9 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .dashboard-sidebar nav a, .dashboard-site-link { padding: .78rem .72rem; border-radius: .65rem; color: #405979; font-size: .86rem; font-weight: 650; text-decoration: none; transition: background .18s ease,transform .18s ease; }
 .dashboard-sidebar nav a:hover, .dashboard-sidebar nav a:focus-visible { background: #8DB9F05C; color: var(--ink); transform: translateX(2px); }
 .dashboard-sidebar nav a[aria-current="page"] { background: var(--brand-blue); color: var(--ink); }
+.admin-sidebar nav a[aria-current="page"] { background: #F5B69E; color: var(--ink); }
+.admin-service-heading-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .65rem; }
+.admin-service-heading-actions .admin-refresh { margin-left: 0; }
 .dashboard-site-link { margin-top: auto; border-top: 1px solid #315B9124; border-radius: 0; padding-top: 1rem; }
 .dashboard-content { min-width: 0; }
 .dashboard-content > .admin-services-page, .dashboard-content > .customer-appointments { width: min(100%,82rem); padding-top: clamp(1.3rem,3vw,2.5rem); }

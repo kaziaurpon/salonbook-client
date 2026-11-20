@@ -19,10 +19,10 @@ type Service = {
   createdAt: string;
 };
 
-type ServiceForm = Omit<Service, "_id" | "status" | "createdAt">;
+type ServiceForm = Omit<Service, "_id" | "createdAt">;
 type ApiResult<T> = T & { message?: string };
 
-const blankForm: ServiceForm = { serviceName: "", category: "", description: "", price: 0, duration: 30, image: "" };
+const blankForm: ServiceForm = { serviceName: "", category: "", description: "", price: 0, duration: 30, image: "", status: "active" };
 
 async function readMessage(response: Response) {
   const payload = await response.json().catch(() => ({})) as ApiResult<Record<string, unknown>>;
@@ -43,6 +43,7 @@ export function AdminServicesManager() {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [pendingDelete, setPendingDelete] = useState<Service | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
 
   const loadServices = useCallback(async () => {
     setLoading(true);
@@ -115,6 +116,7 @@ export function AdminServicesManager() {
       toast.success(editingId ? "Service updated." : "Service added.");
       setForm(blankForm);
       setEditingId("");
+      setFormOpen(false);
       await loadServices();
     } catch (reason) {
       toast.error(reason instanceof Error ? reason.message : "Could not save the service.");
@@ -152,6 +154,7 @@ export function AdminServicesManager() {
 
   function beginEdit(service: Service) {
     setEditingId(service._id);
+    setFormOpen(true);
     setForm({
       serviceName: service.serviceName,
       category: service.category,
@@ -159,6 +162,7 @@ export function AdminServicesManager() {
       price: service.price,
       duration: service.duration,
       image: service.image,
+      status: service.status,
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -171,10 +175,10 @@ export function AdminServicesManager() {
     <main className="admin-services-page">
       <header className="admin-services-heading">
         <div><Link href="/dashboard/admin" className="brand">← Admin dashboard</Link><p className="eyebrow">SERVICE CATALOG</p><h1>Manage services</h1><p>Add, update, activate, or remove salon services.</p></div>
-        <button className="secondary-button admin-refresh" onClick={() => void loadServices()} disabled={loading}>Refresh list</button>
+        <div className="admin-service-heading-actions"><button className="button-primary" onClick={() => { setEditingId(""); setForm(blankForm); setFormOpen(true); }}>+ Add Service</button><button className="secondary-button admin-refresh" onClick={() => void loadServices()} disabled={loading}>Refresh list</button></div>
       </header>
 
-      <section className="admin-service-form-card">
+      {formOpen && <section className="admin-service-form-card">
         <h2>{editingId ? "Update service" : "Add a service"}</h2>
         <form className="admin-service-form" onSubmit={saveService}>
           <label>Service name<input required minLength={2} maxLength={120} value={form.serviceName} onChange={(event) => setForm({ ...form, serviceName: event.target.value })} /></label>
@@ -182,6 +186,7 @@ export function AdminServicesManager() {
           <label className="wide-field">Description<textarea required minLength={10} maxLength={2000} rows={4} value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} /></label>
           <label>Price (৳)<input required type="number" min="1" step="0.01" value={form.price || ""} onChange={(event) => setForm({ ...form, price: Number(event.target.value) })} /></label>
           <label>Duration (minutes)<input required type="number" min="1" step="1" value={form.duration || ""} onChange={(event) => setForm({ ...form, duration: Number(event.target.value) })} /></label>
+          <label>Service status<select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value as ServiceForm["status"] })}><option value="active">Active</option><option value="inactive">Inactive</option></select><small>New services are active by default.</small></label>
           <label className="wide-field">Service image (JPG, PNG, WebP; up to 5 MB)
             <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => void uploadImage(event.target.files?.[0])} disabled={uploading} />
             {uploading && <small>Uploading image…</small>}
@@ -189,14 +194,14 @@ export function AdminServicesManager() {
           </label>
           <div className="admin-form-actions wide-field">
             <button disabled={saving || uploading}>{saving ? "Saving…" : editingId ? "Save changes" : "Add service"}</button>
-            {editingId && <button type="button" className="secondary-button" onClick={() => { setEditingId(""); setForm(blankForm); }}>Cancel edit</button>}
+            <button type="button" className="secondary-button" onClick={() => { setEditingId(""); setForm(blankForm); setFormOpen(false); }}>{editingId ? "Cancel edit" : "Close"}</button>
           </div>
         </form>
-      </section>
+      </section>}
 
       <section className="admin-service-list">
         <h2>All services <span>{services.length}</span></h2>
-        {loading ? <p className="service-message">Loading services…</p> : error ? <div className="service-message service-error"><p>{error}</p><button onClick={() => void loadServices()}>Try again</button></div> : services.length === 0 ? <p className="service-message">No services yet. Add the first salon service above.</p> : (
+        {loading ? <p className="service-message">Loading services…</p> : error ? <div className="service-message service-error"><p>{error}</p><button onClick={() => void loadServices()}>Try again</button></div> : services.length === 0 ? <p className="service-message">No services yet. Use “+ Add Service” to create the first salon service.</p> : (
           <div className="admin-service-items">
             {services.map((service) => (
               <article className="admin-service-item" key={service._id}>
@@ -204,7 +209,7 @@ export function AdminServicesManager() {
                 <div className="admin-service-info"><p className="service-category">{service.category}</p><h3>{service.serviceName}</h3><p>৳{service.price.toLocaleString()} · {service.duration} min</p></div>
                 <span className={`status-pill ${service.status}`}>{service.status}</span>
                 <div className="admin-item-actions">
-                  <button className="text-button" onClick={() => beginEdit(service)}>Edit</button>
+                  <button className="text-button" onClick={() => beginEdit(service)}>Update</button>
                   <button className="text-button" onClick={() => void toggleStatus(service)}>{service.status === "active" ? "Deactivate" : "Activate"}</button>
                   <button className="text-button danger-text" onClick={() => setPendingDelete(service)}>Delete</button>
                 </div>
