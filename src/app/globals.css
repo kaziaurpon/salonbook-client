@@ -273,11 +273,6 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .service-detail-meta span { color: #607895; font-size: .66rem; font-weight: 700; }
 .service-detail-meta strong { color: var(--ink); font-size: .88rem; }
 .service-detail-meta > div:first-child strong { color: #68493F; font: 500 1.45rem Georgia,serif; }
-.service-detail-notes { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .7rem; margin-top: 1rem; }
-.service-detail-notes article { display: flex; align-items: flex-start; gap: .65rem; padding: .85rem; border: 1px solid #FFFFFF; border-radius: .65rem; background: #E9E8F8A8; }
-.service-detail-notes article > span { color: #A46551; font-size: 1rem; }
-.service-detail-notes strong { color: var(--ink); font-size: .76rem; }
-.service-detail-notes p { margin: .25rem 0 0; color: #526B8B; font-size: .68rem; line-height: 1.55; }
 .service-booking-panel { position: sticky; top: 6.4rem; overflow: hidden; border: 1px solid #FFFFFF; border-radius: .9rem 1.4rem .9rem .9rem; background: var(--brand-lavender); box-shadow: 0 .9rem 2.4rem #315B9122; }
 .booking-panel-heading { padding: 1.2rem 1.25rem 1rem; border-bottom: 1px solid #315B911E; background: #F5B69E40; }
 .booking-panel-heading .eyebrow { margin-bottom: .45rem; font-size: .58rem; }

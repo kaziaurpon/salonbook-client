@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
@@ -32,6 +32,11 @@ export default function ServiceDetailsPage() {
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [booking, setBooking] = useState(false);
   const [bookingError, setBookingError] = useState("");
+  const appointmentDateInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [params.id]);
 
   useEffect(() => {
     if (isPending) return;
@@ -124,10 +129,6 @@ export default function ServiceDetailsPage() {
               <div><span>Estimated time</span><strong>{service.duration} minutes</strong></div>
               <div><span>Booking</span><strong>Request a time</strong></div>
             </div>
-            <div className="service-detail-notes">
-              <article><span aria-hidden="true">✳</span><div><strong>Thoughtful care</strong><p>Your service details and estimated duration are ready before you request a visit.</p></div></article>
-              <article><span aria-hidden="true">↗</span><div><strong>Flexible requests</strong><p>Choose an available time and follow the request from your customer dashboard.</p></div></article>
-            </div>
           </div>
         </article>
 
@@ -135,7 +136,7 @@ export default function ServiceDetailsPage() {
           <div className="booking-panel-heading"><p className="eyebrow">REQUEST AN APPOINTMENT</p><h2>Choose your time</h2><p>The salon will review and confirm your request.</p></div>
           {user.role === "admin" ? <p className="detail-note">Admin accounts cannot request customer appointments. Sign in with a customer account to book this service.</p> : (
             <form className="booking-form" onSubmit={submitBooking}>
-              <label>Appointment date<input type="date" required min={new Date().toLocaleDateString("en-CA")} value={date} onChange={(event) => { setDate(event.target.value); setSlots([]); setTimeSlot(""); setBookingError(""); }} /></label>
+              <label>Appointment date<input ref={appointmentDateInput} type="date" required min={new Date().toLocaleDateString("en-CA")} value={date} onClick={() => { try { appointmentDateInput.current?.showPicker(); } catch { appointmentDateInput.current?.focus(); } }} onChange={(event) => { setDate(event.target.value); setSlots([]); setTimeSlot(""); setBookingError(""); }} /></label>
               <label>Available time
                 <select required value={timeSlot} onChange={(event) => setTimeSlot(event.target.value)} disabled={!date || slotsLoading}>
                   <option value="">{!date ? "Choose a date first" : slotsLoading ? "Loading available times…" : "Choose a time"}</option>
