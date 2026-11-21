@@ -20,7 +20,6 @@ export function ProfileEditor({ role }: { role: "admin" | "customer" }) {
   const [saving, setSaving] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imageUploadNotice, setImageUploadNotice] = useState("");
-  const [linkingGoogle, setLinkingGoogle] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -83,21 +82,6 @@ export function ProfileEditor({ role }: { role: "admin" | "customer" }) {
     }
   }
 
-  async function linkGoogleAccount() {
-    setLinkingGoogle(true);
-    try {
-      const result = await authClient.linkSocial({
-        provider: "google",
-        callbackURL: "/auth/complete",
-        errorCallbackURL: window.location.href,
-      });
-      if (result.error) throw new Error(result.error.message || "Could not start Google account linking.");
-    } catch (reason) {
-      toast.error(reason instanceof Error ? reason.message : "Could not link your Google account.");
-      setLinkingGoogle(false);
-    }
-  }
-
   if (isPending || !session || loading) return <main className="admin-services-page"><p>Loading your profile…</p></main>;
   if (error || !profile) return <main className="admin-services-page"><div className="service-message service-error"><p>{error || "Profile unavailable."}</p><button className="secondary-button" onClick={() => router.refresh()}>Try again</button></div></main>;
 
@@ -107,7 +91,6 @@ export function ProfileEditor({ role }: { role: "admin" | "customer" }) {
       <label>Email address<input value={profile.email} readOnly disabled /><small>Email is managed by your authentication account.</small></label>
       <label>Phone number<input type="tel" maxLength={30} value={phone} onChange={(event) => setPhone(event.target.value)} autoComplete="tel" placeholder="+880 1XXXXXXXXX" /></label>
       <label className="profile-form-wide">Profile image URL<input type="url" maxLength={2048} value={image} onChange={(event) => { setImage(event.target.value); setImageUploadNotice(""); }} placeholder="https://example.com/photo.jpg" /><small>Paste an image URL, or upload a JPG, PNG, or WebP image up to 5 MB.</small><input className="profile-image-file" type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => { void uploadProfileImage(event.currentTarget.files?.[0]); }} disabled={uploadingImage} /><small aria-live="polite">{uploadingImage ? "Uploading image…" : imageUploadNotice || "The selected image is not applied until you save your profile."}</small></label>
-      <section className="profile-form-wide profile-google-link"><div><strong>Google sign-in</strong><small>Link the Google account that uses this same email address. You will be asked to sign in with your current Google account.</small></div><button className="secondary-button" type="button" onClick={linkGoogleAccount} disabled={linkingGoogle}>{linkingGoogle ? "Opening Google…" : "Link Google account"}</button></section>
       <div className="profile-form-wide profile-locked-fields"><span>Account role <strong>{profile.role}</strong></span><span>Account status <strong>{profile.isBlocked ? "Blocked" : "Active"}</strong></span><small>Role and access status are managed by the platform and cannot be changed here.</small></div>
       <div className="profile-form-wide"><button className="primary-button" disabled={saving || uploadingImage}>{saving ? "Saving…" : "Save profile"}</button></div>
     </form>

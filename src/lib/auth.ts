@@ -42,7 +42,7 @@ export const auth = betterAuth({
       enabled: true,
       trustedProviders: ["google"],
       allowDifferentEmails: false,
-      updateUserInfoOnLink: false,
+      updateUserInfoOnLink: true,
     },
   },
   user: {

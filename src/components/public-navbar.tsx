@@ -67,7 +67,7 @@ export function PublicNavbar() {
       if (result.error) throw new Error(result.error.message || "Could not sign out. Please try again.");
       setMenuOpen(false);
       setProfileOpen(false);
-      toast.success("Signed out successfully.");
+      toast.success("Signed out successfully.", { duration: 2500 });
       router.replace("/");
       router.refresh();
     } catch (error) {
