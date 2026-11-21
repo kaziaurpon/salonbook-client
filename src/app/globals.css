@@ -343,6 +343,59 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .transaction-item small { display: block; margin-top: .4rem; color: #405979; }
 .transaction-item code { overflow-wrap: anywhere; }
 .transaction-item > strong { white-space: nowrap; font-size: 1.15rem; }
+.admin-transactions-page { max-width: none !important; }
+.transaction-heading { align-items: end; }
+.transaction-heading-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
+.transaction-heading-actions a { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; }
+.transaction-stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .85rem; margin: 1.4rem 0; }
+.transaction-stats article { min-height: 7.5rem; display: grid; align-content: space-between; gap: .35rem; padding: 1rem 1.1rem; border: 1px solid #FFFFFF; border-top: 3px solid #8DB9F0; border-radius: .8rem .8rem 1.7rem .8rem; background: #E9E8F8; }
+.transaction-stats article:nth-child(2) { border-top-color: #D28D79; background: #F5B69E; }
+.transaction-stats article:nth-child(3) { border-top-color: #839DC0; background: #F2F2FC; }
+.transaction-stats article > span { color: #405979; font-size: .78rem; font-weight: 750; }
+.transaction-stats article > strong { color: var(--ink); font: 500 2rem/1 Georgia,serif; }
+.transaction-stats article > small { color: #607895; font-size: .68rem; }
+.transaction-ledger { overflow: hidden; border: 1px solid #FFFFFF; border-radius: 1rem 1rem 2.2rem 1rem; background: #F7F7FC; box-shadow: 0 .8rem 2rem #315B9112; }
+.transaction-ledger-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.35rem; border-bottom: 1px solid #315B911C; }
+.transaction-ledger-heading .eyebrow { margin: 0 0 .3rem; }
+.transaction-ledger-heading h2 { margin: 0; color: var(--ink); font: 500 1.55rem Georgia,serif; }
+.transaction-ledger-heading p:last-child { margin: .3rem 0 0; color: #607895; font-size: .78rem; }
+.read-only-badge { padding: .4rem .62rem; border: 1px solid #FFFFFF; border-radius: 999px; background: #E9E8F8; color: #405979; font-size: .58rem; font-weight: 800; letter-spacing: .1em; }
+.transaction-table-header, .transaction-item { display: grid; grid-template-columns: minmax(9rem,1.15fr) minmax(11rem,1.3fr) minmax(6rem,.62fr) minmax(6rem,.58fr) minmax(8rem,.9fr) minmax(7.5rem,.8fr); gap: .85rem; align-items: center; }
+.transaction-item { grid-template-areas: "customer service amount status session date"; }
+.transaction-customer { grid-area: customer; }
+.transaction-service { grid-area: service; }
+.transaction-amount { grid-area: amount; }
+.transaction-status { grid-area: status; }
+.transaction-session { grid-area: session; }
+.transaction-date { grid-area: date; }
+.transaction-table-header { padding: .75rem 1.1rem; background: #E9E8F8A8; color: #607895; font-size: .58rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.transaction-list { display: grid; gap: 0; }
+.transaction-item { min-height: 5.6rem; padding: .8rem 1.1rem; border: 0; border-bottom: 1px solid #315B9117; border-radius: 0; background: #F7F7FC; box-shadow: none; }
+.transaction-item:last-child { border-bottom: 0; }
+.transaction-customer { min-width: 0; display: flex; align-items: center; gap: .6rem; }
+.transaction-avatar { width: 2.45rem; height: 2.45rem; display: grid; place-items: center; flex: 0 0 auto; overflow: hidden; border: 1px solid #FFFFFF; border-radius: 50%; background: #F5B69E; color: var(--ink); font-weight: 750; }
+.transaction-customer > div, .transaction-service, .transaction-amount, .transaction-date { min-width: 0; display: grid; gap: .17rem; }
+.transaction-customer strong, .transaction-service strong, .transaction-amount strong, .transaction-date strong { color: var(--ink); font-size: .77rem; }
+.transaction-customer small, .transaction-service small, .transaction-service > span, .transaction-amount small, .transaction-date small { overflow: hidden; color: #607895; font-size: .68rem; text-overflow: ellipsis; white-space: nowrap; }
+.transaction-amount strong { font-size: .82rem; white-space: nowrap; }
+.transaction-session code { display: inline-block; max-width: 100%; overflow: hidden; padding: .42rem .5rem; border: 1px solid #315B9128; border-radius: .45rem; background: #E9E8F8; color: #405979; font-size: .65rem; text-overflow: ellipsis; white-space: nowrap; }
+.transaction-status .status-pill { font-size: .67rem; }
+.transaction-status .paid { background: #D5E5F7; color: #294E7D; }
+.transaction-status .failed { background: #F5B69E; color: #51372F; }
+.transaction-integrity-note { display: flex; align-items: start; gap: .65rem; margin: 1rem 0 0; padding: .9rem 1rem; border: 1px solid #FFFFFF; border-radius: .7rem 1rem 1.5rem .7rem; background: #E9E8F8; color: #405979; font-size: .74rem; line-height: 1.55; }
+.transaction-integrity-note > span { color: #315B91; font-size: 1rem; }
+.transaction-empty { padding: 1.5rem; }
+@media (max-width: 1050px) {
+  .transaction-table-header { display: none; }
+  .transaction-item { grid-template-columns: repeat(4,minmax(0,1fr)); grid-template-areas: "customer customer service service" "amount status session date"; }
+}
+@media (max-width: 680px) {
+  .transaction-stats { grid-template-columns: 1fr; }
+  .transaction-item { grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-areas: "customer customer" "service service" "amount status" "session session" "date date"; gap: .65rem; }
+  .transaction-item > * { min-width: 0; }
+  .transaction-session code { width: 100%; }
+  .transaction-heading-actions { justify-content: start; }
+}
 .admin-pagination { display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 1.3rem 0; color: #405979; font-size: .9rem; }
 .admin-dialog-backdrop { position: fixed; z-index: 60; inset: 0; display: grid; place-items: center; padding: 1rem; background: #1C2D4570; backdrop-filter: blur(5px); }
 .admin-confirm-dialog { width: min(100%,30rem); padding: 1.5rem; border: 1px solid #FFFFFFB8; border-radius: 1.2rem 1.2rem 2.5rem 1.2rem; background: var(--brand-lavender); box-shadow: 0 2rem 5rem #14223C50; }
