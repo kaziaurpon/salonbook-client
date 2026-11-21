@@ -514,14 +514,34 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .appointment-statuses strong { color: var(--ink); }
 .appointment-payment-note { grid-column: 2 / -1; margin: -.25rem 0 0; color: #405979; font-size: .78rem; line-height: 1.45; }
 .appointment-pay-button { grid-column: 2 / -1; justify-self: start; min-height: 2.5rem; padding: .6rem .9rem; font-size: .83rem; }
-.payment-return-page { min-height: 65vh; display: grid; place-items: center; padding: 3rem 1rem; background: radial-gradient(ellipse at 50% 20%,#E9E8F8 0,transparent 58%); }
-.payment-return-card { width: min(100%,38rem); padding: clamp(1.5rem,5vw,3rem); border: 1px solid #FFFFFF; border-radius: 1.2rem 1.2rem 3rem 1.2rem; background: var(--brand-lavender); text-align: center; box-shadow: 0 1rem 3rem #315B9124; }
+.payment-return-page { min-height: 72vh; display: grid; place-items: center; padding: 3.5rem 1rem; background: radial-gradient(ellipse at 50% 15%,#E9E8F8 0,transparent 58%); }
+.payment-return-card { width: min(100%,37rem); overflow: hidden; border: 1px solid #FFFFFF; border-radius: 1.1rem 1.1rem 2.1rem 1.1rem; background: #F7F7FC; text-align: left; box-shadow: 0 1rem 3rem #315B9124; }
+.payment-return-hero { padding: clamp(1.25rem,4vw,2.1rem); background: linear-gradient(145deg,#E9F5EF 0%,#E9E8F8 100%); text-align: center; }
+.payment-return-hero .eyebrow { justify-content: center; margin: 0 0 .7rem; }
 .payment-return-mark { width: 4.2rem; height: 4.2rem; display: grid; place-items: center; margin: 1rem auto; border-radius: 50% 50% 50% 14%; background: var(--brand-peach); color: var(--ink); font: 700 1.8rem Georgia,serif; }
-.payment-return-paid .payment-return-mark { background: var(--brand-blue); }
-.payment-return-card h1 { max-width: none; font: 500 clamp(2rem,6vw,3rem) Georgia,serif; letter-spacing: -.045em; }
-.payment-return-card > p:not(.eyebrow) { color: #405979; line-height: 1.65; }
-.payment-return-card > div { display: flex; justify-content: center; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
-.payment-return-card > div a { display: inline-flex; align-items: center; justify-content: center; min-height: 2.9rem; }
+.payment-return-paid .payment-return-mark { background: #D5EFE3; color: #28664C; box-shadow: 0 0 0 .45rem #D5EFE355; }
+.payment-return-hero h1 { max-width: none; margin: 0; font: 500 clamp(2rem,6vw,3rem) Georgia,serif; letter-spacing: -.045em; }
+.payment-return-hero > p:not(.eyebrow) { max-width: 35rem; margin: .75rem auto 0; color: #405979; line-height: 1.65; }
+.payment-waiting-note { font-size: .88rem; }
+.payment-receipt-details { display: grid; gap: .8rem; padding: clamp(.9rem,3.5vw,1.4rem); }
+.payment-receipt-statuses { display: flex; flex-wrap: wrap; gap: .45rem; }
+.payment-receipt-statuses span { padding: .42rem .65rem; border: 1px solid #FFFFFF; border-radius: 999px; background: #DDF1E7; color: #28664C; font-size: .68rem; font-weight: 750; }
+.payment-service-summary { padding: 1.1rem; border: 1px solid #FFFFFF; border-radius: .8rem 1.1rem .8rem .8rem; background: #E9E8F866; }
+.payment-service-summary .eyebrow { margin: 0 0 .45rem; font-size: .58rem; }
+.payment-service-summary h2 { margin: 0; color: var(--ink); font: 500 1.45rem Georgia,serif; }
+.payment-service-summary > span { display: block; margin-top: .25rem; color: #607895; font-size: .76rem; }
+.payment-visit-time { display: grid; grid-template-columns: 1.3fr .7fr; gap: .75rem; margin-top: 1rem; padding-top: .9rem; border-top: 1px solid #315B9124; }
+.payment-visit-time > div { display: grid; gap: .3rem; }
+.payment-visit-time small { color: #607895; font-size: .6rem; font-weight: 800; letter-spacing: .1em; }
+.payment-visit-time strong { color: var(--ink); font-size: .78rem; }
+.payment-receipt-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .25rem .1rem; color: #526B8B; font-size: .82rem; }
+.payment-receipt-row > span small { margin-left: .3rem; color: #8192A9; font-size: .63rem; }
+.payment-receipt-row > strong { color: #68493F; font: 500 1.4rem Georgia,serif; }
+.payment-session-row code { max-width: 65%; overflow: hidden; padding: .42rem .55rem; border: 1px solid #315B9128; border-radius: .45rem; background: #E9E8F8; color: #405979; font-size: .68rem; text-overflow: ellipsis; white-space: nowrap; }
+.payment-return-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: .7rem; padding: 0 clamp(1.1rem,4vw,1.8rem) clamp(1.1rem,4vw,1.6rem); }
+.payment-return-actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 2.9rem; }
+.payment-security-note { margin: 0; padding: .9rem 1.25rem; border-top: 1px solid #315B9117; color: #607895; font-size: .7rem; line-height: 1.55; text-align: center; }
+@media (max-width: 520px) { .payment-visit-time { grid-template-columns: 1fr; } .payment-session-row { align-items: flex-start; flex-direction: column; gap: .4rem; } .payment-session-row code { max-width: 100%; } }
 .admin-appointments-table { min-width: 0; }
 .admin-appointments-table-header, .admin-appointment-item { display: grid; grid-template-columns: 4.25rem minmax(12rem,1.55fr) minmax(7rem,.8fr) minmax(5rem,.48fr) minmax(5.7rem,.55fr) minmax(7rem,.72fr) 13.5rem; gap: .9rem; }
 .admin-appointments-table-header { align-items: center; padding: .8rem 1rem; color: #607895; font-size: .61rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }

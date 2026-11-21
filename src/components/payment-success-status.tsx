@@ -9,6 +9,15 @@ import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
 
 type Stage = "checking" | "paid" | "waiting" | "error";
+type PaymentDetails = {
+  serviceName: string;
+  category: string;
+  appointmentDate: string;
+  timeSlot: string;
+  amount: number;
+  currency: string;
+  stripeSessionId: string | null;
+};
 
 export function PaymentSuccessStatus() {
   const params = useSearchParams();
@@ -17,6 +26,7 @@ export function PaymentSuccessStatus() {
   const appointmentId = params.get("appointment_id") || "";
   const [stage, setStage] = useState<Stage>("checking");
   const [message, setMessage] = useState("Stripe is confirming your payment. This page will update when the verified webhook is recorded.");
+  const [details, setDetails] = useState<PaymentDetails | null>(null);
 
   useEffect(() => {
     if (isPending) return;
@@ -32,9 +42,10 @@ export function PaymentSuccessStatus() {
     const checkStatus = async () => {
       try {
         const response = await authenticatedApiFetch(`/api/appointments/${encodeURIComponent(appointmentId)}/payment-status`);
-        const result = await response.json() as { status?: string; paymentStatus?: string; message?: string };
+        const result = await response.json() as { status?: string; paymentStatus?: string; message?: string; appointment?: PaymentDetails };
         if (!response.ok) throw new Error(result.message || "Could not verify this appointment.");
         if (stopped) return;
+        if (result.appointment) setDetails(result.appointment);
         if (result.paymentStatus === "paid") {
           setStage("paid"); setMessage("Payment confirmed. Your appointment is marked paid."); toast.success("Payment confirmed."); return;
         }
@@ -54,5 +65,38 @@ export function PaymentSuccessStatus() {
 
   const displayStage: Stage = !isPending && session && !appointmentId ? "error" : stage;
   const displayMessage = displayStage === "error" && !appointmentId ? "The appointment reference is missing. Check your appointment history for the latest status." : message;
-  return <PublicShell><main className="payment-return-page"><section className={`payment-return-card ${displayStage === "paid" ? "payment-return-paid" : ""}`} aria-live="polite"><p className="eyebrow">SALONBOOK · CHECKOUT</p><span className="payment-return-mark" aria-hidden="true">{displayStage === "paid" ? "✓" : displayStage === "error" ? "!" : "…"}</span><h1>{displayStage === "paid" ? "Payment confirmed" : displayStage === "waiting" ? "Still confirming" : displayStage === "error" ? "Payment status" : "Thank you"}</h1><p>{displayMessage}</p>{displayStage === "waiting" && <p>Stripe has not delivered a verified confirmation yet. Your appointment will remain unpaid until the webhook arrives.</p>}<div><Link className="button-primary" href="/dashboard/customer">View appointments</Link>{displayStage === "waiting" && <button className="secondary-button" onClick={() => window.location.reload()}>Check again</button>}</div></section></main></PublicShell>;
+  const shortSessionId = details?.stripeSessionId
+    ? `${details.stripeSessionId.slice(0, 12)}…${details.stripeSessionId.slice(-8)}`
+    : "Verifying with Stripe";
+  const formattedDate = details ? new Date(details.appointmentDate).toLocaleDateString("en-BD", { weekday: "long", year: "numeric", month: "long", day: "numeric" }) : "";
+
+  return <PublicShell><main className="payment-return-page">
+    <section className={`payment-return-card ${displayStage === "paid" ? "payment-return-paid" : ""}`} aria-live="polite">
+      <div className="payment-return-hero">
+        <span className="payment-return-mark" aria-hidden="true">{displayStage === "paid" ? "✓" : displayStage === "error" ? "!" : "…"}</span>
+        <p className="eyebrow">SALONBOOK · PAYMENT RECEIPT</p>
+        <h1>{displayStage === "paid" ? "Payment verified" : displayStage === "waiting" ? "Payment is confirming" : displayStage === "error" ? "Payment status" : "Checking your payment"}</h1>
+        <p>{displayMessage}</p>
+        {displayStage === "waiting" && <p className="payment-waiting-note">Stripe has not confirmed this payment yet. Your appointment will remain unpaid until verification completes.</p>}
+      </div>
+
+      {displayStage === "paid" && details && <div className="payment-receipt-details">
+        <div className="payment-receipt-statuses"><span>✓ Appointment confirmed</span><span>✓ Paid</span><span>✓ Stripe verified</span></div>
+        <section className="payment-service-summary">
+          <p className="eyebrow">YOUR SALON VISIT</p>
+          <h2>{details.serviceName}</h2>
+          <span>{details.category}</span>
+          <div className="payment-visit-time"><div><small>DATE</small><strong>{formattedDate}</strong></div><div><small>TIME</small><strong>{details.timeSlot}</strong></div></div>
+        </section>
+        <div className="payment-receipt-row"><span>Amount paid <small>{details.currency.toUpperCase()}</small></span><strong>৳{details.amount.toLocaleString("en-BD")}</strong></div>
+        <div className="payment-receipt-row payment-session-row"><span>Stripe session</span><code title={details.stripeSessionId || undefined}>{shortSessionId}</code></div>
+      </div>}
+
+      <div className="payment-return-actions">
+        <Link className="button-primary" href="/dashboard/customer/appointments">View my appointments <span aria-hidden="true">→</span></Link>
+        {displayStage === "waiting" && <button className="secondary-button" onClick={() => window.location.reload()}>Check again</button>}
+      </div>
+      {displayStage === "paid" && <p className="payment-security-note">SalonBook records a payment only after Stripe verifies it. Keep this confirmation for your reference.</p>}
+    </section>
+  </main></PublicShell>;
 }
