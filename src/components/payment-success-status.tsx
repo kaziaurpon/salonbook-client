@@ -85,7 +85,6 @@ export function PaymentSuccessStatus() {
       </div>
 
       {displayStage === "paid" && details && <div className="payment-receipt-details">
-        <div className="payment-receipt-statuses"><span>✓ Appointment confirmed</span><span>✓ Paid</span><span>✓ Stripe verified</span></div>
         <section className="payment-service-summary">
           <p className="eyebrow">YOUR SALON VISIT</p>
           <h2>{details.serviceName}</h2>

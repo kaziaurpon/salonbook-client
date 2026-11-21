@@ -524,8 +524,6 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .payment-return-hero > p:not(.eyebrow) { max-width: 35rem; margin: .75rem auto 0; color: #405979; line-height: 1.65; }
 .payment-waiting-note { font-size: .88rem; }
 .payment-receipt-details { display: grid; gap: .8rem; padding: clamp(.9rem,3.5vw,1.4rem); }
-.payment-receipt-statuses { display: flex; flex-wrap: wrap; gap: .45rem; }
-.payment-receipt-statuses span { padding: .42rem .65rem; border: 1px solid #FFFFFF; border-radius: 999px; background: #DDF1E7; color: #28664C; font-size: .68rem; font-weight: 750; }
 .payment-service-summary { padding: 1.1rem; border: 1px solid #FFFFFF; border-radius: .8rem 1.1rem .8rem .8rem; background: #E9E8F866; }
 .payment-service-summary .eyebrow { margin: 0 0 .45rem; font-size: .58rem; }
 .payment-service-summary h2 { margin: 0; color: var(--ink); font: 500 1.45rem Georgia,serif; }
