@@ -16,7 +16,7 @@ const links = [
 export function AdminSidebar() {
   const pathname = usePathname();
   return <aside className="dashboard-sidebar admin-sidebar">
-    <SalonBookLogo href="/dashboard/admin" className="dashboard-brand" badge="ADMIN" />
+    <SalonBookLogo href="/" className="dashboard-brand" badge="ADMIN" />
     <p className="dashboard-nav-label">WORKSPACE</p>
     <nav aria-label="Admin navigation">{links.map(([label, href]) => {
       const active = href === "/dashboard/admin" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);

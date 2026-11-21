@@ -365,6 +365,17 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .admin-service-heading-actions .admin-refresh { margin-left: 0; }
 .dashboard-site-link { margin-top: auto; border-top: 1px solid #315B9124; border-radius: 0; padding-top: 1rem; }
 .dashboard-content { min-width: 0; }
+.admin-dashboard-topbar { min-height: 4.6rem; display: flex; align-items: center; justify-content: flex-end; gap: 1rem; padding: .15rem 0 .75rem; border-bottom: 1px solid #315B9124; }
+.admin-topbar-account { position: relative; }
+.admin-topbar-trigger { min-height: 3rem; display: inline-flex; align-items: center; gap: .55rem; padding: .35rem .75rem .35rem .4rem; border: 1px solid #FFFFFF; border-radius: 999px; background: #E9E8F8; color: var(--ink); font: inherit; font-size: .85rem; font-weight: 650; cursor: pointer; box-shadow: 0 .3rem .9rem #315B9114; }
+.admin-topbar-trigger > img, .admin-topbar-avatar-fallback { width: 2.15rem; height: 2.15rem; display: grid; place-items: center; overflow: hidden; border: 2px solid #FFFFFF; border-radius: 50%; background: var(--brand-lavender); color: var(--ink); font-weight: 750; object-fit: cover; }
+.admin-topbar-menu { position: absolute; z-index: 40; top: calc(100% + .55rem); right: 0; width: 15rem; display: grid; gap: .15rem; padding: .55rem; border: 1px solid #FFFFFF; border-radius: .85rem .85rem 1.6rem .85rem; background: var(--brand-lavender); box-shadow: 0 1rem 2rem #14223C2B; }
+.admin-topbar-menu > p { margin: .3rem .5rem .45rem; padding-bottom: .65rem; border-bottom: 1px solid #315B9124; color: #607895; font-size: .58rem; font-weight: 800; letter-spacing: .13em; }
+.admin-topbar-menu > p strong { display: block; margin-top: .3rem; color: var(--ink); font-size: .82rem; letter-spacing: 0; }
+.admin-topbar-menu > a, .admin-topbar-menu > button { padding: .58rem .5rem; border: 0; border-radius: .4rem; background: transparent; color: var(--ink); font: inherit; font-size: .78rem; text-align: left; text-decoration: none; cursor: pointer; }
+.admin-topbar-menu > a:hover, .admin-topbar-menu > button:hover { background: #FFFFFFA6; }
+.admin-topbar-menu > button { border-top: 1px solid #315B9124; margin-top: .2rem; padding-top: .7rem; }
+.admin-topbar-loading { width: 7rem; height: 2.5rem; border-radius: 999px; background: #E9E8F8; }
 .dashboard-content > .admin-services-page, .dashboard-content > .customer-appointments { width: min(100%,82rem); padding-top: clamp(1.3rem,3vw,2.5rem); }
 .customer-dashboard-frame { grid-template-columns: 15.5rem minmax(0,1fr); }
 .customer-dashboard-frame .dashboard-sidebar { background: #E9E8F8D9; }

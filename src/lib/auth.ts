@@ -78,6 +78,17 @@ export const auth = betterAuth({
       },
     },
   },
+  databaseHooks: {
+    user: {
+      create: {
+        // Public signup (email or OAuth) always creates a customer. The local
+        // provisioning CLI promotes the designated admin account afterwards.
+        before: async (user) => ({
+          data: { ...user, role: "customer", isBlocked: false },
+        }),
+      },
+    },
+  },
   hooks: {
     before: createAuthMiddleware(async (context) => {
       if (context.path !== "/sign-up/email") return;
