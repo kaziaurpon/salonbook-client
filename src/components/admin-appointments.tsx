@@ -88,12 +88,17 @@ export function AdminAppointments() {
       <header className="admin-services-heading"><div><Link className="brand" href="/dashboard/admin">← Admin dashboard</Link><p className="eyebrow">BOOKING QUEUE</p><h1>Appointment requests</h1><p>Review customer requests and update their status.</p></div><button className="secondary-button admin-refresh" onClick={() => void load()} disabled={loading}>Refresh</button></header>
       {!loading && !error && <section className="appointment-stats" aria-label="Appointment request totals"><article><span>All requests</span><strong>{totals.total}</strong></article><article><span>Pending</span><strong>{totals.pending}</strong></article><article><span>Confirmed</span><strong>{totals.confirmed}</strong></article><article><span>Cancelled</span><strong>{totals.cancelled}</strong></article></section>}
       {loading ? <p className="service-message">Loading appointment requests…</p> : error ? <div className="service-message service-error"><p>{error}</p><button onClick={() => void load()}>Try again</button></div> : appointments.length === 0 ? <p className="service-message">There are no appointment requests yet.</p> : (
-        <div className="appointment-list">
+        <div className="admin-appointments-table">
+          <div className="admin-appointments-table-header" aria-hidden="true"><span>Service &amp; customer</span><span>Date &amp; time</span><span>Price</span><span>Appointment / payment</span><span>Requested</span><span>Actions</span></div>
+          <div className="appointment-list">
           {appointments.map((item) => (
             <article className="appointment-item admin-appointment-item" key={item._id}>
-              {item.serviceId?.image && <img src={item.serviceId.image} alt="" />}
-              <div className="appointment-main"><p className="service-category">{item.serviceId?.category || "Salon service"}</p><h3>{item.serviceId?.serviceName || "Service unavailable"}</h3><p>{new Date(item.appointmentDate).toLocaleDateString()} · {item.timeSlot}</p><p>Customer: {item.customer?.name || "Unknown"} · {item.customer?.email || "No email"}</p><p>Requested {new Date(item.createdAt).toLocaleString()}</p>{item.message && <p className="appointment-message">“{item.message}”</p>}</div>
-              <div className="appointment-statuses"><span className={`status-pill ${item.status}`}>{item.status}</span><span className={`status-pill ${item.paymentStatus}`}>{item.paymentStatus}</span><strong>৳{item.servicePrice.toLocaleString()}</strong></div>
+              {item.serviceId?.image ? <img src={item.serviceId.image} alt="" /> : <div className="admin-appointment-image-fallback" aria-hidden="true">S</div>}
+              <div className="appointment-main admin-appointment-service"><p className="service-category">{item.serviceId?.category || "Salon service"}</p><h3>{item.serviceId?.serviceName || "Service unavailable"}</h3><p className="admin-appointment-customer">{item.customer?.name || "Unknown customer"}</p><p className="admin-appointment-email">{item.customer?.email || "No email available"}</p>{item.message && <p className="appointment-message">“{item.message}”</p>}</div>
+              <div className="admin-appointment-cell admin-appointment-visit"><strong>{new Date(item.appointmentDate).toLocaleDateString()}</strong><small>{item.timeSlot}</small></div>
+              <div className="admin-appointment-cell admin-appointment-price"><strong>৳{item.servicePrice.toLocaleString()}</strong></div>
+              <div className="appointment-statuses admin-appointment-statuses"><span className={`status-pill ${item.status}`}>{item.status}</span><span className={`status-pill ${item.paymentStatus}`}>{item.paymentStatus}</span></div>
+              <div className="admin-appointment-cell admin-appointment-requested"><strong>{new Date(item.createdAt).toLocaleDateString()}</strong><small>{new Date(item.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</small></div>
               <div className="admin-item-actions">
                 <button className="secondary-button" onClick={() => setDetailsTarget(item)}>Details</button>
                 {item.status === "pending" && <button className="text-button" disabled={busyId === item._id} onClick={() => void updateStatus(item, "confirmed")}>Confirm</button>}
@@ -101,6 +106,7 @@ export function AdminAppointments() {
               </div>
             </article>
           ))}
+          </div>
         </div>
       )}
       {!loading && !error && totals.total > 0 && <nav className="admin-pagination" aria-label="Appointment pages"><button className="secondary-button" disabled={page <= 1} onClick={() => setPage((value) => value - 1)}>Previous</button><span>Page {page} of {pages} · {totals.total} requests</span><button className="secondary-button" disabled={page >= pages} onClick={() => setPage((value) => value + 1)}>Next</button></nav>}

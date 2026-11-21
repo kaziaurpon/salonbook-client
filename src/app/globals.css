@@ -463,8 +463,41 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .payment-return-card > p:not(.eyebrow) { color: #405979; line-height: 1.65; }
 .payment-return-card > div { display: flex; justify-content: center; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
 .payment-return-card > div a { display: inline-flex; align-items: center; justify-content: center; min-height: 2.9rem; }
-.admin-appointment-item { grid-template-columns: 5rem minmax(0,1fr) auto minmax(7rem,auto); }
-.appointment-item > .text-button, .appointment-item > .admin-item-actions { justify-self: end; }
+.admin-appointments-table { min-width: 0; }
+.admin-appointments-table-header, .admin-appointment-item { display: grid; grid-template-columns: 4.25rem minmax(12rem,1.55fr) minmax(7rem,.8fr) minmax(5rem,.48fr) minmax(5.7rem,.55fr) minmax(7rem,.72fr) 13.5rem; gap: .9rem; }
+.admin-appointments-table-header { align-items: center; padding: .8rem 1rem; color: #607895; font-size: .61rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.admin-appointments-table-header span:first-child { grid-column: 1 / 3; }
+.admin-appointments-table-header span:nth-child(2) { grid-column: 3; }
+.admin-appointments-table-header span:nth-child(3) { grid-column: 4; }
+.admin-appointments-table-header span:nth-child(4) { grid-column: 5; }
+.admin-appointments-table-header span:nth-child(5) { grid-column: 6; }
+.admin-appointments-table-header span:nth-child(6) { grid-column: 7; }
+.admin-appointments-table-header span:last-child { text-align: center; }
+.admin-appointment-item { grid-template-areas: "image service visit price status requested actions"; padding: 1rem; border-radius: .85rem 1.2rem 1.7rem .85rem; background: #E9E8F8; box-shadow: 0 .45rem 1.1rem #315B9110; }
+.admin-appointment-item > img, .admin-appointment-image-fallback { grid-area: image; }
+.admin-appointment-service { grid-area: service; }
+.admin-appointment-visit { grid-area: visit; }
+.admin-appointment-price { grid-area: price; }
+.admin-appointment-statuses { grid-area: status; }
+.admin-appointment-requested { grid-area: requested; }
+.admin-appointment-item .admin-item-actions { grid-area: actions; }
+.admin-appointment-item > img, .admin-appointment-image-fallback { width: 4.25rem; height: 4.25rem; border-radius: .7rem 1rem .7rem .7rem; }
+.admin-appointment-image-fallback { display: grid; place-items: center; background: #F5B69E; color: var(--ink); font: 500 1.6rem Georgia,serif; }
+.admin-appointment-service .service-category { margin: 0 0 .25rem; font-size: .64rem; letter-spacing: .12em; }
+.admin-appointment-service h3 { margin: 0 0 .3rem; font-size: .96rem; }
+.admin-appointment-service .admin-appointment-customer { margin: 0; color: var(--ink); font-size: .78rem; font-weight: 750; }
+.admin-appointment-service .admin-appointment-email { margin: .12rem 0 0; color: #607895; font-size: .72rem; overflow-wrap: anywhere; }
+.admin-appointment-service .appointment-message { margin: .35rem 0 0; color: #607895; font-size: .72rem; line-height: 1.35; }
+.admin-appointment-cell { display: grid; align-content: center; gap: .2rem; min-width: 0; }
+.admin-appointment-cell > strong { color: var(--ink); font-size: .77rem; font-weight: 750; }
+.admin-appointment-cell > small { color: #405979; font-size: .72rem; }
+.admin-appointment-price > strong { font-size: .9rem; white-space: nowrap; }
+.admin-appointment-statuses { justify-items: start; gap: .32rem; }
+.admin-appointment-statuses .status-pill { padding: .28rem .48rem; font-size: .67rem; }
+.admin-appointment-statuses .pending { background: #F5B69E; color: #51372F; }
+.admin-appointment-item .admin-item-actions { justify-self: end; gap: .3rem; align-items: center; }
+.admin-appointment-item .admin-item-actions .secondary-button { min-height: 2.3rem; padding: .48rem .65rem; font-size: .73rem; }
+.admin-appointment-item .admin-item-actions .text-button { font-size: .75rem; }
 .customer-appointments .appointments-heading { margin-bottom: 1.5rem; }
 
 /* Feedback */
@@ -703,6 +736,18 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .appointment-item, .admin-appointment-item { grid-template-columns: 3.25rem minmax(0,1fr); }
   .appointment-item > img { width: 3.25rem; height: 3.25rem; }
   .appointment-statuses, .appointment-item > .text-button, .appointment-item > .admin-item-actions { grid-column: 1 / -1; grid-row: auto; justify-self: start; }
+}
+@media (max-width: 1000px) {
+  .admin-appointments-table-header { display: none; }
+  .admin-appointment-item { grid-template-columns: 3.5rem minmax(0,1fr) minmax(6.5rem,.7fr) 13.5rem; grid-template-areas: "image service service service" "visit visit price status" "requested requested actions actions"; }
+  .admin-appointment-item > img, .admin-appointment-image-fallback { width: 3.5rem; height: 3.5rem; }
+  .admin-appointment-item .admin-item-actions { justify-self: end; }
+}
+@media (max-width: 620px) {
+  .admin-appointment-item { grid-template-columns: minmax(0,1fr) minmax(0,1fr); grid-template-areas: "image service" "visit price" "status requested" "actions actions"; gap: .75rem; }
+  .admin-appointment-item > img, .admin-appointment-image-fallback { width: 3.25rem; height: 3.25rem; }
+  .admin-appointment-item .admin-item-actions { justify-self: start; flex-wrap: wrap; }
+  .admin-appointment-item .admin-item-actions .secondary-button { min-height: 2.1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
