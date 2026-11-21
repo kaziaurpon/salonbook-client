@@ -18,7 +18,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [~] Better Auth, registration/login, Google provider config, JWT handoff, Express JWT and current-role guards are implemented. Local email/password persistence and API authorization were verified; Google OAuth still needs a real browser consent test.
 - [~] Public service browsing, admin service/image management, dashboards, appointments, and Stripe test-mode payment are implemented. Signed Stripe test-event replay, invalid-signature rejection, and payment idempotency were verified locally.
 - [x] One initial scaffold commit exists in each repository and has been pushed.
-- [~] Local Git history now contains 23 client commits and 14 server commits. The client has nine commits ahead of GitHub and the server has four; pending client working-tree changes still need the user's commit and both repos need pushing to sync.
+- [~] Local Git history now contains 51 client commits and 20 server commits, exceeding the 20/12 minimums. Both working trees are clean; 25 client commits and six server commits are ahead of GitHub and still need pushing.
 - [ ] Product features are not deployed; live website and submission links remain outstanding.
 
 ## Repository, documentation, and delivery
@@ -26,10 +26,10 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Separate client and server repositories; no parent repository.
 - [x] Client repository: `https://github.com/kaziaurpon/salonbook-client`.
 - [x] Server repository: `https://github.com/kaziaurpon/salonbook-server`.
-- [x] Meaningful client commit minimum: 23 commits exist in local history; nine are ahead of origin and local working-tree changes remain uncommitted.
-- [x] Meaningful server commit minimum: 14 commits exist in local history; four are ahead of origin.
-- [x] Client README includes description, features, stack, install/run instructions, environment variable names, live link placeholder, and both repository links.
-- [x] Server README includes description, features, stack, install/run instructions, environment variable names, live link placeholder, and both repository links.
+- [x] Meaningful client commit minimum: 51 commits exist in local history; 25 are ahead of origin and the working tree is clean.
+- [x] Meaningful server commit minimum: 20 commits exist in local history; six are ahead of origin and the working tree is clean.
+- [~] Client README includes description, features, stack, install/run instructions, environment variable names, and both repository links; the live website URL is still a placeholder.
+- [~] Server README includes description, features, stack, install/run instructions, environment variable names, and both repository links; the live API URL is still a placeholder.
 - [ ] Production deployment and working live site URL.
 - [ ] Securely provision evaluator admin credentials and provide submission details.
 
@@ -139,7 +139,7 @@ Status: `[x]` complete, `[~]` partly complete, `[ ]` not complete.
 - [x] Search by service name and sort by price work on the client and API; paginated API and category filtering are also available.
 - [~] Latest local production build direct HTTP reload returned 200 for home, service list/detail (including invalid ID), payment return, and customer/admin dashboard/profile/transaction routes. Protected API requests reject missing auth and enforce current role; production route reload still needs post-deploy verification.
 - [~] Local CORS and route behavior passed; production CORS/404/504 behavior is pending deployment.
-- [~] Latest client production build and server TypeScript build pass. Client lint exits successfully with eight Next.js image-optimization warnings for externally hosted images. Better Auth logs five MongoDB index-creation errors during static generation, although a prior read-only check found all five indexes present. Local direct reload returned 200 across tested routes. Stripe webhook signature, retry idempotency, and invalid-signature rejection passed. Newly added admin pagination and Google linking need browser verification; manual CRUD/image upload and appointment edge cases remain to be retested.
+- [~] Latest client production build and server TypeScript build pass. Client lint exits successfully with eight Next.js image-optimization warnings for externally hosted images. Better Auth logs five MongoDB index-creation errors during static generation, although a prior read-only check found all five indexes present. Local direct reload returned 200 across tested routes. Stripe webhook signature, retry idempotency, and invalid-signature rejection passed. Manual CRUD/image upload, Google OAuth consent, and appointment edge cases remain to be retested in a browser.
 - [x] Git-history scan found no tracked `.env` files or credential patterns in either repo. Environment files are ignored and examples contain variable names with blank values only.
 
 ## Decisions still to confirm or configure
