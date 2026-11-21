@@ -65,6 +65,10 @@ export function PaymentSuccessStatus() {
 
   const displayStage: Stage = !isPending && session && !appointmentId ? "error" : stage;
   const displayMessage = displayStage === "error" && !appointmentId ? "The appointment reference is missing. Check your appointment history for the latest status." : message;
+  useEffect(() => {
+    if (displayStage === "error") toast.error(displayMessage);
+  }, [displayMessage, displayStage]);
+
   const shortSessionId = details?.stripeSessionId
     ? `${details.stripeSessionId.slice(0, 12)}…${details.stripeSessionId.slice(-8)}`
     : "Verifying with Stripe";
