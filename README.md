@@ -1,48 +1,105 @@
-# SalonBook — Client
+# SalonBook Client
 
-SalonBook is a responsive salon appointment booking platform. This repository contains the Next.js App Router frontend and Better Auth integration. The Express API lives in a separate repository and the frontend reads salon data from that API.
+SalonBook is a salon discovery and appointment-booking platform. This repository contains the responsive Next.js website, customer and admin workspaces, and Better Auth integration. The [SalonBook Server](https://github.com/kaziaurpon/salonbook-server) provides the REST API used for salon services, appointments, customer management, and payments.
+
+## Project overview
+
+Customers can browse salon services, manage their appointments, and pay for confirmed bookings. Administrators can manage the service catalog, appointments, customer access, and payment records from a protected dashboard.
+
+The Client owns authentication and sessions. It stores Better Auth records in MongoDB and sends authenticated requests to the Server, which verifies the signed identity token using Better Auth's JWKS endpoint.
 
 ## Features
 
-- Public home page and active service catalog with search, category filtering, and price sorting.
-- Protected service details and appointment requests.
-- Customer dashboard for appointment history, cancellation, payment, and profile updates.
-- Admin dashboard for services, appointments, customers, read-only transactions, and profile updates.
-- Email/password and Google sign-in through Better Auth.
-- Stripe hosted test-mode checkout; the API webhook, never the browser return page, confirms payment.
-- Powder Blue, Lavender, and Peach responsive interface.
+- Responsive public home page and service catalog with search, category filters, featured services, and price sorting.
+- Protected service details and appointment requests with available-slot handling.
+- Customer workspace for appointment history, cancellation, payment, and profile updates.
+- Admin workspace for services, image uploads, appointments, customers, transactions, and profile updates.
+- Email/password and Google sign-in with Better Auth.
+- Stripe hosted checkout. Payment status is confirmed by the Server's signed webhook, not by the browser redirect.
+- Light and dark themes, including a saved theme preference.
+- Branded Powder Blue, Lavender, and Peach design with responsive layouts.
 
-## Stack
+## Technology stack
 
-Next.js App Router, React, TypeScript, Better Auth, MongoDB Better Auth adapter, and Sonner notifications.
+| Area | Technology |
+| --- | --- |
+| Web framework | Next.js App Router |
+| UI | React, TypeScript, CSS |
+| Authentication | Better Auth, MongoDB adapter |
+| API communication | Fetch-based client for the SalonBook Server |
+| Notifications and icons | Sonner, Lucide React |
+| Payments | Stripe Checkout |
+| Hosting | Vercel |
 
-## Run locally
+## Installation and local development
 
-Requirements: Node.js 20.9 or newer, npm, MongoDB Atlas or a local MongoDB instance, and the separate SalonBook Server checkout.
+### Requirements
 
-1. Install dependencies with `npm install`.
-2. Copy `.env.example` to `.env.local`. If `.env.local` already exists, keep it and add any missing variable names instead of overwriting it.
-3. Set the MongoDB URI and database name shared with the server. Generate `BETTER_AUTH_SECRET` with `openssl rand -base64 32` and keep it private.
-4. In a separate terminal, start the API from the server repository with `npm run dev`.
-5. Start this app with `npm run dev` and open `http://localhost:3000`.
+- Node.js 20.9 or newer and npm.
+- MongoDB Atlas or a local MongoDB instance.
+- A local checkout of the [SalonBook Server](https://github.com/kaziaurpon/salonbook-server).
 
-To enable Google sign-in locally, add a Google OAuth Web application and authorize this exact callback URI:
+### Set up the Client
+
+1. Clone this repository and enter the project directory.
+
+   ```bash
+   git clone https://github.com/kaziaurpon/salonbook-client.git
+   cd salonbook-client
+   ```
+
+2. Install dependencies and create a local environment file:
+
+   ```bash
+   npm install
+   cp .env.example .env.local
+   ```
+
+   If `.env.local` already exists, keep it and add any missing variables rather than replacing it.
+
+3. Add the required local values to `.env.local`. Use the same MongoDB database and database name for the Client and Server. Generate a private Better Auth secret with `openssl rand -base64 32`.
+
+4. Start the Server in a separate terminal by following its [local setup instructions](https://github.com/kaziaurpon/salonbook-server#installation-and-local-development).
+
+5. Start the Client:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000).
+
+### Google sign-in
+
+For local Google sign-in, configure a Google OAuth Web application and add this authorized redirect URI:
 
 ```text
 http://localhost:3000/api/auth/callback/google
 ```
 
-To create an admin securely, temporarily set `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` in `.env.local`, then run:
+### Create an administrator
+
+Public registration creates customer accounts only. To provision an administrator, temporarily add `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` to `.env.local`, then run:
 
 ```bash
 npm run provision:admin -- --confirm-admin-provision
 ```
 
-Remove those temporary admin values afterwards. Public registration cannot create admins.
+Remove the temporary administrator values from `.env.local` after provisioning.
 
-## Environment variable names
+## Available scripts
 
-Names only; put values in ignored `.env.local`, never in Git:
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the local Next.js development server. |
+| `npm run build` | Create a production build. |
+| `npm start` | Serve the production build. |
+| `npm run lint` | Run ESLint. |
+| `npm run provision:admin -- --confirm-admin-provision` | Provision an administrator account. |
+
+## Required environment variables
+
+Variable names only. Keep private values in `.env.local` or the hosting provider's environment settings; never commit them.
 
 ```text
 MONGODB_URI
@@ -53,9 +110,9 @@ GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET
 NEXT_PUBLIC_BETTER_AUTH_URL
 NEXT_PUBLIC_API_URL
-ADMIN_NAME (temporary provisioning only)
-ADMIN_EMAIL (temporary provisioning only)
-ADMIN_PASSWORD (temporary provisioning only)
+ADMIN_NAME
+ADMIN_EMAIL
+ADMIN_PASSWORD
 NEXT_PUBLIC_SALON_PHONE
 NEXT_PUBLIC_SALON_EMAIL
 NEXT_PUBLIC_SALON_ADDRESS
@@ -65,18 +122,28 @@ NEXT_PUBLIC_FACEBOOK_URL
 NEXT_PUBLIC_X_URL
 ```
 
-The `NEXT_PUBLIC_` salon contact variables are public display information, not secrets. The footer has the current SalonBook phone, email, address, opening hours, and platform home links as defaults; set these variables only when replacing them with updated public business details or profile links.
+`ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` are needed only for administrator provisioning. The `NEXT_PUBLIC_SALON_*` and social-link variables contain public display information; the site has defaults when they are omitted.
 
-## Deployment — Vercel
+## Deployment
 
-1. Import the `salonbook-client` GitHub repository as a Next.js project. The repository root is the app root; use the default install/build settings (`npm install`, `npm run build`).
-2. Add the client environment variables above in Vercel Project Settings → Environment Variables. Set `BETTER_AUTH_URL` and `NEXT_PUBLIC_BETTER_AUTH_URL` to the final client origin, for example `https://<client-domain>`; set `NEXT_PUBLIC_API_URL` to `https://<api-domain>`.
-3. Use a unique production `BETTER_AUTH_SECRET` of at least 32 characters. Configure the production Google callback as `https://<client-domain>/api/auth/callback/google` in Google Cloud Console.
-4. After setting variables or changing the domain, create a fresh deployment. Vercel applies environment changes to new builds/deployments.
-5. Replace the live link placeholder below only after confirming direct route reloads, login persistence, CORS, and the Stripe webhook on the deployed system.
+The Client is deployed on Vercel. Use the repository root as the project root and the standard Next.js install/build settings (`npm install` and `npm run build`). Configure production environment variables in Vercel Project Settings → Environment Variables, then create a new deployment after changing environment values.
+
+Production origins:
+
+- Client: `https://salonbook-client-olive.vercel.app`
+- Server API: `https://salonbook-server-slxb.onrender.com`
+
+Set `BETTER_AUTH_URL` and `NEXT_PUBLIC_BETTER_AUTH_URL` to the Client origin, and `NEXT_PUBLIC_API_URL` to the Server origin. Configure this production Google redirect URI in Google Cloud Console:
+
+```text
+https://salonbook-client-olive.vercel.app/api/auth/callback/google
+```
+
+For the Server's Render configuration, Stripe webhook setup, and shared authentication settings, follow the [Server deployment guide](https://github.com/kaziaurpon/salonbook-server#deployment).
 
 ## Links
 
-- Live website: **Not deployed yet — add the verified URL here.**
-- Client repository: https://github.com/kaziaurpon/salonbook-client
-- Server repository: https://github.com/kaziaurpon/salonbook-server
+- Live website: [salonbook-client-olive.vercel.app](https://salonbook-client-olive.vercel.app)
+- Live API health: [salonbook-server-slxb.onrender.com/api/health](https://salonbook-server-slxb.onrender.com/api/health)
+- Client repository: [kaziaurpon/salonbook-client](https://github.com/kaziaurpon/salonbook-client)
+- Server repository: [kaziaurpon/salonbook-server](https://github.com/kaziaurpon/salonbook-server)
