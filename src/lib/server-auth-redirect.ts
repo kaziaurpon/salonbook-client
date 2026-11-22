@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
@@ -5,9 +6,16 @@ import { loginPathFor, safeInternalPath } from "@/lib/auth-redirect";
 
 type Role = "admin" | "customer";
 
-export async function requireSalonBookUser(requiredRole?: Role) {
+// Dashboard layouts are nested, so a single navigation can otherwise query the
+// auth database more than once while rendering the same request.
+const getRequestSession = cache(async () => {
   const requestHeaders = await headers();
   const session = await auth.api.getSession({ headers: requestHeaders });
+  return { requestHeaders, session };
+});
+
+export async function requireSalonBookUser(requiredRole?: Role) {
+  const { requestHeaders, session } = await getRequestSession();
   const requestPath = safeInternalPath(requestHeaders.get("x-salonbook-request-path")) ?? "/";
 
   if (!session) redirect(loginPathFor(requestPath));

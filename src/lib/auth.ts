@@ -10,7 +10,9 @@ const globalForMongo = globalThis as typeof globalThis & { salonBookMongo?: Mong
 // A local placeholder keeps static builds independent of deployment secrets. The auth route
 // returns 503 until real environment values are present, so this URI is never used for auth.
 const mongoClient = globalForMongo.salonBookMongo ?? new MongoClient(mongoUri || "mongodb://127.0.0.1:27017/salonbook_missing_configuration");
-if (process.env.NODE_ENV !== "production") globalForMongo.salonBookMongo = mongoClient;
+// Reuse the client in production server instances too. Creating a pool per module
+// instance can exhaust Atlas connections when server-rendered routes run in parallel.
+globalForMongo.salonBookMongo = mongoClient;
 
 const database = mongoClient.db(process.env.DATABASE_NAME || undefined);
 const baseURL = process.env.BETTER_AUTH_URL || "http://localhost:3000";
