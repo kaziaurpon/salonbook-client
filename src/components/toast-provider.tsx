@@ -18,5 +18,5 @@ export function ToastProvider() {
     return () => window.removeEventListener("salonbook-theme-change", syncTheme);
   }, []);
 
-  return <Toaster richColors position="top-right" theme={theme} toastOptions={{ classNames: { toast: "salon-toast" } }} />;
+  return <Toaster richColors position="top-center" theme={theme} toastOptions={{ classNames: { toast: "salon-toast" } }} />;
 }
