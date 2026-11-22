@@ -171,9 +171,9 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   0%, 100% { transform: rotate(-4deg) translateX(-3px); }
   50% { transform: rotate(4deg) translateX(3px); }
 }
-.service-marquee { width: 100%; min-height: 5rem; display: flex; align-items: center; overflow: hidden; border-block: 1px solid #A4655140; background: var(--brand-peach); color: var(--text-on-accent); }
-.service-marquee-track { display: flex; align-items: stretch; width: max-content; min-height: 5rem; animation: salon-services-scroll 36s linear infinite; will-change: transform; }
-.service-marquee-group { display: flex; flex: none; align-items: center; gap: clamp(1.5rem, 3.5vw, 3.4rem); padding: 1.15rem clamp(1.25rem, 3vw, 2.5rem); }
+.service-marquee { width: 100%; min-height: 4.25rem; display: flex; align-items: center; overflow: hidden; border-block: 1px solid #A4655140; background: var(--brand-peach); color: var(--text-on-accent); }
+.service-marquee-track { display: flex; align-items: stretch; width: max-content; min-height: 4.25rem; animation: salon-services-scroll 36s linear infinite; will-change: transform; }
+.service-marquee-group { display: flex; flex: none; align-items: center; gap: clamp(1.5rem, 3.5vw, 3.4rem); padding: .8rem clamp(1.25rem, 3vw, 2.5rem); }
 .service-marquee-item { display: inline-flex; flex: none; align-items: center; gap: clamp(1.5rem, 3.5vw, 3.4rem); color: var(--text-on-accent); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.1rem, 2vw, 1.55rem); letter-spacing: -.025em; line-height: 1; white-space: nowrap; }
 .service-marquee-star { color: var(--text-on-accent); font-family: Arial, Helvetica, sans-serif; font-size: .9rem; line-height: 1; }
 .service-marquee:hover .service-marquee-track { animation-play-state: paused; }
@@ -867,6 +867,7 @@ html.dark .customer-stats article:nth-child(2), html.dark .status-pill.pending, 
 html.dark .admin-sidebar nav a[aria-current="page"] { color: var(--text-on-accent); }
 html.dark .google-auth-button { color: var(--ink); }
 html.dark .service-skeleton { background: linear-gradient(100deg, #232B45 20%, #2F3858 40%, #232B45 60%); }
+html.dark .service-marquee-group { padding-top: 1.05rem; padding-bottom: .55rem; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
