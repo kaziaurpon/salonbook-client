@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { SalonBookLogo } from "@/components/salonbook-logo";
@@ -54,10 +54,9 @@ function LoginForm() {
     window.location.assign(destination);
   }
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function onSubmit(formElement: HTMLFormElement) {
     setLoading(true);
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formElement);
     try {
       const result = await authClient.signIn.email({
         email: String(form.get("email")),
@@ -93,10 +92,13 @@ function LoginForm() {
         <h1>Sign in to your account</h1>
         {sessionPending && <p className="auth-hint">Checking your current sign-in…</p>}
         {search.get("error") === "google-link-required" || search.get("error") === "account_not_linked" ? <p className="form-error">This Google email may already have a SalonBook account. First sign in here with that account’s email and password, then open My profile and choose “Link Google account”. Use the same email address.</p> : search.get("error") && <p className="form-error">Google sign-in could not be completed. Check the OAuth setup and try again.</p>}
-        <form onSubmit={onSubmit} className="auth-form">
+        <form onSubmit={(event) => event.preventDefault()} className="auth-form">
           <label>Email<input name="email" type="email" autoComplete="email" required /></label>
           <label>Password<input name="password" type="password" autoComplete="current-password" required /></label>
-          <button disabled={loading}>{loading ? "Signing in…" : "Sign in"}</button>
+          <button type="button" disabled={loading} onClick={(event) => {
+            const form = event.currentTarget.form;
+            if (form?.reportValidity()) void onSubmit(form);
+          }}>{loading ? "Signing in…" : "Sign in"}</button>
         </form>
         <div className="auth-divider"><span>or</span></div>
         <button className="secondary-button google-auth-button" disabled={loading} onClick={googleLogin}><GoogleMark />Continue with Google</button>
