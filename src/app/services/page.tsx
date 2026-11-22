@@ -51,7 +51,7 @@ export default function BrowseServicesPage() {
       }).finally(() => {
         if (!controller.signal.aborted) setLoading(false);
       });
-    }, 180);
+    }, 100);
     return () => { window.clearTimeout(timer); controller.abort(); };
   }, [category, retry, search, sort]);
 
