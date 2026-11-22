@@ -1,33 +1,35 @@
 :root {
   color-scheme: light;
+  --page-base: #E9E8F8;
+  --page-bg: radial-gradient(ellipse 76% 72% at 0% 0%, rgb(141 185 240 / 80%), transparent 100%), radial-gradient(ellipse 50% 50% at 100% 100%, rgb(245 182 158 / 35%), transparent 100%), radial-gradient(ellipse 38% 36% at 100% 0%, rgb(141 185 240 / 38%), transparent 100%), var(--page-base);
   --brand-blue: #8DB9F0;
-  --brand-lavender: #E9E8F8;
+  --brand-lavender: rgb(255 255 255 / 60%);
   --brand-peach: #F5B69E;
-  --bg: var(--brand-blue);
-  --surface: var(--brand-lavender);
+  --bg: var(--page-base);
+  --surface: rgb(255 255 255 / 60%);
   --elevated: #F8F8FD;
   --border: #A9B9D1;
   --text: #1E2B43;
-  --muted: #4F5F78;
+  --muted: #46566E;
   --primary: #315B91;
   --accent: var(--brand-peach);
-  --header-bg: #8DB9F0F2;
+  --header-bg: color-mix(in srgb, rgb(255 255 255 / 60%) 75%, rgb(141 185 240 / 60%));
   --ink: #1E2B43;
-  --muted-ink: #4F5F78;
-  --blue-deep: #315B91;
+  --muted-ink: #46566E;
+  --blue-deep: #274F7C;
   --blue-border: #839DC0;
-  --peach-deep: #8A5547;
-  --surface-light: var(--elevated);
-  --surface-raised: #FFFFFF;
+  --peach-deep: #704232;
+  --surface-light: rgb(255 255 255 / 60%);
+  --surface-raised: rgb(255 255 255 / 92%);
   --surface-tint: #E9E8F8A8;
   --line: var(--border);
-  --text-subtle: #607895;
+  --text-subtle: #46566E;
   --text-on-accent: #1E2B43;
   --shadow: #172B4520;
   --on-photo: #FFFCF7;
   --on-photo-muted: #F6F5F8E8;
-  --highlight-soft: #FFFFFF0A;
-  --highlight-faint: #FFFFFF08;
+  --highlight-soft: rgb(255 255 255 / 4%);
+  --highlight-faint: rgb(255 255 255 / 3%);
   --surface-glass: #E9E8F82B;
   --surface-glow: #E9E8F877;
   --surface-wash: #E9E8F80D;
@@ -40,29 +42,31 @@
   --status-neutral-text: #424A5D;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--ink);
-  background: var(--brand-blue);
+  background: var(--page-base);
 }
 
 html.dark {
   color-scheme: dark;
+  --page-base: #0F1424;
+  --page-bg: radial-gradient(ellipse 60% 60% at 0% 0%, rgb(26 33 69 / 90%), transparent 100%), radial-gradient(ellipse 25% 25% at 100% 0%, rgb(141 185 240 / 10%), transparent 100%), radial-gradient(ellipse 50% 50% at 100% 100%, rgb(245 182 158 / 12%), transparent 100%), var(--page-base);
   --bg: #0F1424;
-  --surface: #1A2036;
+  --surface: rgb(26 32 54 / 70%);
   --elevated: #232B45;
   --border: #2F3858;
   --text: #E9E8F8;
   --muted: #A7AECB;
   --primary: #8DB9F0;
   --accent: #F5B69E;
-  --header-bg: #0F1424F2;
+  --header-bg: rgb(26 32 54 / 70%);
   --brand-blue: #0F1424;
-  --brand-lavender: #1A2036;
+  --brand-lavender: rgb(26 32 54 / 70%);
   --brand-peach: #F5B69E;
   --ink: #E9E8F8;
   --muted-ink: #A7AECB;
   --blue-deep: #8DB9F0;
   --blue-border: #2F3858;
   --peach-deep: #F5B69E;
-  --surface-light: var(--elevated);
+  --surface-light: rgb(26 32 54 / 70%);
   --surface-raised: #232B45;
   --surface-tint: #232B45;
   --line: var(--border);
@@ -79,5 +83,15 @@ html.dark {
   --status-success-text: #A2E5C5;
   --status-neutral-bg: #2B3044;
   --status-neutral-text: #C3C7D9;
-  background: var(--brand-blue);
+  background: var(--page-base);
+}
+
+@media (max-width: 620px) {
+  :root {
+    --page-bg: radial-gradient(ellipse 58% 54% at 0% 0%, rgb(141 185 240 / 80%), transparent 100%), radial-gradient(ellipse 38% 40% at 100% 100%, rgb(245 182 158 / 35%), transparent 100%), radial-gradient(ellipse 28% 27% at 100% 0%, rgb(141 185 240 / 38%), transparent 100%), var(--page-base);
+  }
+
+  html.dark {
+    --page-bg: radial-gradient(ellipse 44% 42% at 0% 0%, rgb(26 33 69 / 90%), transparent 100%), radial-gradient(ellipse 20% 20% at 100% 0%, rgb(141 185 240 / 10%), transparent 100%), radial-gradient(ellipse 38% 40% at 100% 100%, rgb(245 182 158 / 12%), transparent 100%), var(--page-base);
+  }
 }

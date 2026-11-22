@@ -1,8 +1,8 @@
 @import "./design-tokens.css";
 
 * { box-sizing: border-box; }
-html { min-height: 100%; background: var(--brand-blue); scroll-behavior: smooth; }
-body { min-height: 100vh; margin: 0; background: var(--brand-blue); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+html { min-height: 100%; background: var(--page-bg); background-attachment: fixed; scroll-behavior: smooth; }
+body { min-height: 100vh; margin: 0; background: var(--page-bg); background-attachment: fixed; color: var(--ink); font-family: Arial, Helvetica, sans-serif; transition: color 200ms ease; }
 a { color: inherit; }
 button, input, select, textarea { font: inherit; }
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
@@ -40,7 +40,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .auth-divider::before, .auth-divider::after { height: 1px; flex: 1; background: #9CB7DC; content: ""; }
 
 /* Authentication and dashboard gate */
-.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 2rem 1rem; background: radial-gradient(ellipse at 80% 16%, #F5B69E88, transparent 26%), radial-gradient(ellipse at 10% 90%, var(--surface-glow), transparent 38%), var(--brand-blue); color: var(--ink); }
+.auth-page { min-height: 100vh; display: grid; place-items: center; padding: 2rem 1rem; background: var(--page-bg); background-attachment: fixed; color: var(--ink); }
 .auth-card { width: min(100%, 30rem); padding: clamp(1.5rem, 5vw, 2.8rem); border: 1px solid var(--line); border-radius: 1.25rem; background: var(--brand-lavender); box-shadow: 0 1.5rem 4rem #315B912E; }
 .auth-card h1 { max-width: none; margin: .35rem 0 1.5rem; color: var(--ink); font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 7vw, 2.7rem); font-weight: 500; letter-spacing: -.045em; }
 .auth-card .brand { margin-bottom: 1.8rem; }
@@ -77,8 +77,8 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .auth-card .service-link:hover { text-decoration: underline; }
 
 /* Shared public navigation and footer */
-.site-header { position: sticky; z-index: 20; top: 0; border-bottom: 1px solid #315B9124; background: var(--header-bg); backdrop-filter: blur(16px); }
-.site-header-inner { position: relative; width: min(100% - 3rem, 82rem); min-height: 5.2rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; margin: 0 auto; }
+.site-header { position: sticky; z-index: 20; top: 0; border-bottom: 1px solid #315B9124; background: var(--header-bg); backdrop-filter: blur(12px); }
+.site-header-inner { position: relative; width: min(100% - 3rem, 82rem); min-height: 4.6rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; margin: 0 auto; }
 .site-brand { display: inline-flex; align-items: center; gap: .7rem; color: var(--ink); text-decoration: none; }
 .site-brand .salonbook-wordmark { font-size: 2.2rem; }
 .site-nav-wrap { display: contents; }
@@ -103,14 +103,14 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .nav-profile-trigger > span:nth-child(2) { font-weight: 700; }
 .nav-profile-trigger > span:last-child { margin-left: .1rem; font-size: .8rem; }
 .nav-profile-avatar { width: 2.15rem; height: 2.15rem; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--line); border-radius: 50%; background: var(--brand-lavender); color: var(--ink); font-weight: 800; object-fit: cover; }
-.nav-profile-menu { position: absolute; z-index: 30; top: calc(100% + .55rem); right: 0; width: 14rem; display: grid; gap: .2rem; padding: .6rem; border: 1px solid var(--line); border-radius: .7rem 1.4rem .7rem .7rem; background: var(--brand-lavender); box-shadow: 0 1rem 2rem #315B9128; }
+.nav-profile-menu { position: absolute; z-index: 30; top: calc(100% + .55rem); right: 0; width: 14rem; display: grid; gap: .2rem; padding: .6rem; border: 1px solid var(--line); border-radius: .7rem 1.4rem .7rem .7rem; background: var(--elevated); box-shadow: 0 1rem 2rem #315B9128; }
 .nav-profile-menu p { margin: .3rem .5rem .55rem; overflow: hidden; color: var(--text-subtle); font-size: .68rem; text-overflow: ellipsis; white-space: nowrap; }
 .nav-profile-menu p strong { display: block; margin-top: .2rem; color: var(--ink); font-size: .82rem; }
 .nav-profile-menu > a, .nav-profile-menu > button { padding: .65rem .55rem; border: 0; border-radius: .4rem; background: transparent; color: var(--ink); font-size: .8rem; text-align: left; text-decoration: none; cursor: pointer; }
 .nav-profile-menu > a:hover, .nav-profile-menu > button:hover { background: var(--surface-light); }
 .nav-loading { width: 4.3rem; height: 1.8rem; border-radius: 1rem; background: linear-gradient(90deg,var(--surface),var(--brand-peach),var(--surface)); background-size: 200% 100%; animation: shimmer 1.3s infinite; }
 .nav-toggle { display: none; }
-.site-footer { scroll-margin-top: 5.5rem; padding: 3rem max(1.5rem, calc((100vw - 82rem)/2)) 1.2rem; border-top: 1px solid #315B9124; background: var(--brand-blue); color: var(--ink); }
+.site-footer { scroll-margin-top: 5.5rem; padding: 3rem max(1.5rem, calc((100vw - 82rem)/2)) 1.2rem; border-top: 1px solid #315B9124; background: var(--header-bg); color: var(--ink); backdrop-filter: blur(12px); }
 .footer-inner { display: grid; grid-template-columns: 1.1fr .72fr 1.22fr 1.25fr; gap: clamp(1.25rem,3vw,2.6rem); padding: 1rem 0 2.5rem; }
 .footer-brand { color: var(--ink); }
 .footer-brand-block > p { max-width: 18rem; margin: .8rem 0 1.15rem; color: var(--muted-ink); font-size: .86rem; line-height: 1.7; }
@@ -134,7 +134,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 
 /* Home: powder-blue canvas, lavender sections, peach calls to action */
 .home-hero { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.04fr .96fr; align-items: center; width: min(100% - 3rem, 82rem); min-height: min(43rem, calc(100svh - 5rem)); margin: 0 auto; padding: 4rem 0; }
-.home-hero::before { position: absolute; z-index: -1; inset: -1rem -8vw; pointer-events: none; background: radial-gradient(ellipse at 75% 48%, var(--surface) 0 17%, transparent 43%), radial-gradient(ellipse at 89% 20%, #F5B69E66, transparent 18%); content: ""; }
+.home-hero::before { position: absolute; z-index: -1; inset: -1rem -8vw; pointer-events: none; background: transparent; content: ""; }
 .hero-copy { position: relative; z-index: 2; padding: 2rem 0 3.5rem; }
 .hero-copy h1, .browse-hero h1 { max-width: 10ch; color: var(--ink); font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.5rem, 7.6vw, 7rem); font-weight: 500; letter-spacing: -.075em; line-height: .97; }
 .hero-copy h1 em, .browse-hero h1 em { color: var(--blue-deep); font-weight: 400; }
@@ -405,7 +405,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 }
 .admin-pagination { display: flex; align-items: center; justify-content: center; gap: 1rem; padding: 1.3rem 0; color: var(--muted-ink); font-size: .9rem; }
 .admin-dialog-backdrop { position: fixed; z-index: 60; inset: 0; display: grid; place-items: center; padding: 1rem; background: #1C2D4570; backdrop-filter: blur(5px); }
-.admin-confirm-dialog { width: min(100%,30rem); padding: 1.5rem; border: 1px solid var(--line); border-radius: 1.2rem 1.2rem 2.5rem 1.2rem; background: var(--brand-lavender); box-shadow: 0 2rem 5rem #14223C50; }
+.admin-confirm-dialog { width: min(100%,30rem); padding: 1.5rem; border: 1px solid var(--line); border-radius: 1.2rem 1.2rem 2.5rem 1.2rem; background: var(--elevated); box-shadow: 0 2rem 5rem #14223C50; }
 .admin-confirm-dialog h2 { margin: 0 0 .7rem; font: 500 1.8rem Georgia,serif; }
 .admin-confirm-dialog > p:not(.eyebrow) { color: var(--muted-ink); line-height: 1.6; }
 .admin-confirm-dialog > div { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .65rem; margin-top: 1.3rem; }
@@ -429,7 +429,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .admin-topbar-account { position: relative; }
 .admin-topbar-trigger { min-height: 3rem; display: inline-flex; align-items: center; gap: .55rem; padding: .35rem .75rem .35rem .4rem; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink); font: inherit; font-size: .85rem; font-weight: 650; cursor: pointer; box-shadow: 0 .3rem .9rem #315B9114; }
 .admin-topbar-trigger > img, .admin-topbar-avatar-fallback { width: 2.15rem; height: 2.15rem; display: grid; place-items: center; overflow: hidden; border: 2px solid var(--line); border-radius: 50%; background: var(--brand-lavender); color: var(--ink); font-weight: 750; object-fit: cover; }
-.admin-topbar-menu { position: absolute; z-index: 40; top: calc(100% + .55rem); right: 0; width: 15rem; display: grid; gap: .15rem; padding: .55rem; border: 1px solid var(--line); border-radius: .85rem .85rem 1.6rem .85rem; background: var(--brand-lavender); box-shadow: 0 1rem 2rem #14223C2B; }
+.admin-topbar-menu { position: absolute; z-index: 40; top: calc(100% + .55rem); right: 0; width: 15rem; display: grid; gap: .15rem; padding: .55rem; border: 1px solid var(--line); border-radius: .85rem .85rem 1.6rem .85rem; background: var(--elevated); box-shadow: 0 1rem 2rem #14223C2B; }
 .admin-topbar-menu > p { margin: .3rem .5rem .45rem; padding-bottom: .65rem; border-bottom: 1px solid #315B9124; color: var(--text-subtle); font-size: .58rem; font-weight: 800; letter-spacing: .13em; }
 .admin-topbar-menu > p strong { display: block; margin-top: .3rem; color: var(--ink); font-size: .82rem; letter-spacing: 0; }
 .admin-topbar-menu > a, .admin-topbar-menu > button { padding: .58rem .5rem; border: 0; border-radius: .4rem; background: transparent; color: var(--ink); font: inherit; font-size: .78rem; text-align: left; text-decoration: none; cursor: pointer; }
@@ -526,7 +526,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .appointment-statuses strong { color: var(--ink); }
 .appointment-payment-note { grid-column: 2 / -1; margin: -.25rem 0 0; color: var(--muted-ink); font-size: .78rem; line-height: 1.45; }
 .appointment-pay-button { grid-column: 2 / -1; justify-self: start; min-height: 2.5rem; padding: .6rem .9rem; font-size: .83rem; }
-.payment-return-page { min-height: 72vh; display: grid; place-items: center; padding: 3.5rem 1rem; background: radial-gradient(ellipse at 50% 15%,var(--surface) 0,transparent 58%); }
+.payment-return-page { min-height: 72vh; display: grid; place-items: center; padding: 3.5rem 1rem; background: transparent; }
 .payment-return-card { width: min(100%,37rem); overflow: hidden; border: 1px solid var(--line); border-radius: 1.1rem 1.1rem 2.1rem 1.1rem; background: var(--surface-light); text-align: left; box-shadow: 0 1rem 3rem #315B9124; }
 .payment-return-hero { padding: clamp(1.25rem,4vw,2.1rem); background: linear-gradient(145deg,#E9F5EF 0%,var(--surface) 100%); text-align: center; }
 .payment-return-hero .eyebrow { justify-content: center; margin: 0 0 .7rem; }
@@ -758,7 +758,7 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
   .auth-visual-content { min-height: 22rem; padding: 1.25rem; }
   .auth-visual-content h2 { font-size: clamp(2.5rem,11vw,3.8rem); }
   .auth-visual-description { font-size: .9rem; }
-  .site-header-inner { width: min(100% - 2rem,82rem); min-height: 4.5rem; display: flex; justify-content: space-between; }
+  .site-header-inner { width: min(100% - 2rem,82rem); min-height: 4rem; display: flex; justify-content: space-between; }
   .site-nav-wrap { display: flex; align-items: center; }
   .site-nav-controls { display: flex; align-items: center; gap: .5rem; }
   .site-account-actions > .theme-toggle { display: none; }
@@ -850,12 +850,12 @@ html.dark .theme-toggle .theme-icon-moon { display: none; }
 html.dark .theme-toggle .theme-icon-sun { display: block; }
 
 html.theme-transition *, html.theme-transition *::before, html.theme-transition *::after {
-  transition-property: color, background-color, border-color, box-shadow, fill, stroke !important;
+  transition-property: color, background, background-color, border-color, box-shadow, fill, stroke !important;
   transition-duration: 200ms !important;
 }
 
 html.dark .home-hero::before {
-  background: radial-gradient(ellipse at 75% 48%, #1A2145 0 17%, transparent 43%), radial-gradient(ellipse at 89% 20%, #F5B69E1A, transparent 18%), linear-gradient(120deg, #0F1424, #1A2145);
+  background: transparent;
 }
 html.dark .salonbook-wordmark { text-shadow: 0 1px 12px #F5B69E26; }
 html.dark img:not(.salonbook-logo-mark img) { filter: brightness(.9); }
@@ -868,6 +868,16 @@ html.dark .admin-sidebar nav a[aria-current="page"] { color: var(--text-on-accen
 html.dark .google-auth-button { color: var(--ink); }
 html.dark .service-skeleton { background: linear-gradient(100deg, #232B45 20%, #2F3858 40%, #232B45 60%); }
 html.dark .service-marquee-group { padding-top: 1.05rem; padding-bottom: .55rem; }
+html.dark .art-label span { color: var(--text-on-accent); }
+html.dark .customer-profile-visit { background: var(--brand-peach) !important; color: var(--text-on-accent); }
+html.dark .customer-profile-visit h2, html.dark .customer-profile-visit p, html.dark .customer-profile-visit > span, html.dark .customer-profile-visit a { color: var(--text-on-accent); }
+.auth-layout, .auth-card, .site-nav-links, .nav-profile-menu, .category-card, .browse-controls-wrap, .service-card,
+.service-detail-main, .service-booking-panel, .public-state, .service-message,
+.dashboard-sidebar, .admin-topbar-trigger, .admin-topbar-menu, .profile-form, .customer-row, .customer-detail-card,
+.customer-history-list article, .customer-profile-aside > section, .admin-service-form-card, .admin-service-list,
+.appointment-stats article, .appointment-item, .admin-appointment-item,
+.transaction-stats article, .transaction-ledger, .admin-confirm-dialog, .payment-return-card, .payment-service-summary,
+.customer-appointments-panel { backdrop-filter: blur(12px); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
