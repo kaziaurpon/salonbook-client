@@ -17,8 +17,8 @@ function CountUp({ value, active }: { value: number; active: boolean }) {
     if (!active) return;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion || value <= 0) {
-      setCount(value);
-      return;
+      const frame = requestAnimationFrame(() => setCount(value));
+      return () => cancelAnimationFrame(frame);
     }
     let frame = 0;
     const start = performance.now();
@@ -105,7 +105,6 @@ export default function HomePage() {
           </div>
           <div className="hero-art">
             <img className="hero-photo" src="/images/salon-barbershop.jpg" alt="Barber chairs and styling tools inside a modern barbershop" fetchPriority="high" />
-            <span className="hero-photo-kicker"><span aria-hidden="true">✳</span> THE SALON, IN FOCUS</span>
             <div className="art-label"><span>YOUR NEXT VISIT</span><strong>Starts here.</strong><small>Thoughtful care, at your pace.</small></div>
           </div>
         </section>
