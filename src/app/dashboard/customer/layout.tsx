@@ -2,10 +2,8 @@ import Link from "next/link";
 import { headers } from "next/headers";
 import { SalonBookLogo } from "@/components/salonbook-logo";
 import { CustomerDashboardTopbar } from "@/components/customer-dashboard-topbar";
-import { requireSalonBookUser } from "@/lib/server-auth-redirect";
 
 export default async function CustomerLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  await requireSalonBookUser("customer");
   const requestHeaders = await headers();
   const pathname = requestHeaders.get("x-salonbook-request-path")?.split("?")[0] || "/dashboard/customer";
   const links = [["Overview", "/dashboard/customer"], ["My appointments", "/dashboard/customer/appointments"], ["My profile", "/dashboard/customer/profile"]];
