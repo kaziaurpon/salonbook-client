@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { ArrowRight, BadgeCheck, CalendarDays, CheckCircle2, Clock3, CircleDollarSign, ClipboardCheck, Search, ShieldCheck } from "lucide-react";
 import { PublicShell } from "@/components/public-shell";
 import { ServiceCard, type PublicService } from "@/components/service-card";
 import { getCategoryImage } from "@/lib/service-images";
@@ -9,10 +10,38 @@ import { getCategoryImage } from "@/lib/service-images";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 type PublicCategory = { name: string; image: string };
 
+function CountUp({ value, active }: { value: number; active: boolean }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!active) return;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion || value <= 0) {
+      setCount(value);
+      return;
+    }
+    let frame = 0;
+    const start = performance.now();
+    const duration = 850;
+    const animate = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      setCount(Math.round(value * (1 - (1 - progress) ** 3)));
+      if (progress < 1) frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [active, value]);
+
+  return <>{count}</>;
+}
+
 export default function HomePage() {
   const [services, setServices] = useState<PublicService[]>([]);
   const [marqueeServices, setMarqueeServices] = useState<PublicService[]>([]);
   const [categories, setCategories] = useState<PublicCategory[]>([]);
+  const [serviceTotal, setServiceTotal] = useState(0);
+  const [visibleAbout, setVisibleAbout] = useState(false);
+  const aboutRef = useRef<HTMLElement>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
@@ -32,11 +61,12 @@ export default function HomePage() {
         const featuredResult = await featuredResponse.json() as { services: PublicService[] };
         const categoryResult = await categoriesResponse.json() as { categories: PublicCategory[] };
         const allServicesResult = allServicesResponse.ok
-          ? await allServicesResponse.json() as { services: PublicService[] }
-          : { services: [] };
+          ? await allServicesResponse.json() as { services: PublicService[]; total?: number }
+          : { services: [], total: 0 };
         setServices(featuredResult.services);
         setMarqueeServices(allServicesResult.services);
         setCategories(categoryResult.categories);
+        setServiceTotal(allServicesResult.total ?? allServicesResult.services.length);
       }).catch((reason: unknown) => {
         if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Could not load salon information.");
       }).finally(() => {
@@ -45,6 +75,19 @@ export default function HomePage() {
     });
     return () => controller.abort();
   }, [retry]);
+
+  useEffect(() => {
+    const section = aboutRef.current;
+    if (!section || visibleAbout) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setVisibleAbout(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.12 });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [visibleAbout]);
 
   return (
     <PublicShell>
@@ -122,14 +165,65 @@ export default function HomePage() {
           ) : <p className="category-hint">Service categories will appear here when they are available.</p>}
         </section>
 
-        <section id="about" className="visit-section page-section" aria-labelledby="visit-heading">
-          <div className="visit-visual">
+        <section id="about" ref={aboutRef} className={`visit-section page-section${visibleAbout ? " is-visible" : ""}`} aria-labelledby="visit-heading">
+          <div className="visit-visual about-reveal" style={{ "--reveal-delay": "0ms" } as CSSProperties}>
             <div className="visit-photo" role="img" aria-label="A salon interior with thoughtful care details" />
             <span className="visit-photo-shade" aria-hidden="true" />
             <span className="visit-image-kicker"><span aria-hidden="true">✳</span> SALONBOOK · PERSONAL CARE</span>
-            <div className="visit-image-caption"><span>YOUR NEXT MOMENT</span><strong>Care, at your pace.</strong><small>Find a service that feels right for you.</small></div>
+            <div className="visit-image-caption"><span>YOUR NEXT MOMENT</span><strong>Care, at your pace.</strong></div>
+            <span className="visit-image-badge"><BadgeCheck size={16} aria-hidden="true" /> Clear pricing, no surprises</span>
           </div>
-          <div className="visit-copy"><p className="eyebrow">ABOUT SALONBOOK</p><h2 id="visit-heading">A little more care, made easier to find.</h2><p>SalonBook brings salon services, clear pricing, and available appointment times together in one place. Choose the care that suits you, send a request, then follow its status from your personal dashboard.</p><ol className="visit-steps"><li><span>01</span> Explore salon services</li><li><span>02</span> Choose a date and open time</li><li><span>03</span> Track your appointment</li></ol><Link className="button-primary" href="/services">Find your service <span aria-hidden="true">↗</span></Link></div>
+
+          <div className="visit-copy">
+            <div className="about-intro about-reveal" style={{ "--reveal-delay": "80ms" } as CSSProperties}>
+              <p className="eyebrow">ABOUT SALONBOOK</p>
+              <h2 id="visit-heading">A little more care, made easier to find.</h2>
+              <p>SalonBook brings salon services, clear pricing, and available appointment times together in one place. Choose the care that suits you, send a request, then follow its status from your personal dashboard.</p>
+            </div>
+
+            <div className="about-stats about-reveal" style={{ "--reveal-delay": "160ms" } as CSSProperties} aria-label="SalonBook at a glance">
+              {[
+                { label: "Services", value: serviceTotal },
+                { label: "Categories", value: categories.length },
+                { label: "Featured picks", value: services.length },
+                { label: "Booking steps", value: 3 },
+              ].map((stat) => <div className="about-stat" key={stat.label}><strong><CountUp value={stat.value} active={visibleAbout} /></strong><span>{stat.label}</span></div>)}
+            </div>
+
+            <div className="about-block about-reveal" style={{ "--reveal-delay": "240ms" } as CSSProperties}>
+              <h3 className="about-block-title">How it works</h3>
+              <div className="about-how-grid">
+                <article className="about-how-card"><span className="about-step-number">01</span><Search size={19} aria-hidden="true" /><h4>Explore services</h4><p>Browse the menu and compare clear details.</p></article>
+                <article className="about-how-card"><span className="about-step-number">02</span><CalendarDays size={19} aria-hidden="true" /><h4>Choose date and time</h4><p>Request a slot that suits your schedule.</p></article>
+                <article className="about-how-card"><span className="about-step-number">03</span><ClipboardCheck size={19} aria-hidden="true" /><h4>Track your appointment</h4><p>Follow updates from your dashboard.</p></article>
+              </div>
+            </div>
+
+            <div className="about-block about-reveal" style={{ "--reveal-delay": "320ms" } as CSSProperties}>
+              <h3 className="about-block-title">Why SalonBook</h3>
+              <div className="about-feature-grid">
+                <div className="about-feature"><CircleDollarSign size={19} aria-hidden="true" /><span><strong>Clear pricing</strong><small>Know the price before you book.</small></span></div>
+                <div className="about-feature"><Clock3 size={19} aria-hidden="true" /><span><strong>Easy booking</strong><small>Request a time in a few steps.</small></span></div>
+                <div className="about-feature"><CheckCircle2 size={19} aria-hidden="true" /><span><strong>Status tracking</strong><small>See where your request stands.</small></span></div>
+                <div className="about-feature"><ShieldCheck size={19} aria-hidden="true" /><span><strong>Trusted salons</strong><small>Explore a curated service menu.</small></span></div>
+              </div>
+            </div>
+
+            <div className="about-categories about-reveal" style={{ "--reveal-delay": "400ms" } as CSSProperties}>
+              <h3 className="about-block-title">Explore by category</h3>
+              <div className="about-category-chips">
+                {["Hair", "Beard & Grooming", "Hair Color", "Skin & Facial", "Makeup"].map((name) => {
+                  const match = categories.find((category) => category.name.toLowerCase() === name.toLowerCase());
+                  return <Link key={name} href={`/services?category=${encodeURIComponent(match?.name ?? name)}`}>{name}<ArrowRight size={13} aria-hidden="true" /></Link>;
+                })}
+              </div>
+            </div>
+
+            <div className="about-actions about-reveal" style={{ "--reveal-delay": "480ms" } as CSSProperties}>
+              <Link className="button-primary" href="/services">Find your service <ArrowRight size={16} aria-hidden="true" /></Link>
+              <Link className="about-secondary-link" href="/services">View services</Link>
+            </div>
+          </div>
         </section>
       </main>
     </PublicShell>
