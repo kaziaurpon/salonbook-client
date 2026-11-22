@@ -11,6 +11,7 @@ type PublicCategory = { name: string; image: string };
 
 export default function HomePage() {
   const [services, setServices] = useState<PublicService[]>([]);
+  const [marqueeServices, setMarqueeServices] = useState<PublicService[]>([]);
   const [categories, setCategories] = useState<PublicCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -25,11 +26,16 @@ export default function HomePage() {
       void Promise.all([
         fetch(`${apiUrl}/api/services/featured?limit=6`, { signal: controller.signal }),
         fetch(`${apiUrl}/api/services/category-cards`, { signal: controller.signal }),
-      ]).then(async ([featuredResponse, categoriesResponse]) => {
+        fetch(`${apiUrl}/api/services?limit=48`, { signal: controller.signal }),
+      ]).then(async ([featuredResponse, categoriesResponse, allServicesResponse]) => {
         if (!featuredResponse.ok || !categoriesResponse.ok) throw new Error("We couldn’t reach the salon menu. Please try again.");
         const featuredResult = await featuredResponse.json() as { services: PublicService[] };
         const categoryResult = await categoriesResponse.json() as { categories: PublicCategory[] };
+        const allServicesResult = allServicesResponse.ok
+          ? await allServicesResponse.json() as { services: PublicService[] }
+          : { services: [] };
         setServices(featuredResult.services);
+        setMarqueeServices(allServicesResult.services);
         setCategories(categoryResult.categories);
       }).catch((reason: unknown) => {
         if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Could not load salon information.");
@@ -59,8 +65,25 @@ export default function HomePage() {
             <span className="hero-photo-kicker"><span aria-hidden="true">✳</span> THE SALON, IN FOCUS</span>
             <div className="art-label"><span>YOUR NEXT VISIT</span><strong>Starts here.</strong><small>Thoughtful care, at your pace.</small></div>
           </div>
-          <div className="hero-index"><span>01</span><span className="index-line" /><span>CARE, CONSIDERED</span></div>
         </section>
+
+        {marqueeServices.length > 0 && (
+          <section className="service-marquee" aria-label="Salon services">
+            <h2 className="sr-only">Salon services</h2>
+            <div className="service-marquee-track">
+              {[0, 1].map((copy) => (
+                <div className="service-marquee-group" key={copy} aria-hidden={copy === 1}>
+                  {marqueeServices.map((service) => (
+                    <span className="service-marquee-item" key={service._id}>
+                      <span>{service.serviceName}</span>
+                      <span className="service-marquee-star" aria-hidden="true">✳</span>
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="featured-section page-section" aria-labelledby="featured-heading">
           <div className="section-heading">
