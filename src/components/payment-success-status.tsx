@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Check, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { PublicShell } from "@/components/public-shell";
 import { authClient } from "@/lib/auth-client";
@@ -29,6 +30,7 @@ export function PaymentSuccessStatus() {
   const [message, setMessage] = useState("Stripe is confirming your payment. This page will update when the verified webhook is recorded.");
   const [details, setDetails] = useState<PaymentDetails | null>(null);
   const [retryKey, setRetryKey] = useState(0);
+  const [sessionCopied, setSessionCopied] = useState(false);
 
   useEffect(() => {
     if (isPending) return;
@@ -76,10 +78,23 @@ export function PaymentSuccessStatus() {
     : "Verifying with Stripe";
   const formattedDate = details ? new Date(details.appointmentDate).toLocaleDateString("en-BD", { weekday: "long", year: "numeric", month: "long", day: "numeric" }) : "";
 
+  async function copyStripeSession() {
+    if (!details?.stripeSessionId) return;
+    try {
+      await navigator.clipboard.writeText(details.stripeSessionId);
+      setSessionCopied(true);
+      toast.success("Stripe session ID copied.");
+      window.setTimeout(() => setSessionCopied(false), 1600);
+    } catch {
+      toast.error("Could not copy the Stripe session ID.");
+    }
+  }
+
   return <PublicShell><main className="payment-return-page">
     <section className={`payment-return-card ${displayStage === "paid" ? "payment-return-paid" : ""}`} aria-live="polite">
       <div className="payment-return-hero">
-        <span className="payment-return-mark" aria-hidden="true">{displayStage === "paid" ? "✓" : displayStage === "error" ? "!" : "…"}</span>
+        {displayStage === "paid" && <div className="payment-confetti" aria-hidden="true">{Array.from({ length: 9 }, (_, index) => <i key={index} />)}</div>}
+        <span className="payment-return-mark" aria-hidden="true">{displayStage === "paid" ? <svg viewBox="0 0 64 64" fill="none"><circle className="payment-check-circle" cx="32" cy="32" r="27" /><path className="payment-check-path" d="m19 33 9 9 18-20" /></svg> : displayStage === "error" ? "!" : "…"}</span>
         <p className="eyebrow">SALONBOOK · PAYMENT RECEIPT</p>
         <h1>{displayStage === "paid" ? "Payment verified" : displayStage === "waiting" ? "Payment is confirming" : displayStage === "error" ? "Payment status" : "Checking your payment"}</h1>
         <p>{displayMessage}</p>
@@ -92,14 +107,15 @@ export function PaymentSuccessStatus() {
           <p className="eyebrow">YOUR SALON VISIT</p>
           <h2>{details.serviceName}</h2>
           <span>{details.category}</span>
+          <div className="payment-ticket-divider" aria-hidden="true" />
           <div className="payment-visit-time"><div><small>DATE</small><strong>{formattedDate}</strong></div><div><small>TIME</small><strong>{details.timeSlot}</strong></div></div>
         </section>
-        <div className="payment-receipt-row"><span>Amount paid <small>{details.currency.toUpperCase()}</small></span><strong>৳{details.amount.toLocaleString("en-BD")}</strong></div>
-        <div className="payment-receipt-row payment-session-row"><span>Stripe session</span><code title={details.stripeSessionId || undefined}>{shortSessionId}</code></div>
+        <div className="payment-receipt-row payment-amount-row"><span>Amount paid <small>{details.currency.toUpperCase()}</small></span><strong>৳{details.amount.toLocaleString("en-BD")}</strong></div>
+        <div className="payment-receipt-row payment-session-row"><span>Stripe session</span><div className="payment-session-chip"><code title={details.stripeSessionId || undefined}>{shortSessionId}</code><button type="button" onClick={() => void copyStripeSession()} disabled={!details.stripeSessionId} aria-label={sessionCopied ? "Stripe session ID copied" : "Copy Stripe session ID"} title={sessionCopied ? "Copied" : "Copy session ID"}>{sessionCopied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}</button></div></div>
       </div>}
 
       <div className="payment-return-actions">
-        <Link className="button-primary" href="/dashboard/customer/appointments">View my appointments <span aria-hidden="true">→</span></Link>
+        <Link className="button-primary payment-appointments-button" href="/dashboard/customer/appointments">View my appointments <span className="payment-appointments-arrow" aria-hidden="true">→</span></Link>
         {(displayStage === "waiting" || displayStage === "error") && appointmentId && <button className="secondary-button" onClick={() => { setStage("checking"); setMessage("Stripe is confirming your payment. This page will update when the verified webhook is recorded."); setRetryKey((key) => key + 1); }}>Retry payment status</button>}
       </div>
       {displayStage === "paid" && <p className="payment-security-note">SalonBook records a payment only after Stripe verifies it. Keep this confirmation for your reference.</p>}

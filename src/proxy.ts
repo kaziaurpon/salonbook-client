@@ -18,9 +18,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL(loginPathFor(requestedPath), request.url));
   }
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-salonbook-request-path", requestedPath);
-  return NextResponse.next({ request: { headers: requestHeaders } });
+  return NextResponse.next();
 }
 
 export const config = {
