@@ -6,6 +6,7 @@ import type { MouseEvent } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { SalonBookLogo } from "@/components/salonbook-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { toast } from "sonner";
 
 export function PublicNavbar() {
@@ -86,10 +87,13 @@ export function PublicNavbar() {
       <div className="site-header-inner">
         <SalonBookLogo className="site-brand" />
         <div className="site-nav-wrap">
+        <div className="site-nav-controls">
+        <ThemeToggle />
         <button className="nav-toggle" type="button" aria-expanded={menuOpen} aria-controls="site-navigation" onClick={() => setMenuOpen((open) => !open)}>
           <span className="sr-only">{menuOpen ? "Close" : "Open"} navigation menu</span>
           <span /><span />
         </button>
+        </div>
         <nav id="site-navigation" className={`site-nav${menuOpen ? " is-open" : ""}`} aria-label="Main navigation">
           <div className="site-nav-links">
             <Link href="/" aria-current={isActive("/") ? "page" : undefined} onClick={goHome}>Home</Link>
@@ -97,6 +101,7 @@ export function PublicNavbar() {
             <Link className={pathname === "/" && hash === "#about" ? "is-active" : undefined} href="/#about" aria-current={pathname === "/" && hash === "#about" ? "location" : undefined} onClick={goToAbout}>About Us</Link>
           </div>
           <div className="site-account-actions">
+            <ThemeToggle />
             {isPending ? <span className="nav-loading" aria-label="Loading account" /> : user ? (
               <div className="nav-profile-wrap" ref={profileWrapRef}>
                 <button className="nav-profile-trigger" type="button" aria-expanded={profileOpen} aria-controls="profile-menu" onClick={() => setProfileOpen((open) => !open)}>{user.image ? <img className="nav-profile-avatar" src={user.image} alt="" referrerPolicy="no-referrer" /> : <span className="nav-profile-avatar">{user.name?.slice(0, 1).toUpperCase() || "S"}</span>}<span>{user.name || "My account"}</span><span aria-hidden="true">⌄</span></button>

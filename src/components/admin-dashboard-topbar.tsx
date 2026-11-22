@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function AdminDashboardTopbar() {
   const router = useRouter();
@@ -42,9 +43,10 @@ export function AdminDashboardTopbar() {
     }
   }
 
-  if (!user) return <header className="admin-dashboard-topbar"><span className="admin-topbar-loading" /></header>;
+  if (!user) return <header className="admin-dashboard-topbar"><ThemeToggle /><span className="admin-topbar-loading" /></header>;
 
   return <header className="admin-dashboard-topbar">
+    <ThemeToggle />
     <div className="admin-topbar-account" ref={wrapperRef}>
       <button className="admin-topbar-trigger" type="button" aria-expanded={open} aria-controls="admin-account-menu" onClick={() => setOpen((value) => !value)}>
         {user.image ? <img src={user.image} alt="" referrerPolicy="no-referrer" /> : <span className="admin-topbar-avatar-fallback">{user.name?.slice(0, 1).toUpperCase() || "A"}</span>}
