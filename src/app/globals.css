@@ -186,15 +186,16 @@ h1 { max-width: 12ch; margin: 0; font-size: clamp(2.5rem, 7vw, 5rem); line-heigh
 .text-arrow-link { display: inline-flex; align-items: center; gap: 1rem; padding-bottom: .4rem; border-bottom: 1px solid var(--peach-deep); color: var(--peach-deep); font-size: .85rem; font-weight: 750; text-decoration: none; }
 .text-arrow-link:hover { color: var(--peach-deep); }
 .service-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1.2rem; }
-.service-card { overflow: hidden; border: 1px solid var(--line); border-radius: .85rem; background: var(--brand-lavender); box-shadow: 0 .7rem 1.8rem #315B911D; }
+.service-card { display: block; overflow: hidden; border: 1px solid var(--line); border-radius: .85rem; background: var(--brand-lavender); box-shadow: 0 .7rem 1.8rem #315B911D; color: inherit; text-decoration: none; }
+.service-card:focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
 .service-image-link { position: relative; display: block; overflow: hidden; background: var(--surface-tint); }
 .service-card-image, .service-card > img { display: block; width: 100%; height: 15.5rem; object-fit: cover; background: var(--surface-tint); transition: transform .4s ease; }
-.service-image-link:hover .service-card-image { transform: scale(1.04); }
+.service-card:hover .service-card-image { transform: scale(1.04); }
 .image-arrow { position: absolute; right: .8rem; bottom: .8rem; width: 2.4rem; height: 2.4rem; display: grid; place-items: center; border-radius: 50%; background: var(--brand-peach); color: var(--ink); }
 .service-card-content { padding: 1.2rem 1.25rem 1rem; color: var(--ink); }
 .service-category { margin: 0 0 .45rem; color: var(--blue-deep); font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .service-card h2, .service-card h3 { margin: 0; color: var(--ink); font-family: Georgia,serif; font-size: 1.45rem; font-weight: 500; }
-.service-card h3 a { text-decoration: none; }
+.service-card h3 { text-decoration: none; }
 .service-description { display: -webkit-box; min-height: 3.1rem; overflow: hidden; color: var(--muted-ink); font-size: .88rem; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .service-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: .85rem 0; color: var(--muted-ink); }
 .service-meta strong { color: var(--peach-deep); font-size: 1.1rem; }
