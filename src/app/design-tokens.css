@@ -40,6 +40,8 @@
   --status-success-text: #28664C;
   --status-neutral-bg: #D7D7E7;
   --status-neutral-text: #424A5D;
+  --skeleton-base: #E9E8F8;
+  --skeleton-highlight: #D9E9FA;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--ink);
   background: var(--page-base);
@@ -83,6 +85,8 @@ html.dark {
   --status-success-text: #A2E5C5;
   --status-neutral-bg: #2B3044;
   --status-neutral-text: #C3C7D9;
+  --skeleton-base: #1A2036;
+  --skeleton-highlight: #2F3858;
   background: var(--page-base);
 }
 

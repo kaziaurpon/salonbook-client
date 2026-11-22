@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
+import { DashboardSkeleton, minimumLoader } from "@/components/loading-system";
 
 type TransactionItem = {
   _id: string;
@@ -31,6 +32,7 @@ export default function AdminTransactionsPage() {
   const [totals, setTotals] = useState<TransactionTotals>({ total: 0, successful: 0, failed: 0 });
   const load = useCallback(async () => {
     setLoading(true); setError("");
+    const minimumLoading = minimumLoader(400);
     try {
       const response = await authenticatedApiFetch(`/api/admin/transactions?page=${page}&limit=12`);
       const result = await response.json() as { transactions?: TransactionItem[]; totals?: TransactionTotals; pagination?: { pages: number }; message?: string };
@@ -39,7 +41,7 @@ export default function AdminTransactionsPage() {
       setTotals(result.totals || { total: 0, successful: 0, failed: 0 });
       setPages(result.pagination?.pages || 1);
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Could not load transactions."); }
-    finally { setLoading(false); }
+    finally { await minimumLoading; setLoading(false); }
   }, [page]);
 
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function AdminTransactionsPage() {
     {!loading && !error && <section className="transaction-stats" aria-label="Transaction totals"><article><span>All records</span><strong>{totals.total.toLocaleString()}</strong><small>Verified checkout attempts</small></article><article><span>Successful payments</span><strong>{totals.successful.toLocaleString()}</strong><small>Confirmed by Stripe</small></article><article><span>Failed payments</span><strong>{totals.failed.toLocaleString()}</strong><small>Unsuccessful checkout attempts</small></article></section>}
     <section className="transaction-ledger">
       <header className="transaction-ledger-heading"><div><p className="eyebrow">SALONBOOK · STRIPE</p><h2>Payment ledger</h2><p>{loading ? "Loading records…" : `${totals.total.toLocaleString()} transaction${totals.total === 1 ? "" : "s"} recorded`}</p></div><span className="read-only-badge">READ ONLY</span></header>
-      {loading ? <p className="service-message">Loading transactions…</p> : error ? <div className="service-message service-error"><p>{error}</p><button onClick={() => void load()}>Try again</button></div> : items.length === 0 ? <p className="service-message transaction-empty">No payment transactions have been recorded yet.</p> : <>
+      {loading ? <DashboardSkeleton rows={6} /> : error ? <div className="service-message service-error"><p>{error}</p><button onClick={() => void load()}>Try again</button></div> : items.length === 0 ? <p className="service-message transaction-empty">No payment transactions have been recorded yet.</p> : <>
         <div className="transaction-table-header" aria-hidden="true"><span>Customer</span><span>Service &amp; appointment</span><span>Amount</span><span>Payment status</span><span>Stripe session</span><span>Transaction date</span></div>
         <div className="transaction-list">{items.map((item) => <article className="transaction-item" key={item._id}>
           <div className="transaction-customer"><span className="transaction-avatar">{item.customer?.name?.slice(0, 1).toUpperCase() || "C"}</span><div><strong>{item.customer?.name || "Customer"}</strong><small>{item.customer?.email || item.customerId}</small></div></div>

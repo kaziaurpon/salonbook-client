@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { PublicShell } from "@/components/public-shell";
 import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
+import { ScissorsLoader } from "@/components/loading-system";
 
 type Stage = "checking" | "paid" | "waiting" | "error";
 type PaymentDetails = {
@@ -27,6 +28,7 @@ export function PaymentSuccessStatus() {
   const [stage, setStage] = useState<Stage>("checking");
   const [message, setMessage] = useState("Stripe is confirming your payment. This page will update when the verified webhook is recorded.");
   const [details, setDetails] = useState<PaymentDetails | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
 
   useEffect(() => {
     if (isPending) return;
@@ -61,7 +63,7 @@ export function PaymentSuccessStatus() {
     };
     void checkStatus();
     return () => { stopped = true; if (timer) clearTimeout(timer); };
-  }, [appointmentId, isPending, router, session]);
+  }, [appointmentId, isPending, retryKey, router, session]);
 
   const displayStage: Stage = !isPending && session && !appointmentId ? "error" : stage;
   const displayMessage = displayStage === "error" && !appointmentId ? "The appointment reference is missing. Check your appointment history for the latest status." : message;
@@ -81,6 +83,7 @@ export function PaymentSuccessStatus() {
         <p className="eyebrow">SALONBOOK · PAYMENT RECEIPT</p>
         <h1>{displayStage === "paid" ? "Payment verified" : displayStage === "waiting" ? "Payment is confirming" : displayStage === "error" ? "Payment status" : "Checking your payment"}</h1>
         <p>{displayMessage}</p>
+        {(displayStage === "checking" || displayStage === "waiting") && <ScissorsLoader label="Securing your payment..." compact />}
         {displayStage === "waiting" && <p className="payment-waiting-note">Stripe has not confirmed this payment yet. Your appointment will remain unpaid until verification completes.</p>}
       </div>
 
@@ -97,7 +100,7 @@ export function PaymentSuccessStatus() {
 
       <div className="payment-return-actions">
         <Link className="button-primary" href="/dashboard/customer/appointments">View my appointments <span aria-hidden="true">→</span></Link>
-        {displayStage === "waiting" && <button className="secondary-button" onClick={() => window.location.reload()}>Check again</button>}
+        {(displayStage === "waiting" || displayStage === "error") && appointmentId && <button className="secondary-button" onClick={() => { setStage("checking"); setMessage("Stripe is confirming your payment. This page will update when the verified webhook is recorded."); setRetryKey((key) => key + 1); }}>Retry payment status</button>}
       </div>
       {displayStage === "paid" && <p className="payment-security-note">SalonBook records a payment only after Stripe verifies it. Keep this confirmation for your reference.</p>}
     </section>

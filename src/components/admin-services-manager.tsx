@@ -7,6 +7,7 @@ import { FormEvent, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
+import { ButtonLoader, DashboardSkeleton, minimumLoader } from "@/components/loading-system";
 
 type Service = {
   _id: string;
@@ -45,10 +46,12 @@ export function AdminServicesManager() {
   const [pages, setPages] = useState(1);
   const [pendingDelete, setPendingDelete] = useState<Service | null>(null);
   const [formOpen, setFormOpen] = useState(false);
+  const [busyServiceId, setBusyServiceId] = useState("");
 
   const loadServices = useCallback(async () => {
     setLoading(true);
     setError("");
+    const minimumLoading = minimumLoader(400);
     try {
       const response = await authenticatedApiFetch(`/api/admin/services?page=${page}&limit=12`);
       const result = await readMessage(response) as ApiResult<{ services: Service[]; pages: number }>;
@@ -58,6 +61,7 @@ export function AdminServicesManager() {
       const message = reason instanceof Error ? reason.message : "Could not load the service list.";
       setError(message);
     } finally {
+      await minimumLoading;
       setLoading(false);
     }
   }, [page]);
@@ -87,6 +91,7 @@ export function AdminServicesManager() {
       return;
     }
     setUploading(true);
+    const minimumLoading = minimumLoader(400);
     try {
       const body = new FormData();
       body.append("image", file);
@@ -97,6 +102,7 @@ export function AdminServicesManager() {
     } catch (reason) {
       toast.error(reason instanceof Error ? reason.message : "Could not upload the image.");
     } finally {
+      await minimumLoading;
       setUploading(false);
     }
   }
@@ -108,6 +114,7 @@ export function AdminServicesManager() {
       return;
     }
     setSaving(true);
+    const minimumLoading = minimumLoader(400);
     try {
       const response = await authenticatedApiFetch(
         editingId ? `/api/admin/services/${editingId}` : "/api/admin/services",
@@ -122,11 +129,14 @@ export function AdminServicesManager() {
     } catch (reason) {
       toast.error(reason instanceof Error ? reason.message : "Could not save the service.");
     } finally {
+      await minimumLoading;
       setSaving(false);
     }
   }
 
   async function toggleStatus(service: Service) {
+    setBusyServiceId(service._id);
+    const minimumLoading = minimumLoader(400);
     const status = service.status === "active" ? "inactive" : "active";
     try {
       const response = await authenticatedApiFetch(`/api/admin/services/${service._id}/status`, {
@@ -138,10 +148,15 @@ export function AdminServicesManager() {
       await loadServices();
     } catch (reason) {
       toast.error(reason instanceof Error ? reason.message : "Could not change the service status.");
+    } finally {
+      await minimumLoading;
+      setBusyServiceId("");
     }
   }
 
   async function deleteService(service: Service) {
+    setBusyServiceId(service._id);
+    const minimumLoading = minimumLoader(400);
     try {
       const response = await authenticatedApiFetch(`/api/admin/services/${service._id}`, { method: "DELETE" });
       await readMessage(response);
@@ -150,6 +165,9 @@ export function AdminServicesManager() {
       await loadServices();
     } catch (reason) {
       toast.error(reason instanceof Error ? reason.message : "Could not delete the service.");
+    } finally {
+      await minimumLoading;
+      setBusyServiceId("");
     }
   }
 
@@ -190,11 +208,11 @@ export function AdminServicesManager() {
           <label>Service status<select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value as ServiceForm["status"] })}><option value="active">Active</option><option value="inactive">Inactive</option></select><small>New services are active by default.</small></label>
           <label className="wide-field">Service image (JPG, PNG, WebP; up to 5 MB)
             <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => void uploadImage(event.target.files?.[0])} disabled={uploading} />
-            {uploading && <small>Uploading image…</small>}
+            {uploading && <small><ButtonLoader label="Uploading image…" /></small>}
             {form.image && <span className="upload-success">Image uploaded and ready to save.</span>}
           </label>
           <div className="admin-form-actions wide-field">
-            <button disabled={saving || uploading}>{saving ? "Saving…" : editingId ? "Save changes" : "Add service"}</button>
+            <button disabled={saving || uploading} aria-busy={saving}>{saving ? <ButtonLoader label="Saving service…" /> : editingId ? "Save changes" : "Add service"}</button>
             <button type="button" className="secondary-button" onClick={() => { setEditingId(""); setForm(blankForm); setFormOpen(false); }}>{editingId ? "Cancel edit" : "Close"}</button>
           </div>
         </form>
@@ -202,7 +220,7 @@ export function AdminServicesManager() {
 
       <section className="admin-service-list">
         <h2>All services <span>{services.length}</span></h2>
-        {loading ? <p className="service-message">Loading services…</p> : error ? <div className="service-message service-error"><p>{error}</p><button onClick={() => void loadServices()}>Try again</button></div> : services.length === 0 ? <p className="service-message">No services yet. Use “+ Add Service” to create the first salon service.</p> : (
+        {loading ? <DashboardSkeleton rows={6} /> : error ? <div className="service-message service-error"><p>{error}</p><button onClick={() => void loadServices()}>Try again</button></div> : services.length === 0 ? <p className="service-message">No services yet. Use “+ Add Service” to create the first salon service.</p> : (
           <div className="admin-service-items">
             {services.map((service) => (
               <article className="admin-service-item" key={service._id}>
@@ -211,8 +229,8 @@ export function AdminServicesManager() {
                 <span className={`status-pill ${service.status}`}>{service.status}</span>
                 <div className="admin-item-actions">
                   <button className="text-button" onClick={() => beginEdit(service)}>Update</button>
-                  <button className="text-button" onClick={() => void toggleStatus(service)}>{service.status === "active" ? "Deactivate" : "Activate"}</button>
-                  <button className="text-button danger-text" onClick={() => setPendingDelete(service)}>Delete</button>
+                  <button className="text-button" disabled={busyServiceId === service._id} aria-busy={busyServiceId === service._id} onClick={() => void toggleStatus(service)}>{busyServiceId === service._id ? <ButtonLoader label="Updating…" /> : service.status === "active" ? "Deactivate" : "Activate"}</button>
+                  <button className="text-button danger-text" disabled={busyServiceId === service._id} onClick={() => setPendingDelete(service)}>Delete</button>
                 </div>
               </article>
             ))}
@@ -220,7 +238,7 @@ export function AdminServicesManager() {
         )}
         {!loading && !error && pages > 1 && <nav className="admin-pagination" aria-label="Service list pages"><button className="secondary-button" disabled={page <= 1} onClick={() => setPage((current) => Math.max(1, current - 1))}>Previous</button><span>Page {page} of {pages}</span><button className="secondary-button" disabled={page >= pages} onClick={() => setPage((current) => Math.min(pages, current + 1))}>Next</button></nav>}
       </section>
-      {pendingDelete && <div className="admin-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setPendingDelete(null); }}><section className="admin-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-service-title" aria-describedby="delete-service-description"><p className="eyebrow">REMOVE FROM CATALOG</p><h2 id="delete-service-title">Delete this service?</h2><p id="delete-service-description">“{pendingDelete.serviceName}” will be permanently removed. Existing appointment records remain in your history.</p><div><button className="secondary-button" onClick={() => setPendingDelete(null)}>Keep service</button><button className="danger-button" onClick={() => void deleteService(pendingDelete)}>Delete service</button></div></section></div>}
+      {pendingDelete && <div className="admin-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && busyServiceId !== pendingDelete._id) setPendingDelete(null); }}><section className="admin-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="delete-service-title" aria-describedby="delete-service-description"><p className="eyebrow">REMOVE FROM CATALOG</p><h2 id="delete-service-title">Delete this service?</h2><p id="delete-service-description">“{pendingDelete.serviceName}” will be permanently removed. Existing appointment records remain in your history.</p><div><button className="secondary-button" onClick={() => setPendingDelete(null)} disabled={busyServiceId === pendingDelete._id}>Keep service</button><button className="danger-button" onClick={() => void deleteService(pendingDelete)} disabled={busyServiceId === pendingDelete._id}>{busyServiceId === pendingDelete._id ? <ButtonLoader label="Deleting service…" /> : "Delete service"}</button></div></section></div>}
     </main>
   );
 }

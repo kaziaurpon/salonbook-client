@@ -5,6 +5,8 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowRight, BadgeCheck, CalendarDays, CheckCircle2, Clock3, CircleDollarSign, ClipboardCheck, Search, ShieldCheck } from "lucide-react";
 import { PublicShell } from "@/components/public-shell";
 import { ServiceCard, type PublicService } from "@/components/service-card";
+import { ServiceSkeletonGrid } from "@/components/loading-system";
+import { withRequestTimeout } from "@/lib/api";
 import { getCategoryImage } from "@/lib/service-images";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
@@ -50,13 +52,14 @@ export default function HomePage() {
     const controller = new AbortController();
     queueMicrotask(() => {
       if (controller.signal.aborted) return;
+      const minimumLoaderTime = new Promise<void>((resolve) => window.setTimeout(resolve, 400));
       setLoading(true);
       setError("");
-      void Promise.all([
-        fetch(`${apiUrl}/api/services/featured?limit=6`, { signal: controller.signal }),
-        fetch(`${apiUrl}/api/services/category-cards`, { signal: controller.signal }),
-        fetch(`${apiUrl}/api/services?limit=48`, { signal: controller.signal }),
-      ]).then(async ([featuredResponse, categoriesResponse, allServicesResponse]) => {
+      void withRequestTimeout((signal) => Promise.all([
+        fetch(`${apiUrl}/api/services/featured?limit=6`, { signal }),
+        fetch(`${apiUrl}/api/services/category-cards`, { signal }),
+        fetch(`${apiUrl}/api/services?limit=48`, { signal }),
+      ]), { signal: controller.signal }).then(async ([featuredResponse, categoriesResponse, allServicesResponse]) => {
         if (!featuredResponse.ok || !categoriesResponse.ok) throw new Error("We couldn’t reach the salon menu. Please try again.");
         const featuredResult = await featuredResponse.json() as { services: PublicService[] };
         const categoryResult = await categoriesResponse.json() as { categories: PublicCategory[] };
@@ -69,7 +72,8 @@ export default function HomePage() {
         setServiceTotal(allServicesResult.total ?? allServicesResult.services.length);
       }).catch((reason: unknown) => {
         if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Could not load salon information.");
-      }).finally(() => {
+      }).finally(async () => {
+        await minimumLoaderTime;
         if (!controller.signal.aborted) setLoading(false);
       });
     });
@@ -135,9 +139,9 @@ export default function HomePage() {
           {error ? (
             <div className="public-state error-state" role="alert"><span className="state-symbol">!</span><h3>Our service menu took a pause.</h3><p>{error}</p><button className="button-primary" onClick={() => setRetry((value) => value + 1)}>Try again</button></div>
           ) : loading ? (
-            <div className="service-grid" aria-busy="true" aria-label="Loading featured services">{Array.from({ length: 3 }, (_, index) => <div className="service-skeleton" key={index} />)}</div>
+            <ServiceSkeletonGrid />
           ) : services.length ? (
-            <div className="service-grid">{services.map((service) => <ServiceCard key={service._id} service={service} featured />)}</div>
+            <div className="service-grid service-results-ready">{services.map((service, index) => <ServiceCard key={service._id} service={service} featured revealIndex={index} />)}</div>
           ) : (
             <div className="public-state"><span className="state-symbol">✳</span><h3>Something lovely is on its way.</h3><p>There are no active services to feature just yet. Please check back soon.</p><Link className="text-arrow-link" href="/services">Browse the service menu <span aria-hidden="true">→</span></Link></div>
           )}

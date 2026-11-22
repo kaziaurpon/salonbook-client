@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PublicShell } from "@/components/public-shell";
 import { ServiceCard, type PublicService } from "@/components/service-card";
+import { ServiceSkeletonGrid } from "@/components/loading-system";
+import { withRequestTimeout } from "@/lib/api";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -35,12 +37,13 @@ export default function BrowseServicesPage() {
       if (search.trim()) params.set("q", search.trim());
       if (category) params.set("category", category);
       if (sort !== "newest") params.set("sort", sort);
+      const minimumLoaderTime = new Promise<void>((resolve) => window.setTimeout(resolve, 400));
       setLoading(true);
       setError("");
-      void Promise.all([
-        fetch(`${apiUrl}/api/services?${params.toString()}`, { signal: controller.signal }),
-        fetch(`${apiUrl}/api/services/categories`, { signal: controller.signal }),
-      ]).then(async ([servicesResponse, categoriesResponse]) => {
+      void withRequestTimeout((signal) => Promise.all([
+        fetch(`${apiUrl}/api/services?${params.toString()}`, { signal }),
+        fetch(`${apiUrl}/api/services/categories`, { signal }),
+      ]), { signal: controller.signal }).then(async ([servicesResponse, categoriesResponse]) => {
         if (!servicesResponse.ok || !categoriesResponse.ok) throw new Error("Could not load the salon menu. Check that the API is running, then try again.");
         const serviceResult = await servicesResponse.json() as { services: PublicService[] };
         const categoryResult = await categoriesResponse.json() as { categories: string[] };
@@ -48,10 +51,11 @@ export default function BrowseServicesPage() {
         setCategories(categoryResult.categories);
       }).catch((reason: unknown) => {
         if (!controller.signal.aborted) setError(reason instanceof Error ? reason.message : "Could not load salon services.");
-      }).finally(() => {
+      }).finally(async () => {
+        await minimumLoaderTime;
         if (!controller.signal.aborted) setLoading(false);
       });
-    }, 100);
+    }, 120);
     return () => { window.clearTimeout(timer); controller.abort(); };
   }, [category, retry, search, sort]);
 
@@ -77,10 +81,10 @@ export default function BrowseServicesPage() {
         </section>
 
         <section className="browse-results" aria-live="polite">
-          <div className="results-heading"><p>{loading ? "Finding your options…" : error ? "Service menu unavailable" : `${services.length} ${services.length === 1 ? "service" : "services"}${hasFilters ? " match your search" : " to explore"}`}</p><span>ACTIVE SERVICES</span></div>
+          <div className="results-heading"><p>{loading ? "" : error ? "Service menu unavailable" : `${services.length} ${services.length === 1 ? "service" : "services"}${hasFilters ? " match your search" : " to explore"}`}</p><span>ACTIVE SERVICES</span></div>
           {error ? <div className="public-state error-state" role="alert"><span className="state-symbol">!</span><h2>We couldn’t load the services.</h2><p>{error}</p><button className="button-primary" onClick={() => setRetry((value) => value + 1)}>Try again</button></div>
-            : loading ? <div className="service-grid" aria-busy="true" aria-label="Loading services">{Array.from({ length: 6 }, (_, index) => <div className="service-skeleton" key={index} />)}</div>
-              : services.length ? <div className="service-grid">{services.map((service) => <ServiceCard key={service._id} service={service} />)}</div>
+            : loading ? <ServiceSkeletonGrid />
+              : services.length ? <div className="service-grid service-results-ready">{services.map((service, index) => <ServiceCard key={service._id} service={service} revealIndex={index} />)}</div>
                 : <div className="public-state"><span className="state-symbol">✳</span><h2>{hasFilters ? "No services match those filters." : "The menu is getting ready."}</h2><p>{hasFilters ? "Try a different search or clear the filters to see all active services." : "There are no active salon services right now. Please check back soon."}</p>{hasFilters ? <button className="button-primary" onClick={() => { setSearch(""); setCategory(""); }}>Clear filters</button> : <Link className="text-arrow-link" href="/">Back to home <span aria-hidden="true">→</span></Link>}</div>}
         </section>
       </main>
