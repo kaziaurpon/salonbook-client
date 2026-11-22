@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getServiceImage } from "@/lib/service-images";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
@@ -117,7 +118,7 @@ export function CustomerAppointments({ view = "overview" }: { view?: "overview" 
         <div className="appointment-list customer-appointment-list">
           {visibleAppointments.length === 0 ? <div className="customer-filter-empty">No {statusFilter} appointments yet.</div> : visibleAppointments.map((appointment) => view === "list" ? (
             <article className="customer-table-row" key={appointment._id}>
-              <div className="customer-table-service">{appointment.serviceId?.image ? <img src={appointment.serviceId.image} alt="" /> : <span className="customer-service-placeholder">✳</span>}<div><p className="service-category">{appointment.serviceId?.category || "Salon service"}</p><h3>{appointment.serviceId?.serviceName || "Service unavailable"}</h3></div></div>
+              <div className="customer-table-service">{appointment.serviceId?.image ? <img src={getServiceImage(appointment.serviceId.serviceName, appointment.serviceId.image)} alt="" /> : <span className="customer-service-placeholder">✳</span>}<div><p className="service-category">{appointment.serviceId?.category || "Salon service"}</p><h3>{appointment.serviceId?.serviceName || "Service unavailable"}</h3></div></div>
               <div className="customer-table-date"><strong>{new Date(appointment.appointmentDate).toLocaleDateString()}</strong><span>{appointment.timeSlot}</span></div>
               <strong className="customer-table-price">৳{appointment.servicePrice.toLocaleString()}</strong>
               <span className={`status-pill ${appointment.status}`}>{appointment.status}</span>
@@ -127,7 +128,7 @@ export function CustomerAppointments({ view = "overview" }: { view?: "overview" 
             </article>
           ) : (
             <article className="appointment-item" key={appointment._id}>
-              {appointment.serviceId?.image ? <img src={appointment.serviceId.image} alt={appointment.serviceId?.serviceName || "Salon service"} /> : <span className="customer-service-placeholder">✳</span>}
+              {appointment.serviceId?.image ? <img src={getServiceImage(appointment.serviceId.serviceName, appointment.serviceId.image)} alt={appointment.serviceId?.serviceName || "Salon service"} /> : <span className="customer-service-placeholder">✳</span>}
               <div className="appointment-main"><p className="service-category">{appointment.serviceId?.category || "Salon service"}</p><h3>{appointment.serviceId?.serviceName || "Service unavailable"}</h3><p>{new Date(appointment.appointmentDate).toLocaleDateString()} · {appointment.timeSlot}</p><p className="customer-requested-date">Requested {new Date(appointment.createdAt).toLocaleString()}</p>{appointment.message && <p className="appointment-message">“{appointment.message}”</p>}</div>
               <div className="appointment-statuses"><span className={`status-pill ${appointment.status}`}>{appointment.status}</span><span className={`status-pill ${appointment.paymentStatus}`}>{appointment.paymentStatus}</span><strong>৳{appointment.servicePrice.toLocaleString()}</strong></div>
               {appointment.paymentStatus === "unpaid" && <p className="appointment-payment-note">{appointment.status === "confirmed" ? "Secure test-mode checkout is available for this confirmed appointment." : "Payment is unavailable while an appointment is pending or cancelled."}</p>}

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { getServiceImage } from "@/lib/service-images";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authenticatedApiFetch } from "@/lib/api";
@@ -93,7 +94,7 @@ export function AdminAppointments() {
           <div className="appointment-list">
           {appointments.map((item) => (
             <article className="appointment-item admin-appointment-item" key={item._id}>
-              {item.serviceId?.image ? <img src={item.serviceId.image} alt="" /> : <div className="admin-appointment-image-fallback" aria-hidden="true">S</div>}
+              {item.serviceId?.image ? <img src={getServiceImage(item.serviceId.serviceName, item.serviceId.image)} alt="" /> : <div className="admin-appointment-image-fallback" aria-hidden="true">S</div>}
               <div className="appointment-main admin-appointment-service"><p className="service-category">{item.serviceId?.category || "Salon service"}</p><h3>{item.serviceId?.serviceName || "Service unavailable"}</h3><p className="admin-appointment-customer">{item.customer?.name || "Unknown customer"}</p><p className="admin-appointment-email">{item.customer?.email || "No email available"}</p>{item.message && <p className="appointment-message">“{item.message}”</p>}</div>
               <div className="admin-appointment-cell admin-appointment-visit"><strong>{new Date(item.appointmentDate).toLocaleDateString()}</strong><small>{item.timeSlot}</small></div>
               <div className="admin-appointment-cell admin-appointment-price"><strong>৳{item.servicePrice.toLocaleString()}</strong></div>

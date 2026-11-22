@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { getServiceImage } from "@/lib/service-images";
 import { useRouter } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -205,7 +206,7 @@ export function AdminServicesManager() {
           <div className="admin-service-items">
             {services.map((service) => (
               <article className="admin-service-item" key={service._id}>
-                <img src={service.image} alt="" />
+                <img src={getServiceImage(service.serviceName, service.image)} alt="" />
                 <div className="admin-service-info"><p className="service-category">{service.category}</p><h3>{service.serviceName}</h3><p>৳{service.price.toLocaleString()} · {service.duration} min</p></div>
                 <span className={`status-pill ${service.status}`}>{service.status}</span>
                 <div className="admin-item-actions">

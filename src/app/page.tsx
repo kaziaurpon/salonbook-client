@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PublicShell } from "@/components/public-shell";
 import { ServiceCard, type PublicService } from "@/components/service-card";
+import { getCategoryImage } from "@/lib/service-images";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 type PublicCategory = { name: string; image: string };
@@ -94,7 +95,7 @@ export default function HomePage() {
             </div>
           </div>
           {error ? <p className="category-hint">Categories will appear when the service menu is available.</p> : loading ? <div className="category-cards" aria-busy="true" aria-label="Loading service categories">{Array.from({ length: 4 }, (_, index) => <span className="category-placeholder" key={index} />)}</div> : categories.length ? (
-            <div className="category-cards">{categories.map((category, index) => <Link className="category-card" key={category.name} href={`/services?category=${encodeURIComponent(category.name)}`}><div className="category-card-image-wrap"><img src={category.image} alt="" className="category-card-image" loading="lazy" /><span className="category-number">0{index + 1}</span></div><div className="category-card-label"><span>{category.name}</span><span className="category-arrow" aria-hidden="true">↗</span></div></Link>)}</div>
+            <div className="category-cards">{categories.map((category, index) => <Link className="category-card" key={category.name} href={`/services?category=${encodeURIComponent(category.name)}`}><div className="category-card-image-wrap"><img src={getCategoryImage(category.name, category.image)} alt="" className="category-card-image" loading="lazy" /><span className="category-number">0{index + 1}</span></div><div className="category-card-label"><span>{category.name}</span><span className="category-arrow" aria-hidden="true">↗</span></div></Link>)}</div>
           ) : <p className="category-hint">Service categories will appear here when they are available.</p>}
         </section>
 

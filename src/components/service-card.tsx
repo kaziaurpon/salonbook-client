@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getServiceImage } from "@/lib/service-images";
 
 export type PublicService = {
   _id: string;
@@ -14,7 +15,7 @@ export function ServiceCard({ service, featured = false }: { service: PublicServ
   return (
     <article className={`service-card${featured ? " featured-service-card" : ""}`}>
       <Link className="service-image-link" href={`/services/${service._id}`} aria-label={`View ${service.serviceName} details`}>
-        <img className="service-card-image" src={service.image} alt={service.serviceName} loading="lazy" />
+        <img className="service-card-image" src={getServiceImage(service.serviceName, service.image)} alt={service.serviceName} loading="lazy" />
         <span className="image-arrow" aria-hidden="true">↗</span>
       </Link>
       <div className="service-card-content">

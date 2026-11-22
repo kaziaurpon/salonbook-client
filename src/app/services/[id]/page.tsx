@@ -8,6 +8,7 @@ import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
 import { loginPathFor } from "@/lib/auth-redirect";
 import { PublicShell } from "@/components/public-shell";
+import { getServiceImage } from "@/lib/service-images";
 
 type Service = {
   serviceName: string;
@@ -118,7 +119,7 @@ export default function ServiceDetailsPage() {
       <Link className="service-back-link" href="/services"><span aria-hidden="true">←</span> Back to all services</Link>
       <div className="service-detail-layout">
         <article className="service-detail-main">
-          <div className="service-detail-photo"><img src={service.image} alt={`${service.serviceName} at SalonBook`} /><span>{service.category}</span></div>
+          <div className="service-detail-photo"><img src={getServiceImage(service.serviceName, service.image)} alt={`${service.serviceName} at SalonBook`} /><span>{service.category}</span></div>
           <div className="service-detail-content">
             <div className="service-detail-badges"><span className="service-active-badge"><i aria-hidden="true" /> Active service</span><span>Salon experience</span></div>
             <p className="service-category">{service.category}</p>
