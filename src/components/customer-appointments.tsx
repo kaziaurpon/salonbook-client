@@ -23,6 +23,13 @@ type Appointment = {
   serviceId?: { serviceName: string; category: string; image: string } | null;
 };
 
+function sortLatestRequested(appointments: Appointment[]) {
+  return [...appointments].sort((first, second) => {
+    const requestedOrder = new Date(second.createdAt).getTime() - new Date(first.createdAt).getTime();
+    return requestedOrder || second._id.localeCompare(first._id);
+  });
+}
+
 export function CustomerAppointments({ view = "overview" }: { view?: "overview" | "list" }) {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
@@ -45,7 +52,7 @@ export function CustomerAppointments({ view = "overview" }: { view?: "overview" 
       const response = await authenticatedApiFetch("/api/appointments/mine");
       const result = await response.json() as { appointments?: Appointment[]; message?: string };
       if (!response.ok || !result.appointments) throw new Error(result.message || "Could not load your appointments.");
-      setAppointments(result.appointments);
+      setAppointments(sortLatestRequested(result.appointments));
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Could not load your appointments.");
     } finally {
