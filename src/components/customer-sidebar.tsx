@@ -7,6 +7,7 @@ import { SalonBookLogo } from "@/components/salonbook-logo";
 const links = [
   ["Overview", "/dashboard/customer"],
   ["My appointments", "/dashboard/customer/appointments"],
+  ["Payments", "/dashboard/customer/payments"],
   ["My profile", "/dashboard/customer/profile"],
 ] as const;
 

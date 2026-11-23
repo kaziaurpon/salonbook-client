@@ -3,11 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ReceiptText } from "lucide-react";
 import { getServiceImage } from "@/lib/service-images";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { authenticatedApiFetch } from "@/lib/api";
 import { ButtonLoader, DashboardSkeleton, minimumLoader, PaymentOverlay } from "@/components/loading-system";
+import { PaymentReceiptModal } from "@/components/payment-receipt-modal";
 
 type Appointment = {
   _id: string;
@@ -32,6 +34,7 @@ export function CustomerAppointments({ view = "overview" }: { view?: "overview" 
   const [paymentOverlay, setPaymentOverlay] = useState<{ state: "processing" | "success" | "error"; id: string; message?: string } | null>(null);
   const [cancelTarget, setCancelTarget] = useState<Appointment | null>(null);
   const [detailsTarget, setDetailsTarget] = useState<Appointment | null>(null);
+  const [receiptAppointmentId, setReceiptAppointmentId] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<"all" | Appointment["status"]>("all");
 
   const load = useCallback(async () => {
@@ -140,7 +143,7 @@ export function CustomerAppointments({ view = "overview" }: { view?: "overview" 
               <div className="customer-table-date"><strong>{new Date(appointment.appointmentDate).toLocaleDateString()}</strong><span>{appointment.timeSlot}</span></div>
               <strong className="customer-table-price">৳{appointment.servicePrice.toLocaleString()}</strong>
               <span className={`status-pill ${appointment.status}`}>{appointment.status}</span>
-              <span className={`status-pill ${appointment.paymentStatus}`}>{appointment.paymentStatus}</span>
+              {appointment.paymentStatus === "paid" ? <button type="button" className="status-pill paid customer-paid-receipt" onClick={() => setReceiptAppointmentId(appointment._id)} aria-label="View payment receipt" aria-haspopup="dialog" title="View receipt"><ReceiptText size={14} aria-hidden="true" />Paid</button> : <span className={`status-pill ${appointment.paymentStatus}`}>{appointment.paymentStatus}</span>}
               <span className="customer-table-requested">{new Date(appointment.createdAt).toLocaleString()}</span>
               <div className="customer-table-actions"><button className="secondary-button" onClick={() => setDetailsTarget(appointment)}>Details</button>{appointment.status === "confirmed" && appointment.paymentStatus === "unpaid" && <button className="button-primary" aria-busy={payingId === appointment._id} disabled={payingId === appointment._id} onClick={() => void payNow(appointment._id)}>{payingId === appointment._id ? <ButtonLoader label="Securing payment..." /> : "Pay now"}</button>}{appointment.status === "pending" && <button className="text-button danger-text" disabled={busyId === appointment._id} onClick={() => setCancelTarget(appointment)}>Cancel</button>}</div>
             </article>
@@ -161,6 +164,7 @@ export function CustomerAppointments({ view = "overview" }: { view?: "overview" 
       {detailsTarget && <div className="admin-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setDetailsTarget(null); }}><section className="admin-confirm-dialog customer-appointment-details" role="dialog" aria-modal="true" aria-labelledby="appointment-details-title"><p className="eyebrow">APPOINTMENT DETAILS</p><h2 id="appointment-details-title">{detailsTarget.serviceId?.serviceName || "Salon service"}</h2><dl><div><dt>Category</dt><dd>{detailsTarget.serviceId?.category || "Salon service"}</dd></div><div><dt>Date & time</dt><dd>{new Date(detailsTarget.appointmentDate).toLocaleDateString()} · {detailsTarget.timeSlot}</dd></div><div><dt>Price</dt><dd>৳{detailsTarget.servicePrice.toLocaleString()}</dd></div><div><dt>Appointment status</dt><dd><span className={`status-pill ${detailsTarget.status}`}>{detailsTarget.status}</span></dd></div><div><dt>Payment status</dt><dd><span className={`status-pill ${detailsTarget.paymentStatus}`}>{detailsTarget.paymentStatus}</span></dd></div><div><dt>Requested on</dt><dd>{new Date(detailsTarget.createdAt).toLocaleString()}</dd></div></dl>{detailsTarget.message && <p className="appointment-message">Your note: “{detailsTarget.message}”</p>}<div><button className="secondary-button" onClick={() => setDetailsTarget(null)}>Close</button>{detailsTarget.status === "confirmed" && detailsTarget.paymentStatus === "unpaid" && <button className="button-primary" aria-busy={payingId === detailsTarget._id} disabled={payingId === detailsTarget._id} onClick={() => void payNow(detailsTarget._id)}>{payingId === detailsTarget._id ? <ButtonLoader label="Securing payment..." /> : "Pay now"}</button>}</div></section></div>}
       {cancelTarget && <div className="admin-dialog-backdrop" role="presentation"><section className="admin-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="customer-cancel-title"><p className="eyebrow">YOUR APPOINTMENT</p><h2 id="customer-cancel-title">Cancel this request?</h2><p>Your pending {cancelTarget.serviceId?.serviceName || "salon service"} request for {new Date(cancelTarget.appointmentDate).toLocaleDateString()} at {cancelTarget.timeSlot} will be cancelled.</p><div><button className="secondary-button" onClick={() => setCancelTarget(null)} disabled={busyId === cancelTarget._id}>Keep request</button><button className="primary-button" onClick={() => void cancel(cancelTarget._id)} disabled={busyId === cancelTarget._id}>{busyId === cancelTarget._id ? <ButtonLoader label="Cancelling…" /> : "Confirm cancellation"}</button></div></section></div>}
       {paymentOverlay && <PaymentOverlay state={paymentOverlay.state} message={paymentOverlay.message} onRetry={paymentOverlay.state === "error" ? () => void payNow(paymentOverlay.id) : undefined} onClose={paymentOverlay.state === "processing" ? undefined : closePaymentOverlay} />}
+      {receiptAppointmentId && <PaymentReceiptModal appointmentId={receiptAppointmentId} onClose={() => setReceiptAppointmentId(null)} />}
     </section>
   );
 }
